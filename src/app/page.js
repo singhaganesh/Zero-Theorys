@@ -113,6 +113,29 @@ export default function Home() {
       ),
       description: "High-performance native-speed mobile applications for iOS and Android using clean modular components.",
       tags: ["Flutter", "React Native", "iOS & Android", "Offline Sync"]
+    },
+    {
+      title: "Website Development",
+      icon: (
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--accent-primary)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <polyline points="16 18 22 12 16 6"></polyline>
+          <polyline points="8 6 2 12 8 18"></polyline>
+        </svg>
+      ),
+      description: "High-performance, SEO-engineered web applications optimized for speed, accessibility, and clean conversion paths.",
+      tags: ["Next.js", "Vite", "SEO Engine", "Web Performance"]
+    },
+    {
+      title: "Software Development",
+      icon: (
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--accent-primary)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <rect x="2" y="4" width="20" height="16" rx="2" ry="2"></rect>
+          <line x1="2" y1="10" x2="22" y2="10"></line>
+          <line x1="12" y1="2" x2="12" y2="4"></line>
+        </svg>
+      ),
+      description: "Custom enterprise software engines, secure SaaS platforms, and distributed systems architected for scale.",
+      tags: ["APIs", "Microservices", "Docker", "SaaS Systems"]
     }
   ];
 
@@ -209,27 +232,7 @@ export default function Home() {
                       </div>
                       <h3 style={{ fontSize: "1.3rem" }}>{svc.title}</h3>
                     </div>
-                    
-                    <p style={{ marginBottom: "1.5rem", fontSize: "0.95rem" }}>{svc.description}</p>
-                    
-                    <div style={{ display: "flex", gap: "0.5rem", flexWrap: "wrap" }}>
-                      {svc.tags.map((tag) => (
-                        <span 
-                          key={tag} 
-                          style={{ 
-                            fontSize: "0.75rem", 
-                            background: "#ffffff", 
-                            border: "1px solid var(--border-light)", 
-                            padding: "0.25rem 0.65rem", 
-                            borderRadius: "4px",
-                            color: "var(--text-secondary)",
-                            fontWeight: "500"
-                          }}
-                        >
-                          {tag}
-                        </span>
-                      ))}
-                    </div>
+                    <p style={{ marginBottom: "0.5rem", fontSize: "0.95rem" }}>{svc.description}</p>
                   </div>
                 </div>
               </ScrollReveal>
@@ -297,6 +300,85 @@ export default function Home() {
                 </div>
               </ScrollReveal>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* 3.5. TECHNOLOGY STACK */}
+      <section style={{ padding: "6rem 0", borderTop: "1px solid var(--border-light)" }}>
+        <div className="container">
+          <ScrollReveal direction="up">
+            <div className="section-title-wrap">
+              <span className="section-tag">Technical Foundations</span>
+              <h2 className="section-title">Our Technology Stack</h2>
+              <p className="section-subtitle">We build with enterprise-grade tools, framework clusters, and automated deployment pipelines.</p>
+            </div>
+          </ScrollReveal>
+
+          <div className="grid-4" style={{ gap: "1.5rem" }}>
+            {/* Category 1: AI & Intelligent Pipelines */}
+            <ScrollReveal direction="up" delay={0}>
+              <div className="glass-card" style={{ height: "100%" }}>
+                <div className="glass-card-content">
+                  <h3 style={{ fontSize: "1.15rem", marginBottom: "1rem", color: "var(--accent-primary)" }}>AI &amp; Data Core</h3>
+                  <div style={{ display: "flex", gap: "0.5rem", flexWrap: "wrap" }}>
+                    {["LangChain", "LlamaIndex", "Vector DBs", "Pinecone", "Redis Cache", "Multi-Agents", "Fine-Tuning"].map((tech) => (
+                      <span key={tech} style={{ fontSize: "0.75rem", background: "var(--bg-tertiary)", border: "1px solid var(--border-light)", padding: "0.25rem 0.65rem", borderRadius: "4px", color: "var(--text-secondary)", fontWeight: "500" }}>
+                        {tech}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </ScrollReveal>
+
+            {/* Category 2: Full-Stack Web */}
+            <ScrollReveal direction="up" delay={100}>
+              <div className="glass-card" style={{ height: "100%" }}>
+                <div className="glass-card-content">
+                  <h3 style={{ fontSize: "1.15rem", marginBottom: "1rem", color: "var(--accent-secondary)" }}>Web Ecosystems</h3>
+                  <div style={{ display: "flex", gap: "0.5rem", flexWrap: "wrap" }}>
+                    {["Next.js", "React", "TypeScript", "Node.js", "NestJS", "Fastify", "GraphQL", "Prisma"].map((tech) => (
+                      <span key={tech} style={{ fontSize: "0.75rem", background: "var(--bg-tertiary)", border: "1px solid var(--border-light)", padding: "0.25rem 0.65rem", borderRadius: "4px", color: "var(--text-secondary)", fontWeight: "500" }}>
+                        {tech}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </ScrollReveal>
+
+            {/* Category 3: Cloud & DevOps */}
+            <ScrollReveal direction="up" delay={200}>
+              <div className="glass-card" style={{ height: "100%" }}>
+                <div className="glass-card-content">
+                  <h3 style={{ fontSize: "1.15rem", marginBottom: "1rem", color: "var(--accent-primary)" }}>DevOps &amp; Cloud</h3>
+                  <div style={{ display: "flex", gap: "0.5rem", flexWrap: "wrap" }}>
+                    {["Docker", "Kubernetes", "AWS CDK", "Terraform", "CI/CD Actions", "PostgreSQL", "OpenTelemetry"].map((tech) => (
+                      <span key={tech} style={{ fontSize: "0.75rem", background: "var(--bg-tertiary)", border: "1px solid var(--border-light)", padding: "0.25rem 0.65rem", borderRadius: "4px", color: "var(--text-secondary)", fontWeight: "500" }}>
+                        {tech}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </ScrollReveal>
+
+            {/* Category 4: Mobile SDKs */}
+            <ScrollReveal direction="up" delay={300}>
+              <div className="glass-card" style={{ height: "100%" }}>
+                <div className="glass-card-content">
+                  <h3 style={{ fontSize: "1.15rem", marginBottom: "1rem", color: "var(--accent-secondary)" }}>Mobile Engineering</h3>
+                  <div style={{ display: "flex", gap: "0.5rem", flexWrap: "wrap" }}>
+                    {["Flutter", "React Native", "Swift (iOS)", "Kotlin (Android)", "SQLite", "Offline Sync", "Push Notifs"].map((tech) => (
+                      <span key={tech} style={{ fontSize: "0.75rem", background: "var(--bg-tertiary)", border: "1px solid var(--border-light)", padding: "0.25rem 0.65rem", borderRadius: "4px", color: "var(--text-secondary)", fontWeight: "500" }}>
+                        {tech}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </ScrollReveal>
           </div>
         </div>
       </section>
