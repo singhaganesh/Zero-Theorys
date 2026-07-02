@@ -12,6 +12,7 @@ export default function Home() {
   const cardsRef = useRef([]);
   const metricsRef = useRef(null);
   const [apiSpeed, setApiSpeed] = useState(0);
+  const [hoveredService, setHoveredService] = useState(null);
   const [securityScore, setSecurityScore] = useState(0);
   const [uptime, setUptime] = useState(0.0);
 
@@ -208,35 +209,110 @@ export default function Home() {
             </div>
           </ScrollReveal>
 
-          <div className="grid-2">
-            {services.map((svc, i) => (
-              <ScrollReveal key={svc.title} direction="up" delay={i * 100}>
-                <div 
-                  ref={(el) => (cardsRef.current[i] = el)}
-                  onMouseMove={(e) => handleMouseMove(e, i)}
-                  className="glass-card"
-                  style={{ cursor: "default" }}
-                >
-                  <div className="glass-card-content">
-                    <div style={{ display: "flex", gap: "1rem", alignItems: "center", marginBottom: "1.25rem" }}>
-                      <div style={{
-                        width: "48px",
-                        height: "48px",
-                        borderRadius: "12px",
-                        background: "rgba(79, 70, 229, 0.06)",
-                        display: "flex",
-                        justifyContent: "center",
-                        alignItems: "center"
-                      }}>
-                        {svc.icon}
-                      </div>
-                      <h3 style={{ fontSize: "1.3rem" }}>{svc.title}</h3>
-                    </div>
-                    <p style={{ marginBottom: "0.5rem", fontSize: "0.95rem" }}>{svc.description}</p>
+          <div className="timeline-container">
+            <div className="timeline-spine-line" />
+            
+            {services.map((svc, i) => {
+              const isEven = i % 2 === 0;
+              const isHovered = hoveredService === i;
+              
+              return (
+                <div key={svc.title} className="timeline-row">
+                  {/* Left Column */}
+                  <div className="timeline-col-left">
+                    {isEven && (
+                      <ScrollReveal direction="left" delay={100} style={{ width: "100%", display: "flex", justifyContent: "flex-end" }}>
+                        <div 
+                          onMouseEnter={() => setHoveredService(i)}
+                          onMouseLeave={() => setHoveredService(null)}
+                          onMouseMove={(e) => handleMouseMove(e, i)}
+                          ref={(el) => (cardsRef.current[i] = el)}
+                          className="glass-card timeline-card-wrapper"
+                          style={{ cursor: "default" }}
+                        >
+                          <div className="glass-card-content">
+                            <div style={{ display: "flex", gap: "1rem", alignItems: "center", marginBottom: "1.25rem" }}>
+                              <div style={{
+                                width: "48px",
+                                height: "48px",
+                                borderRadius: "12px",
+                                background: "rgba(5, 150, 105, 0.06)",
+                                display: "flex",
+                                justifyContent: "center",
+                                alignItems: "center"
+                              }}>
+                                {svc.icon}
+                              </div>
+                              <h3 style={{ fontSize: "1.3rem" }}>{svc.title}</h3>
+                            </div>
+                            <p style={{ marginBottom: "0.5rem", fontSize: "0.95rem" }}>{svc.description}</p>
+                          </div>
+                        </div>
+                        
+                        {/* Wavy Connector Line to Spine */}
+                        <svg className="timeline-connector-svg" viewBox="0 0 40 20">
+                          <path 
+                            d="M 0 10 C 10 6, 30 14, 40 10" 
+                            stroke={isHovered ? "var(--accent-primary)" : "var(--border-light)"} 
+                            strokeWidth={isHovered ? "3" : "1.5"} 
+                            fill="none" 
+                          />
+                        </svg>
+                      </ScrollReveal>
+                    )}
+                  </div>
+
+                  {/* Middle Column (Node) */}
+                  <div className="timeline-col-middle">
+                    <div className={`timeline-node ${isHovered ? "active" : ""}`} />
+                  </div>
+
+                  {/* Right Column */}
+                  <div className="timeline-col-right">
+                    {!isEven && (
+                      <ScrollReveal direction="right" delay={100} style={{ width: "100%", display: "flex", justifyContent: "flex-start" }}>
+                        <div 
+                          onMouseEnter={() => setHoveredService(i)}
+                          onMouseLeave={() => setHoveredService(null)}
+                          onMouseMove={(e) => handleMouseMove(e, i)}
+                          ref={(el) => (cardsRef.current[i] = el)}
+                          className="glass-card timeline-card-wrapper"
+                          style={{ cursor: "default" }}
+                        >
+                          <div className="glass-card-content">
+                            <div style={{ display: "flex", gap: "1rem", alignItems: "center", marginBottom: "1.25rem" }}>
+                              <div style={{
+                                width: "48px",
+                                height: "48px",
+                                borderRadius: "12px",
+                                background: "rgba(5, 150, 105, 0.06)",
+                                display: "flex",
+                                justifyContent: "center",
+                                alignItems: "center"
+                              }}>
+                                {svc.icon}
+                              </div>
+                              <h3 style={{ fontSize: "1.3rem" }}>{svc.title}</h3>
+                            </div>
+                            <p style={{ marginBottom: "0.5rem", fontSize: "0.95rem" }}>{svc.description}</p>
+                          </div>
+                        </div>
+                        
+                        {/* Wavy Connector Line to Spine */}
+                        <svg className="timeline-connector-svg" viewBox="0 0 40 20">
+                          <path 
+                            d="M 0 10 C 10 6, 30 14, 40 10" 
+                            stroke={isHovered ? "var(--accent-primary)" : "var(--border-light)"} 
+                            strokeWidth={isHovered ? "3" : "1.5"} 
+                            fill="none" 
+                          />
+                        </svg>
+                      </ScrollReveal>
+                    )}
                   </div>
                 </div>
-              </ScrollReveal>
-            ))}
+              );
+            })}
           </div>
         </div>
       </section>
