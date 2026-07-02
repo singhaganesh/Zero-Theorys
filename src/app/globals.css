@@ -30,6 +30,30 @@
   --transition-normal: 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
+[data-theme="dark"] {
+  --bg-primary: #141714;       /* Deep Forest Charcoal */
+  --bg-secondary: #1b1f1b;     /* Dark mossy slate */
+  --bg-tertiary: #232823;      /* Slightly lighter slate */
+  --bg-header: rgba(20, 23, 20, 0.8); /* Translucent dark moss */
+  
+  --text-primary: #f4f5f4;     /* Soft white */
+  --text-secondary: #9ca49c;   /* Muted sage gray */
+  --text-muted: #5e6b5e;       /* Darker sage slate */
+  
+  --accent-primary: #34d399;   /* Glowing Mint Green */
+  --accent-primary-hover: #10b981;
+  --accent-secondary: #dcb88f; /* Warm Sand Gold */
+  --accent-secondary-hover: #cfa87c;
+  
+  --border-light: rgba(255, 255, 255, 0.04);
+  --border-active: rgba(52, 211, 153, 0.25);
+  
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.15);
+  --shadow-md: 0 10px 25px -5px rgba(0, 0, 0, 0.2), 0 8px 10px -6px rgba(0, 0, 0, 0.2);
+  --shadow-lg: 0 20px 40px -10px rgba(0, 0, 0, 0.3), 0 10px 20px -10px rgba(0, 0, 0, 0.3);
+  --shadow-glow: 0 0 30px rgba(52, 211, 153, 0.04);
+}
+
 * {
   box-sizing: border-box;
   margin: 0;
@@ -450,4 +474,9 @@ a {
   to {
     stroke-dashoffset: -12;
   }
+}
+
+.theme-toggle-btn:hover {
+  background: var(--bg-tertiary) !important;
+  border-color: var(--text-muted) !important;
 }
