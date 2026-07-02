@@ -81,15 +81,15 @@ export default function RagPipeline() {
             {/* 1. Input Node */}
             <g transform="translate(40, 60)" cursor="pointer" onClick={() => setActiveStep("input")}>
               <rect x="0" y="0" width="80" height="80" rx="16" 
-                fill={activeStep === "input" ? "rgba(5, 150, 105, 0.08)" : "#ffffff"} 
-                stroke={activeStep === "input" ? "url(#indigoCyan)" : "#cbd5e1"} 
+                fill={activeStep === "input" ? "rgba(5, 150, 105, 0.08)" : "var(--bg-secondary)"} 
+                stroke={activeStep === "input" ? "url(#indigoCyan)" : "var(--border-light)"} 
                 strokeWidth={activeStep === "input" ? "3" : "1.5"}
                 style={{ transition: "all 0.3s" }} 
               />
-              <svg x="24" y="24" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke={activeStep === "input" ? "#059669" : "#64748b"} strokeWidth="2">
+              <svg x="24" y="24" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke={activeStep === "input" ? "#059669" : "var(--text-muted)"} strokeWidth="2">
                 <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
               </svg>
-              <text x="40" y="98" textAnchor="middle" fontSize="11" fontWeight="600" fill={activeStep === "input" ? "#059669" : "#475569"} fontFamily="var(--font-display)">
+              <text x="40" y="98" textAnchor="middle" fontSize="11" fontWeight="600" fill={activeStep === "input" ? "#059669" : "var(--text-secondary)"} fontFamily="var(--font-display)">
                 1. Guardrails
               </text>
             </g>
@@ -97,15 +97,15 @@ export default function RagPipeline() {
             {/* 2. Cache Node */}
             <g transform="translate(220, 60)" cursor="pointer" onClick={() => setActiveStep("cache")}>
               <rect x="0" y="0" width="80" height="80" rx="16" 
-                fill={activeStep === "cache" ? "rgba(5, 150, 105, 0.08)" : "#ffffff"} 
-                stroke={activeStep === "cache" ? "url(#indigoCyan)" : "#cbd5e1"} 
+                fill={activeStep === "cache" ? "rgba(5, 150, 105, 0.08)" : "var(--bg-secondary)"} 
+                stroke={activeStep === "cache" ? "url(#indigoCyan)" : "var(--border-light)"} 
                 strokeWidth={activeStep === "cache" ? "3" : "1.5"}
                 style={{ transition: "all 0.3s" }} 
               />
-              <svg x="24" y="24" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke={activeStep === "cache" ? "#059669" : "#64748b"} strokeWidth="2">
+              <svg x="24" y="24" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke={activeStep === "cache" ? "#059669" : "var(--text-muted)"} strokeWidth="2">
                 <path d="M22 12h-4l-3 9L9 3l-3 9H2"/>
               </svg>
-              <text x="40" y="98" textAnchor="middle" fontSize="11" fontWeight="600" fill={activeStep === "cache" ? "#059669" : "#475569"} fontFamily="var(--font-display)">
+              <text x="40" y="98" textAnchor="middle" fontSize="11" fontWeight="600" fill={activeStep === "cache" ? "#059669" : "var(--text-secondary)"} fontFamily="var(--font-display)">
                 2. Cache Engine
               </text>
             </g>
@@ -113,17 +113,17 @@ export default function RagPipeline() {
             {/* 3. Vector DB Node */}
             <g transform="translate(400, 60)" cursor="pointer" onClick={() => setActiveStep("vector")}>
               <rect x="0" y="0" width="80" height="80" rx="16" 
-                fill={activeStep === "vector" ? "rgba(5, 150, 105, 0.08)" : "#ffffff"} 
-                stroke={activeStep === "vector" ? "url(#indigoCyan)" : "#cbd5e1"} 
+                fill={activeStep === "vector" ? "rgba(5, 150, 105, 0.08)" : "var(--bg-secondary)"} 
+                stroke={activeStep === "vector" ? "url(#indigoCyan)" : "var(--border-light)"} 
                 strokeWidth={activeStep === "vector" ? "3" : "1.5"}
                 style={{ transition: "all 0.3s" }} 
               />
-              <svg x="24" y="24" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke={activeStep === "vector" ? "#059669" : "#64748b"} strokeWidth="2">
+              <svg x="24" y="24" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke={activeStep === "vector" ? "#059669" : "var(--text-muted)"} strokeWidth="2">
                 <ellipse cx="12" cy="5" rx="9" ry="3"></ellipse>
                 <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"></path>
                 <path d="M3 12c0 1.66 4 3 9 3s9-1.34 9-3"></path>
               </svg>
-              <text x="40" y="98" textAnchor="middle" fontSize="11" fontWeight="600" fill={activeStep === "vector" ? "#059669" : "#475569"} fontFamily="var(--font-display)">
+              <text x="40" y="98" textAnchor="middle" fontSize="11" fontWeight="600" fill={activeStep === "vector" ? "#059669" : "var(--text-secondary)"} fontFamily="var(--font-display)">
                 3. Vector DB
               </text>
             </g>
@@ -131,15 +131,15 @@ export default function RagPipeline() {
             {/* 4. Agents Node */}
             <g transform="translate(580, 60)" cursor="pointer" onClick={() => setActiveStep("agents")}>
               <rect x="0" y="0" width="80" height="80" rx="16" 
-                fill={activeStep === "agents" ? "rgba(5, 150, 105, 0.08)" : "#ffffff"} 
-                stroke={activeStep === "agents" ? "url(#indigoCyan)" : "#cbd5e1"} 
+                fill={activeStep === "agents" ? "rgba(5, 150, 105, 0.08)" : "var(--bg-secondary)"} 
+                stroke={activeStep === "agents" ? "url(#indigoCyan)" : "var(--border-light)"} 
                 strokeWidth={activeStep === "agents" ? "3" : "1.5"}
                 style={{ transition: "all 0.3s" }} 
               />
-              <svg x="24" y="24" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke={activeStep === "agents" ? "#059669" : "#64748b"} strokeWidth="2">
+              <svg x="24" y="24" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke={activeStep === "agents" ? "#059669" : "var(--text-muted)"} strokeWidth="2">
                 <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
               </svg>
-              <text x="40" y="98" textAnchor="middle" fontSize="11" fontWeight="600" fill={activeStep === "agents" ? "#059669" : "#475569"} fontFamily="var(--font-display)">
+              <text x="40" y="98" textAnchor="middle" fontSize="11" fontWeight="600" fill={activeStep === "agents" ? "#059669" : "var(--text-secondary)"} fontFamily="var(--font-display)">
                 4. Multi-Agent
               </text>
             </g>
@@ -147,16 +147,16 @@ export default function RagPipeline() {
             {/* 5. Output Node */}
             <g transform="translate(760, 60)" cursor="pointer" onClick={() => setActiveStep("output")}>
               <rect x="0" y="0" width="80" height="80" rx="16" 
-                fill={activeStep === "output" ? "rgba(5, 150, 105, 0.08)" : "#ffffff"} 
-                stroke={activeStep === "output" ? "url(#indigoCyan)" : "#cbd5e1"} 
+                fill={activeStep === "output" ? "rgba(5, 150, 105, 0.08)" : "var(--bg-secondary)"} 
+                stroke={activeStep === "output" ? "url(#indigoCyan)" : "var(--border-light)"} 
                 strokeWidth={activeStep === "output" ? "3" : "1.5"}
                 style={{ transition: "all 0.3s" }} 
               />
-              <svg x="24" y="24" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke={activeStep === "output" ? "#059669" : "#64748b"} strokeWidth="2">
+              <svg x="24" y="24" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke={activeStep === "output" ? "#059669" : "var(--text-muted)"} strokeWidth="2">
                 <polyline points="9 11 12 14 22 4"></polyline>
                 <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path>
               </svg>
-              <text x="40" y="98" textAnchor="middle" fontSize="11" fontWeight="600" fill={activeStep === "output" ? "#059669" : "#475569"} fontFamily="var(--font-display)">
+              <text x="40" y="98" textAnchor="middle" fontSize="11" fontWeight="600" fill={activeStep === "output" ? "#059669" : "var(--text-secondary)"} fontFamily="var(--font-display)">
                 5. Validation
               </text>
             </g>

@@ -68,7 +68,7 @@ export default function CalendarScheduler() {
   };
 
   return (
-    <div className="glass-card" style={{ padding: "2rem", background: "#ffffff", border: "1px solid var(--border-light)" }}>
+    <div className="glass-card" style={{ padding: "2rem", background: "var(--bg-secondary)", border: "1px solid var(--border-light)" }}>
       <div className="glass-card-content">
         {!isBooked ? (
           <div>
@@ -116,7 +116,7 @@ export default function CalendarScheduler() {
                           borderRadius: "8px",
                           background: isSelected 
                             ? "rgba(5, 150, 105, 0.08)" 
-                            : isAvailable ? "#ffffff" : "var(--bg-tertiary)",
+                            : isAvailable ? "var(--bg-secondary)" : "var(--bg-tertiary)",
                           color: isSelected 
                             ? "var(--accent-primary)" 
                             : isAvailable ? "var(--text-primary)" : "var(--text-muted)",
@@ -156,7 +156,7 @@ export default function CalendarScheduler() {
                               padding: "0.75rem",
                               borderRadius: "8px",
                               border: isTimeSelected ? "2px solid var(--accent-primary)" : "1px solid var(--border-light)",
-                              background: isTimeSelected ? "rgba(5, 150, 105, 0.05)" : "#ffffff",
+                              background: isTimeSelected ? "rgba(5, 150, 105, 0.05)" : "var(--bg-secondary)",
                               color: isTimeSelected ? "var(--accent-primary)" : "var(--text-secondary)",
                               fontWeight: isTimeSelected ? "600" : "500",
                               cursor: "pointer",
@@ -180,7 +180,7 @@ export default function CalendarScheduler() {
                             placeholder="Enter name"
                             value={bookingForm.name} 
                             onChange={(e) => setBookingForm({...bookingForm, name: e.target.value})}
-                            style={{ padding: "0.6rem 0.8rem", borderRadius: "6px", border: "1px solid var(--border-light)", outline: "none", fontSize: "0.9rem" }}
+                            style={{ padding: "0.6rem 0.8rem", borderRadius: "6px", border: "1px solid var(--border-light)", outline: "none", fontSize: "0.9rem", background: "var(--bg-primary)", color: "var(--text-primary)" }}
                           />
                         </div>
                         <div style={{ display: "flex", flexDirection: "column", gap: "0.25rem" }}>
@@ -191,7 +191,7 @@ export default function CalendarScheduler() {
                             placeholder="Enter email"
                             value={bookingForm.email} 
                             onChange={(e) => setBookingForm({...bookingForm, email: e.target.value})}
-                            style={{ padding: "0.6rem 0.8rem", borderRadius: "6px", border: "1px solid var(--border-light)", outline: "none", fontSize: "0.9rem" }}
+                            style={{ padding: "0.6rem 0.8rem", borderRadius: "6px", border: "1px solid var(--border-light)", outline: "none", fontSize: "0.9rem", background: "var(--bg-primary)", color: "var(--text-primary)" }}
                           />
                         </div>
                         {formError && <span style={{ color: "red", fontSize: "0.8rem" }}>{formError}</span>}

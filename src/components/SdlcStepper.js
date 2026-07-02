@@ -89,7 +89,7 @@ export default function SdlcStepper() {
                 padding: "1.25rem",
                 borderRadius: "12px",
                 cursor: "pointer",
-                background: isActive ? "#ffffff" : "transparent",
+                background: isActive ? "var(--bg-secondary)" : "transparent",
                 border: isActive ? "1px solid var(--border-active)" : "1px solid transparent",
                 boxShadow: isActive ? "var(--shadow-md)" : "none",
                 transition: "all var(--transition-fast)"
@@ -146,7 +146,7 @@ export default function SdlcStepper() {
       </div>
 
       {/* Right Column: Active Phase Specs Detail */}
-      <div className="glass-card" style={{ display: "flex", flexDirection: "column", justifyContent: "space-between", background: "#ffffff", border: "1px solid var(--border-light)" }}>
+      <div className="glass-card" style={{ display: "flex", flexDirection: "column", justifyContent: "space-between", background: "var(--bg-secondary)", border: "1px solid var(--border-light)" }}>
         <div className="glass-card-content">
           <span style={{ fontSize: "0.8rem", color: "var(--accent-primary)", fontWeight: "600", textTransform: "uppercase", letterSpacing: "0.05em" }}>
             {steps[activeStep].phase} &mdash; {steps[activeStep].subtitle}

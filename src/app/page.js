@@ -418,7 +418,7 @@ export default function Home() {
           <div className="grid-3">
             {/* Speed card */}
             <ScrollReveal direction="up" delay={0}>
-              <div className="glass-card" style={{ textAlign: "center", background: "#ffffff", height: "100%" }}>
+              <div className="glass-card" style={{ textAlign: "center", background: "var(--bg-secondary)", height: "100%" }}>
                 <div className="glass-card-content">
                   <span style={{ fontSize: "3.5rem", fontWeight: "700", fontFamily: "var(--font-display)", color: "var(--accent-primary)" }}>
                     {apiSpeed}ms
@@ -431,7 +431,7 @@ export default function Home() {
 
             {/* Security card */}
             <ScrollReveal direction="up" delay={150}>
-              <div className="glass-card" style={{ textAlign: "center", background: "#ffffff", height: "100%" }}>
+              <div className="glass-card" style={{ textAlign: "center", background: "var(--bg-secondary)", height: "100%" }}>
                 <div className="glass-card-content">
                   <span style={{ fontSize: "3.5rem", fontWeight: "700", fontFamily: "var(--font-display)", color: "var(--accent-secondary)" }}>
                     {securityScore}%
@@ -444,7 +444,7 @@ export default function Home() {
 
             {/* Uptime card */}
             <ScrollReveal direction="up" delay={300}>
-              <div className="glass-card" style={{ textAlign: "center", background: "#ffffff", height: "100%" }}>
+              <div className="glass-card" style={{ textAlign: "center", background: "var(--bg-secondary)", height: "100%" }}>
                 <div className="glass-card-content">
                   <span style={{ fontSize: "3.5rem", fontWeight: "700", fontFamily: "var(--font-display)", color: "var(--accent-primary)" }}>
                     {uptime}%

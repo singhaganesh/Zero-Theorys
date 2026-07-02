@@ -76,7 +76,7 @@ export default function IntakePlanner() {
   };
 
   return (
-    <div className="glass-card" style={{ padding: "2.5rem", background: "#ffffff", border: "1px solid var(--border-light)" }}>
+    <div className="glass-card" style={{ padding: "2.5rem", background: "var(--bg-secondary)", border: "1px solid var(--border-light)" }}>
       <div className="glass-card-content">
         {!isSubmitted ? (
           <div>
@@ -120,7 +120,7 @@ export default function IntakePlanner() {
                           padding: "1.25rem",
                           border: isSelected ? "2px solid var(--accent-primary)" : "1px solid var(--border-light)",
                           borderRadius: "12px",
-                          background: isSelected ? "rgba(5, 150, 105, 0.04)" : "#ffffff",
+                          background: isSelected ? "rgba(5, 150, 105, 0.04)" : "var(--bg-secondary)",
                           cursor: "pointer",
                           transition: "all var(--transition-fast)"
                         }}
@@ -152,7 +152,7 @@ export default function IntakePlanner() {
                           padding: "1.25rem",
                           border: isSelected ? "2px solid var(--accent-primary)" : "1px solid var(--border-light)",
                           borderRadius: "12px",
-                          background: isSelected ? "rgba(5, 150, 105, 0.04)" : "#ffffff",
+                          background: isSelected ? "rgba(5, 150, 105, 0.04)" : "var(--bg-secondary)",
                           cursor: "pointer",
                           transition: "all var(--transition-fast)"
                         }}
@@ -207,7 +207,7 @@ export default function IntakePlanner() {
                             padding: "1rem",
                             border: isSelected ? "2px solid var(--accent-primary)" : "1px solid var(--border-light)",
                             borderRadius: "10px",
-                            background: isSelected ? "rgba(5, 150, 105, 0.04)" : "#ffffff",
+                            background: isSelected ? "rgba(5, 150, 105, 0.04)" : "var(--bg-secondary)",
                             cursor: "pointer",
                             transition: "all var(--transition-fast)"
                           }}
@@ -237,7 +237,7 @@ export default function IntakePlanner() {
                             padding: "1rem",
                             border: isSelected ? "2px solid var(--accent-primary)" : "1px solid var(--border-light)",
                             borderRadius: "10px",
-                            background: isSelected ? "rgba(5, 150, 105, 0.04)" : "#ffffff",
+                            background: isSelected ? "rgba(5, 150, 105, 0.04)" : "var(--bg-secondary)",
                             cursor: "pointer",
                             transition: "all var(--transition-fast)"
                           }}
@@ -272,7 +272,7 @@ export default function IntakePlanner() {
                       <span style={{ fontSize: "0.75rem", color: "var(--text-muted)", fontWeight: "600", textTransform: "uppercase" }}>Technical Scope</span>
                       <div style={{ display: "flex", gap: "0.35rem", flexWrap: "wrap", marginTop: "0.25rem" }}>
                         {formData.needs.map(nId => (
-                          <span key={nId} style={{ fontSize: "0.75rem", background: "#ffffff", border: "1px solid var(--border-light)", padding: "0.2rem 0.5rem", borderRadius: "4px" }}>
+                          <span key={nId} style={{ fontSize: "0.75rem", background: "var(--bg-primary)", border: "1px solid var(--border-light)", padding: "0.2rem 0.5rem", borderRadius: "4px" }}>
                             {technicalNeeds.find(t => t.id === nId)?.label.split(" ")[0]}
                           </span>
                         ))}
@@ -303,7 +303,7 @@ export default function IntakePlanner() {
                       placeholder="e.g. John Doe"
                       value={formData.name} 
                       onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                      style={{ padding: "0.65rem 0.85rem", borderRadius: "8px", border: "1px solid var(--border-light)", outline: "none", fontSize: "0.95rem" }}
+                      style={{ padding: "0.65rem 0.85rem", borderRadius: "8px", border: "1px solid var(--border-light)", outline: "none", fontSize: "0.95rem", background: "var(--bg-primary)", color: "var(--text-primary)" }}
                     />
                   </div>
 
@@ -315,7 +315,7 @@ export default function IntakePlanner() {
                       placeholder="e.g. john@company.com"
                       value={formData.email} 
                       onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                      style={{ padding: "0.65rem 0.85rem", borderRadius: "8px", border: "1px solid var(--border-light)", outline: "none", fontSize: "0.95rem" }}
+                      style={{ padding: "0.65rem 0.85rem", borderRadius: "8px", border: "1px solid var(--border-light)", outline: "none", fontSize: "0.95rem", background: "var(--bg-primary)", color: "var(--text-primary)" }}
                     />
                   </div>
 
@@ -326,7 +326,7 @@ export default function IntakePlanner() {
                       placeholder="Tell us briefly about the system requirements..."
                       value={formData.description} 
                       onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                      style={{ padding: "0.65rem 0.85rem", borderRadius: "8px", border: "1px solid var(--border-light)", outline: "none", fontSize: "0.95rem", resize: "none", fontFamily: "var(--font-body)" }}
+                      style={{ padding: "0.65rem 0.85rem", borderRadius: "8px", border: "1px solid var(--border-light)", outline: "none", fontSize: "0.95rem", resize: "none", fontFamily: "var(--font-body)", background: "var(--bg-primary)", color: "var(--text-primary)" }}
                     />
                   </div>
                 </form>
