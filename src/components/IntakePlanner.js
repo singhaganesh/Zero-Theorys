@@ -1,8 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
-export default function IntakePlanner() {
+export default function IntakePlanner({ preselectedNeed }) {
   const [step, setStep] = useState(1);
   const [formData, setFormData] = useState({
     industry: "",
@@ -14,6 +14,16 @@ export default function IntakePlanner() {
     description: ""
   });
   const [isSubmitted, setIsSubmitted] = useState(false);
+
+  useEffect(() => {
+    if (preselectedNeed) {
+      setFormData((prev) => ({
+        ...prev,
+        needs: [preselectedNeed]
+      }));
+      setStep(2); // Auto-advance to Technical Needs step
+    }
+  }, [preselectedNeed]);
 
   const industries = [
     { id: "SaaS", label: "Software-as-a-Service (SaaS)", desc: "Subscription-based cloud platforms" },
@@ -27,8 +37,10 @@ export default function IntakePlanner() {
   const technicalNeeds = [
     { id: "AICore", label: "Next-Gen AI Core Architecture", desc: "LLMs, Vector databases, and Multi-Agent frameworks" },
     { id: "AIAgents", label: "Autonomous AI Agent Orchestration", desc: "RAG pipelines, Semantic caching, and Fine-tuning" },
-    { id: "FullStack", label: "Full-Stack Web Ecosystems", desc: "Decoupled APIs, databases, and microservices" },
-    { id: "Mobile", label: "Cross-Platform Mobile Engineering", desc: "High-performance iOS & Android systems" }
+    { id: "FullStack", label: "Full-Stack Web Ecosystems & Cloud", desc: "Decoupled APIs, databases, microservices, and kubernetes" },
+    { id: "Mobile", label: "Cross-Platform Mobile Engineering", desc: "High-performance native iOS & Android systems" },
+    { id: "Website", label: "Website Development & SEO Engine", desc: "SEO-optimized Jamstack pages and Web Vitals tuning" },
+    { id: "Software", label: "Custom Software Engineering", desc: "Secure SaaS platforms and distributed enterprise systems" }
   ];
 
   const budgets = [

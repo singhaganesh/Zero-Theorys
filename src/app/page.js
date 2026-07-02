@@ -7,12 +7,15 @@ import ScrollReveal from "@/components/ScrollReveal";
 import SdlcStepper from "@/components/SdlcStepper";
 import CalendarScheduler from "@/components/CalendarScheduler";
 import IntakePlanner from "@/components/IntakePlanner";
+import ServiceDetailDrawer from "@/components/ServiceDetailDrawer";
 
 export default function Home() {
   const cardsRef = useRef([]);
   const metricsRef = useRef(null);
   const [apiSpeed, setApiSpeed] = useState(0);
   const [hoveredService, setHoveredService] = useState(null);
+  const [selectedService, setSelectedService] = useState(null);
+  const [preselectedFormNeed, setPreselectedFormNeed] = useState(null);
   const [securityScore, setSecurityScore] = useState(0);
   const [uptime, setUptime] = useState(0.0);
 
@@ -71,6 +74,7 @@ export default function Home() {
 
   const services = [
     {
+      id: "AICore",
       title: "Next-Gen AI Core Architecture",
       icon: (
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--accent-primary)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -81,9 +85,16 @@ export default function Home() {
         </svg>
       ),
       description: "Production LLM integration, advanced vector databases, and scalable multi-agent frameworks optimized for latency.",
-      tags: ["LLMs", "Vector DBs", "Semantic Search", "LangChain"]
+      tags: ["LLMs", "Vector DBs", "Semantic Search", "LangChain"],
+      deliverables: [
+        "Custom LLM API Integrations",
+        "Optimized Vector DB Schemas",
+        "System Latency Audits & Profiling",
+        "Data Privacy & Compliance Guardrails"
+      ]
     },
     {
+      id: "AIAgents",
       title: "Autonomous Agent Orchestration",
       icon: (
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--accent-primary)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -93,9 +104,16 @@ export default function Home() {
         </svg>
       ),
       description: "Retrieval-Augmented Generation (RAG) pipelines, semantic caching, fine-tuning infrastructure, and tool-using pipelines.",
-      tags: ["RAG Pipelines", "Semantic Cache", "Fine-Tuning", "CrewAI"]
+      tags: ["RAG Pipelines", "Semantic Cache", "Fine-Tuning", "CrewAI"],
+      deliverables: [
+        "Custom Multi-Agent Workflows",
+        "Semantic Cache Implementations",
+        "RAG Pipeline Query Routing",
+        "Fine-Tuning Infrastructure Setup"
+      ]
     },
     {
+      id: "FullStack",
       title: "Full-Stack Ecosystems & Cloud",
       icon: (
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--accent-primary)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -105,9 +123,16 @@ export default function Home() {
         </svg>
       ),
       description: "Distributed architectures, microservices, secure container orchestration, and serverless auto-scaling setups.",
-      tags: ["Next.js", "Node.js", "Kubernetes", "DevOps"]
+      tags: ["Next.js", "Node.js", "Kubernetes", "DevOps"],
+      deliverables: [
+        "Decoupled REST/GraphQL APIs",
+        "Containerized Deployment Specs",
+        "Database Clustering & Replication",
+        "Auto-scaling Serverless Layouts"
+      ]
     },
     {
+      id: "Mobile",
       title: "Cross-Platform Mobile Engineering",
       icon: (
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--accent-primary)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -116,9 +141,16 @@ export default function Home() {
         </svg>
       ),
       description: "High-performance native-speed mobile applications for iOS and Android using clean modular components.",
-      tags: ["Flutter", "React Native", "iOS & Android", "Offline Sync"]
+      tags: ["Flutter", "React Native", "iOS & Android", "Offline Sync"],
+      deliverables: [
+        "Universal iOS & Android Codebase",
+        "Secure Offline Data Sync Engines",
+        "Native Device API Integrations",
+        "App Store & Google Play Publishing"
+      ]
     },
     {
+      id: "Website",
       title: "Website Development",
       icon: (
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--accent-primary)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -127,9 +159,16 @@ export default function Home() {
         </svg>
       ),
       description: "High-performance, SEO-engineered web applications optimized for speed, accessibility, and clean conversion paths.",
-      tags: ["Next.js", "Vite", "SEO Engine", "Web Performance"]
+      tags: ["Next.js", "Vite", "SEO Engine", "Web Performance"],
+      deliverables: [
+        "Jamstack / Server-Side Rendered Pages",
+        "Advanced SEO Audits & Structured Data",
+        "Core Web Vitals Speed Optimization",
+        "Lead Conversion Funnels & Telemetry"
+      ]
     },
     {
+      id: "Software",
       title: "Software Development",
       icon: (
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--accent-primary)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -139,7 +178,13 @@ export default function Home() {
         </svg>
       ),
       description: "Custom enterprise software engines, secure SaaS platforms, and distributed systems architected for scale.",
-      tags: ["APIs", "Microservices", "Docker", "SaaS Systems"]
+      tags: ["APIs", "Microservices", "Docker", "SaaS Systems"],
+      deliverables: [
+        "Custom SaaS Platform Architectures",
+        "Secure User Role & Access Controls",
+        "Third-party Integrations & Webhooks",
+        "Robust Systems Telemetry Dashboards"
+      ]
     }
   ];
 
@@ -238,21 +283,14 @@ export default function Home() {
                           onMouseEnter={() => setHoveredService(i)}
                           onMouseLeave={() => setHoveredService(null)}
                           onMouseMove={(e) => handleMouseMove(e, i)}
+                          onClick={() => setSelectedService(svc)}
                           ref={(el) => (cardsRef.current[i] = el)}
                           className="glass-card timeline-card-wrapper"
-                          style={{ cursor: "default" }}
+                          style={{ cursor: "pointer" }}
                         >
                           <div className="glass-card-content">
                             <div style={{ display: "flex", gap: "1rem", alignItems: "center", marginBottom: "1.25rem" }}>
-                              <div style={{
-                                width: "48px",
-                                height: "48px",
-                                borderRadius: "12px",
-                                background: "rgba(5, 150, 105, 0.06)",
-                                display: "flex",
-                                justifyContent: "center",
-                                alignItems: "center"
-                              }}>
+                              <div className="glass-icon-container">
                                 {svc.icon}
                               </div>
                               <h3 style={{ fontSize: "1.3rem" }}>{svc.title}</h3>
@@ -296,21 +334,14 @@ export default function Home() {
                           onMouseEnter={() => setHoveredService(i)}
                           onMouseLeave={() => setHoveredService(null)}
                           onMouseMove={(e) => handleMouseMove(e, i)}
+                          onClick={() => setSelectedService(svc)}
                           ref={(el) => (cardsRef.current[i] = el)}
                           className="glass-card timeline-card-wrapper"
-                          style={{ cursor: "default" }}
+                          style={{ cursor: "pointer" }}
                         >
                           <div className="glass-card-content">
                             <div style={{ display: "flex", gap: "1rem", alignItems: "center", marginBottom: "1.25rem" }}>
-                              <div style={{
-                                width: "48px",
-                                height: "48px",
-                                borderRadius: "12px",
-                                background: "rgba(5, 150, 105, 0.06)",
-                                display: "flex",
-                                justifyContent: "center",
-                                alignItems: "center"
-                              }}>
+                              <div className="glass-icon-container">
                                 {svc.icon}
                               </div>
                               <h3 style={{ fontSize: "1.3rem" }}>{svc.title}</h3>
@@ -598,12 +629,27 @@ export default function Home() {
                     Define your target industry, architectural dependencies, budget levels, and timeline.
                   </p>
                 </div>
-                <IntakePlanner />
+                <IntakePlanner preselectedNeed={preselectedFormNeed} />
               </div>
             </ScrollReveal>
           </div>
         </div>
       </section>
+
+      {/* Service Details Slide-Over/Bottom-Sheet Panel */}
+      <ServiceDetailDrawer 
+        service={selectedService} 
+        onClose={() => setSelectedService(null)} 
+        onStartProject={(svc) => {
+          setPreselectedFormNeed(svc.id);
+          setSelectedService(null);
+          // Smooth scroll down to consultation form section
+          const el = document.getElementById("consultation");
+          if (el) {
+            el.scrollIntoView({ behavior: "smooth" });
+          }
+        }} 
+      />
     </div>
   );
 }
