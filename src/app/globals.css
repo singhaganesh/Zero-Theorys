@@ -234,7 +234,7 @@ a {
 .glass-card:hover {
   transform: translateY(-3px);
   box-shadow: var(--shadow-lg), var(--shadow-glow);
-  border-color: var(--border-active);
+  border-color: var(--accent-primary) !important;
 }
 
 .glass-card:hover::before {
@@ -495,9 +495,14 @@ a {
   top: 0;
   bottom: 0;
   width: 2px;
-  background: var(--border-light);
+  background: transparent;
   transform: translateX(-50%);
   z-index: 1;
+}
+
+.timeline-spine-pulse {
+  animation: electric-crackle 0.5s infinite alternate ease-in-out;
+  opacity: 0.5;
 }
 
 .timeline-row {
@@ -620,5 +625,48 @@ a {
   
   .timeline-card-wrapper {
     max-width: 100%;
+  }
+}
+
+/* Electric timeline connectors */
+.timeline-connector-pulse {
+  opacity: 0.15;
+  transition: all var(--transition-fast);
+  animation: electric-crackle 0.3s infinite alternate ease-in-out;
+}
+
+.timeline-connector-pulse.active {
+  opacity: 1;
+  animation: electric-crackle-fast 0.08s infinite alternate ease-in-out;
+}
+
+@keyframes electric-crackle {
+  0% {
+    opacity: 0.12;
+    stroke-width: 1.2px;
+    filter: drop-shadow(0 0 1.5px var(--accent-primary));
+  }
+  100% {
+    opacity: 0.35;
+    stroke-width: 2px;
+    filter: drop-shadow(0 0 3px var(--accent-primary)) drop-shadow(0 0 0.5px #ffffff);
+  }
+}
+
+@keyframes electric-crackle-fast {
+  0% {
+    opacity: 0.75;
+    stroke-width: 2px;
+    filter: drop-shadow(0 0 3px var(--accent-primary)) drop-shadow(0 0 0.5px #ffffff);
+  }
+  50% {
+    opacity: 0.55;
+    stroke-width: 1.6px;
+    filter: drop-shadow(0 0 1px var(--accent-primary));
+  }
+  100% {
+    opacity: 1;
+    stroke-width: 3.5px;
+    filter: drop-shadow(0 0 8px var(--accent-primary)) drop-shadow(0 0 2px #ffffff);
   }
 }

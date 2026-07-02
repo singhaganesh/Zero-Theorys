@@ -210,7 +210,19 @@ export default function Home() {
           </ScrollReveal>
 
           <div className="timeline-container">
-            <div className="timeline-spine-line" />
+            {/* Animated Electric Spine */}
+            <svg className="timeline-spine-line" style={{ width: "2px", height: "100%", overflow: "visible" }}>
+              <line x1="1" y1="0" x2="1" y2="100%" stroke="var(--border-light)" strokeWidth="2" />
+              <line 
+                className="timeline-spine-pulse"
+                x1="1" 
+                y1="0" 
+                x2="1" 
+                y2="100%" 
+                stroke="var(--accent-primary)" 
+                strokeWidth="2" 
+              />
+            </svg>
             
             {services.map((svc, i) => {
               const isEven = i % 2 === 0;
@@ -249,12 +261,21 @@ export default function Home() {
                           </div>
                         </div>
                         
-                        {/* Wavy Connector Line to Spine */}
+                        {/* Wavy Connector Line - Flows OUTWARD (Spine to Left Card) */}
                         <svg className="timeline-connector-svg" viewBox="0 0 40 20">
+                          {/* Base Wire Channel */}
                           <path 
-                            d="M 0 10 C 10 6, 30 14, 40 10" 
-                            stroke={isHovered ? "var(--accent-primary)" : "var(--border-light)"} 
-                            strokeWidth={isHovered ? "3" : "1.5"} 
+                            d="M 40 10 C 30 14, 10 6, 0 10" 
+                            stroke="var(--border-light)" 
+                            strokeWidth="1.5" 
+                            fill="none" 
+                          />
+                          {/* Electric Current Pulse */}
+                          <path 
+                            className={`timeline-connector-pulse ${isHovered ? "active" : ""}`}
+                            d="M 40 10 C 30 14, 10 6, 0 10" 
+                            stroke="var(--accent-primary)" 
+                            strokeWidth="2.5" 
                             fill="none" 
                           />
                         </svg>
@@ -298,12 +319,21 @@ export default function Home() {
                           </div>
                         </div>
                         
-                        {/* Wavy Connector Line to Spine */}
+                        {/* Wavy Connector Line - Flows OUTWARD (Spine to Right Card) */}
                         <svg className="timeline-connector-svg" viewBox="0 0 40 20">
+                          {/* Base Wire Channel */}
                           <path 
                             d="M 0 10 C 10 6, 30 14, 40 10" 
-                            stroke={isHovered ? "var(--accent-primary)" : "var(--border-light)"} 
-                            strokeWidth={isHovered ? "3" : "1.5"} 
+                            stroke="var(--border-light)" 
+                            strokeWidth="1.5" 
+                            fill="none" 
+                          />
+                          {/* Electric Current Pulse */}
+                          <path 
+                            className={`timeline-connector-pulse ${isHovered ? "active" : ""}`}
+                            d="M 0 10 C 10 6, 30 14, 40 10" 
+                            stroke="var(--accent-primary)" 
+                            strokeWidth="2.5" 
                             fill="none" 
                           />
                         </svg>
