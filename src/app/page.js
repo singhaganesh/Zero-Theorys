@@ -7,7 +7,6 @@ import ScrollReveal from "@/components/ScrollReveal";
 import SdlcStepper from "@/components/SdlcStepper";
 import CalendarScheduler from "@/components/CalendarScheduler";
 import IntakePlanner from "@/components/IntakePlanner";
-import FlowConfigurator from "@/components/FlowConfigurator";
 
 export default function Home() {
   const cardsRef = useRef([]);
@@ -239,23 +238,6 @@ export default function Home() {
               </ScrollReveal>
             ))}
           </div>
-        </div>
-      </section>
-
-      {/* 2.5. VISUAL PIPELINE CONFIGURATOR */}
-      <section style={{ padding: "6rem 0", borderBottom: "1px solid var(--border-light)" }}>
-        <div className="container">
-          <ScrollReveal direction="up">
-            <div className="section-title-wrap">
-              <span className="section-tag">Interactive Pipeline</span>
-              <h2 className="section-title">Visual Systems Configurator</h2>
-              <p className="section-subtitle">Select input triggers and trace how autonomous agents process, route, and validate request payloads dynamically.</p>
-            </div>
-          </ScrollReveal>
-
-          <ScrollReveal direction="up" delay={150}>
-            <FlowConfigurator />
-          </ScrollReveal>
         </div>
       </section>
 
