@@ -427,7 +427,7 @@ a {
 
 /* Standard Interaction Overrides for Clean Mode */
 .stepper-item:hover {
-  background: #ffffff !important;
+  background: var(--bg-secondary) !important;
   border-color: var(--border-active) !important;
   box-shadow: var(--shadow-md) !important;
 }
