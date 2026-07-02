@@ -5,6 +5,8 @@ import { useEffect, useRef, useState } from "react";
 import ThreeSphere from "@/components/ThreeSphere";
 import ScrollReveal from "@/components/ScrollReveal";
 import SdlcStepper from "@/components/SdlcStepper";
+import CalendarScheduler from "@/components/CalendarScheduler";
+import IntakePlanner from "@/components/IntakePlanner";
 
 export default function Home() {
   const cardsRef = useRef([]);
@@ -164,7 +166,7 @@ export default function Home() {
   return (
     <div className="fade-in-section">
       {/* 1. HERO SECTION */}
-      <section style={{ padding: "6rem 0 4rem 0", position: "relative", overflow: "hidden" }}>
+      <section id="home" style={{ padding: "6rem 0 4rem 0", position: "relative", overflow: "hidden" }}>
         <div className="container grid-2" style={{ alignItems: "center" }}>
           <ScrollReveal direction="left" duration={900}>
             <div>
@@ -180,7 +182,7 @@ export default function Home() {
                 Zero Theorys designs and deploys next-gen AI pipelines, scalable clouds, and cross-platform systems for international enterprises.
               </p>
               <div style={{ display: "flex", gap: "1rem", alignItems: "center" }}>
-                <Link href="/consultation" className="btn-primary">
+                <Link href="#consultation" className="btn-primary">
                   Book an MVP Consultation
                 </Link>
               </div>
@@ -196,7 +198,7 @@ export default function Home() {
       </section>
 
       {/* 2. CORE SERVICE MATRIX */}
-      <section style={{ padding: "6rem 0", background: "var(--bg-tertiary)", borderTop: "1px solid var(--border-light)", borderBottom: "1px solid var(--border-light)" }}>
+      <section id="services" style={{ padding: "6rem 0", background: "var(--bg-tertiary)", borderTop: "1px solid var(--border-light)", borderBottom: "1px solid var(--border-light)" }}>
         <div className="container">
           <ScrollReveal direction="up">
             <div className="section-title-wrap">
@@ -382,7 +384,7 @@ export default function Home() {
       </section>
 
       {/* 3.7. SDLC WORKFLOW */}
-      <section style={{ 
+      <section id="sdlc" style={{ 
         padding: "6rem 0", 
         background: "var(--bg-secondary)", 
         borderTop: "1px solid var(--border-light)"
@@ -450,6 +452,47 @@ export default function Home() {
                   <h3 style={{ fontSize: "1.1rem", margin: "0.5rem 0 0.75rem 0" }}>Serverless Auto-Scaling</h3>
                   <p style={{ fontSize: "0.9rem" }}>Highly available architectures built on multi-region compute node clustering for 100% elastic load scalability.</p>
                 </div>
+              </div>
+            </ScrollReveal>
+          </div>
+        </div>
+      </section>
+
+      {/* 5. CONSULTATION ENGINE */}
+      <section id="consultation" style={{ padding: "6rem 0", borderTop: "1px solid var(--border-light)" }}>
+        <div className="container">
+          <ScrollReveal direction="up">
+            <div className="section-title-wrap">
+              <span className="section-tag">Conversion Workspace</span>
+              <h2 className="section-title">Interactive Consultation Engine</h2>
+              <p className="section-subtitle">Zero friction. Select a calendar block for a quick sync, or map out your full target architecture with our project planner.</p>
+            </div>
+          </ScrollReveal>
+
+          <div className="grid-2" style={{ alignItems: "start", gap: "2.5rem", marginTop: "3rem" }}>
+            {/* Column 1: Live Scheduling */}
+            <ScrollReveal direction="left" delay={150}>
+              <div>
+                <div style={{ marginBottom: "2rem" }}>
+                  <h3 style={{ fontSize: "1.25rem", color: "var(--text-primary)", marginBottom: "0.5rem" }}>Live Availability Calendar</h3>
+                  <p style={{ color: "var(--text-secondary)", fontSize: "0.9rem" }}>
+                    Select a date and reserve a 15-minute slot directly with our engineering architects.
+                  </p>
+                </div>
+                <CalendarScheduler />
+              </div>
+            </ScrollReveal>
+
+            {/* Column 2: Project Planner */}
+            <ScrollReveal direction="right" delay={150}>
+              <div>
+                <div style={{ marginBottom: "2rem" }}>
+                  <h3 style={{ fontSize: "1.25rem", color: "var(--text-primary)", marginBottom: "0.5rem" }}>Smart Technical Planner</h3>
+                  <p style={{ color: "var(--text-secondary)", fontSize: "0.9rem" }}>
+                    Define your target industry, architectural dependencies, budget levels, and timeline.
+                  </p>
+                </div>
+                <IntakePlanner />
               </div>
             </ScrollReveal>
           </div>
