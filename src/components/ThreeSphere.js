@@ -52,16 +52,16 @@ export default function ThreeSphere() {
     const count = sphereGeometry.attributes.position.count;
     const originalPositions = sphereGeometry.attributes.position.clone();
     
-    // Colors buffer - mix indigo and cyan
+    // Colors buffer - mix mint green and sky blue
     const colors = new Float32Array(count * 3);
-    const colorIndigo = new THREE.Color("#4f46e5");
-    const colorCyan = new THREE.Color("#0ea5e9");
+    const colorMint = new THREE.Color("#10b981");
+    const colorBlue = new THREE.Color("#60a5fa");
     
     for (let i = 0; i < count; i++) {
       // Mix colors based on Y coordinate
       const y = sphereGeometry.attributes.position.getY(i);
       const ratio = (y + radius) / (radius * 2);
-      const mixedColor = new THREE.Color().lerpColors(colorIndigo, colorCyan, ratio);
+      const mixedColor = new THREE.Color().lerpColors(colorMint, colorBlue, ratio);
       
       colors[i * 3] = mixedColor.r;
       colors[i * 3 + 1] = mixedColor.g;
@@ -85,10 +85,10 @@ export default function ThreeSphere() {
 
     // Create a wireframe sphere overlay for structural integrity
     const wireframeMaterial = new THREE.MeshBasicMaterial({
-      color: 0x6366f1,
+      color: 0x10b981,
       wireframe: true,
       transparent: true,
-      opacity: 0.08
+      opacity: 0.02
     });
     const wireMesh = new THREE.Mesh(new THREE.SphereGeometry(radius - 0.02, 16, 16), wireframeMaterial);
     scene.add(wireMesh);
@@ -141,15 +141,14 @@ export default function ThreeSphere() {
         // Vector pointing from center to vertex
         const vector = new THREE.Vector3(x, y, z).normalize();
         
-        // Complex wave logic simulating 3D fluid kinetic deformation
-        const wave1 = Math.sin(x * 2.0 + time * 1.5) * 0.08;
-        const wave2 = Math.cos(y * 2.5 + time * 2.0) * 0.06;
-        const wave3 = Math.sin(z * 3.0 + time * 1.0) * 0.05;
+        // Smoother, organic wave logic representing fluid water-ripples
+        const wave1 = Math.sin(x * 1.2 + time * 0.8) * 0.04;
+        const wave2 = Math.cos(y * 1.5 + time * 1.0) * 0.03;
+        const wave3 = Math.sin(z * 1.8 + time * 0.6) * 0.02;
         
-        // Mouse reaction: inflate sphere where mouse cursor points
-        // In 3D space, mouse X maps to rotation plane, let's create a coordinate relative distortion
-        const dist = Math.sqrt(Math.pow(x - mouse.x * 2, 2) + Math.pow(y - mouse.y * 2, 2));
-        const mouseEffect = Math.max(0, 1.2 - dist) * 0.18;
+        // Gentle mouse interaction: inflate slightly near mouse cursor
+        const dist = Math.sqrt(Math.pow(x - mouse.x * 1.5, 2) + Math.pow(y - mouse.y * 1.5, 2));
+        const mouseEffect = Math.max(0, 1.5 - dist) * 0.06;
 
         const displacement = radius + wave1 + wave2 + wave3 + mouseEffect;
         

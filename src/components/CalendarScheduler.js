@@ -115,7 +115,7 @@ export default function CalendarScheduler() {
                           border: isSelected ? "2px solid var(--accent-primary)" : "1px solid var(--border-light)",
                           borderRadius: "8px",
                           background: isSelected 
-                            ? "rgba(79, 70, 229, 0.08)" 
+                            ? "rgba(5, 150, 105, 0.08)" 
                             : isAvailable ? "#ffffff" : "var(--bg-tertiary)",
                           color: isSelected 
                             ? "var(--accent-primary)" 
@@ -156,7 +156,7 @@ export default function CalendarScheduler() {
                               padding: "0.75rem",
                               borderRadius: "8px",
                               border: isTimeSelected ? "2px solid var(--accent-primary)" : "1px solid var(--border-light)",
-                              background: isTimeSelected ? "rgba(79, 70, 229, 0.05)" : "#ffffff",
+                              background: isTimeSelected ? "rgba(5, 150, 105, 0.05)" : "#ffffff",
                               color: isTimeSelected ? "var(--accent-primary)" : "var(--text-secondary)",
                               fontWeight: isTimeSelected ? "600" : "500",
                               cursor: "pointer",
@@ -281,13 +281,6 @@ export default function CalendarScheduler() {
           </div>
         )}
       </div>
-      
-      <style jsx>{`
-        .calendar-day-btn:hover:not(:disabled) {
-          border-color: var(--accent-primary) !important;
-          background: rgba(79, 70, 229, 0.03) !important;
-        }
-      `}</style>
     </div>
   );
 }

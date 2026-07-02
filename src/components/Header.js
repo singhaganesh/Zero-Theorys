@@ -7,10 +7,10 @@ export default function Header() {
   const pathname = usePathname();
 
   const navLinks = [
-    { name: "Home", href: "#home" },
-    { name: "Services", href: "#services" },
-    { name: "SDLC", href: "#sdlc" },
-    { name: "Consultation", href: "#consultation" },
+    { name: "Home", href: "/#home" },
+    { name: "Services", href: "/#services" },
+    { name: "SDLC", href: "/#sdlc" },
+    { name: "Consultation", href: "/#consultation" },
   ];
 
   return (
@@ -39,7 +39,7 @@ export default function Header() {
 
         <nav style={{ display: "flex", gap: "2.5rem", alignItems: "center" }}>
           {navLinks.map((link) => {
-            const isActive = pathname === link.href;
+            const isActive = (link.href === "/#home" && pathname === "/") || pathname === link.href;
             return (
               <Link 
                 key={link.href} 

@@ -120,7 +120,7 @@ export default function IntakePlanner() {
                           padding: "1.25rem",
                           border: isSelected ? "2px solid var(--accent-primary)" : "1px solid var(--border-light)",
                           borderRadius: "12px",
-                          background: isSelected ? "rgba(79, 70, 229, 0.04)" : "#ffffff",
+                          background: isSelected ? "rgba(5, 150, 105, 0.04)" : "#ffffff",
                           cursor: "pointer",
                           transition: "all var(--transition-fast)"
                         }}
@@ -152,7 +152,7 @@ export default function IntakePlanner() {
                           padding: "1.25rem",
                           border: isSelected ? "2px solid var(--accent-primary)" : "1px solid var(--border-light)",
                           borderRadius: "12px",
-                          background: isSelected ? "rgba(79, 70, 229, 0.04)" : "#ffffff",
+                          background: isSelected ? "rgba(5, 150, 105, 0.04)" : "#ffffff",
                           cursor: "pointer",
                           transition: "all var(--transition-fast)"
                         }}
@@ -207,7 +207,7 @@ export default function IntakePlanner() {
                             padding: "1rem",
                             border: isSelected ? "2px solid var(--accent-primary)" : "1px solid var(--border-light)",
                             borderRadius: "10px",
-                            background: isSelected ? "rgba(79, 70, 229, 0.04)" : "#ffffff",
+                            background: isSelected ? "rgba(5, 150, 105, 0.04)" : "#ffffff",
                             cursor: "pointer",
                             transition: "all var(--transition-fast)"
                           }}
@@ -237,7 +237,7 @@ export default function IntakePlanner() {
                             padding: "1rem",
                             border: isSelected ? "2px solid var(--accent-primary)" : "1px solid var(--border-light)",
                             borderRadius: "10px",
-                            background: isSelected ? "rgba(79, 70, 229, 0.04)" : "#ffffff",
+                            background: isSelected ? "rgba(5, 150, 105, 0.04)" : "#ffffff",
                             cursor: "pointer",
                             transition: "all var(--transition-fast)"
                           }}
@@ -423,13 +423,6 @@ export default function IntakePlanner() {
           </div>
         )}
       </div>
-
-      <style jsx>{`
-        .selectable-item:hover {
-          border-color: var(--accent-primary) !important;
-          background: rgba(79, 70, 229, 0.02) !important;
-        }
-      `}</style>
     </div>
   );
 }

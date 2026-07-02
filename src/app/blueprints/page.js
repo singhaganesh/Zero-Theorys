@@ -1,6 +1,6 @@
 "use client";
 
-import RagPipeline from "@/components/RagPipeline";
+import FlowConfigurator from "@/components/FlowConfigurator";
 import SdlcStepper from "@/components/SdlcStepper";
 import ScrollReveal from "@/components/ScrollReveal";
 
@@ -35,7 +35,7 @@ export default function Blueprints() {
           </ScrollReveal>
           
           <ScrollReveal direction="up" delay={150}>
-            <RagPipeline />
+            <FlowConfigurator />
           </ScrollReveal>
         </div>
       </section>

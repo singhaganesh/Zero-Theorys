@@ -185,8 +185,8 @@ export default function SdlcStepper() {
 
         {/* Operational metric banner */}
         <div style={{ 
-          background: "rgba(79, 70, 229, 0.04)", 
-          border: "1px solid rgba(79, 70, 229, 0.08)", 
+          background: "rgba(5, 150, 105, 0.04)", 
+          border: "1px solid rgba(5, 150, 105, 0.08)", 
           padding: "1rem 1.25rem", 
           borderRadius: "8px",
           marginTop: "1.5rem",
@@ -204,13 +204,6 @@ export default function SdlcStepper() {
           </span>
         </div>
       </div>
-
-      <style jsx>{`
-        .stepper-item:hover {
-          background: rgba(255, 255, 255, 0.6) !important;
-          border-color: var(--border-light) !important;
-        }
-      `}</style>
     </div>
   );
 }
