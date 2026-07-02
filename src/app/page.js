@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import ThreeSphere from "@/components/ThreeSphere";
 import ScrollReveal from "@/components/ScrollReveal";
+import SdlcStepper from "@/components/SdlcStepper";
 
 export default function Home() {
   const cardsRef = useRef([]);
@@ -181,9 +182,6 @@ export default function Home() {
               <div style={{ display: "flex", gap: "1rem", alignItems: "center" }}>
                 <Link href="/consultation" className="btn-primary">
                   Book an MVP Consultation
-                </Link>
-                <Link href="/blueprints" className="btn-secondary">
-                  View Blueprints
                 </Link>
               </div>
             </div>
@@ -380,6 +378,27 @@ export default function Home() {
               </div>
             </ScrollReveal>
           </div>
+        </div>
+      </section>
+
+      {/* 3.7. SDLC WORKFLOW */}
+      <section style={{ 
+        padding: "6rem 0", 
+        background: "var(--bg-secondary)", 
+        borderTop: "1px solid var(--border-light)"
+      }}>
+        <div className="container">
+          <ScrollReveal direction="up">
+            <div className="section-title-wrap">
+              <span className="section-tag">Development Pipeline</span>
+              <h2 className="section-title">Strict SDLC &amp; Agile Engineering</h2>
+              <p className="section-subtitle">Our step-by-step commitment pipeline that takes product requirements from schemas to cloud deploys.</p>
+            </div>
+          </ScrollReveal>
+
+          <ScrollReveal direction="up" delay={150}>
+            <SdlcStepper />
+          </ScrollReveal>
         </div>
       </section>
 
