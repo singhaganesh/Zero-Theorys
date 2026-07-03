@@ -126,13 +126,8 @@ export default function Home() {
   const timelineRef = useRef(null);
   const nodeRefs = useRef([]);
   const teamRef = useRef(null);
-  const teamProgressVal = useRef(0);
-  const lockScrollY = useRef(null);
-  const touchStartY = useRef(null);
-  const lockCooldown = useRef(false);
   const [spineFill, setSpineFill] = useState(0);
   const [activatedCount, setActivatedCount] = useState(0);
-  const [teamCardProgress, setTeamCardProgress] = useState([0, 0, 0]);
   const [apiSpeed, setApiSpeed] = useState(0);
   const [hoveredService, setHoveredService] = useState(null);
   const [selectedService, setSelectedService] = useState(null);
@@ -193,16 +188,12 @@ export default function Home() {
     };
   }, []);
 
-  // 3. Scroll-driven animations: timeline + team cards (with LERP physics and scroll-locking)
+  // 3. Scroll-driven animations: timeline (with LERP physics)
   useEffect(() => {
     const timelineContainer = timelineRef.current;
-    const teamContainer = teamRef.current;
     
     let currentFill = 0;
     let targetFill = 0;
-    
-    let currentTeamProgress = [0, 0, 0];
-    let targetTeamProgress = [0, 0, 0];
     
     let animFrame = null;
 
@@ -220,24 +211,6 @@ export default function Home() {
         setSpineFill(currentFill);
       }
 
-      // Team cards LERP (staggered sliders)
-      const newTeamProgress = [...currentTeamProgress];
-      let teamChanged = false;
-      for (let idx = 0; idx < 3; idx++) {
-        const diffTeam = targetTeamProgress[idx] - currentTeamProgress[idx];
-        if (Math.abs(diffTeam) > 0.001) {
-          newTeamProgress[idx] += diffTeam * 0.05; // Easing speed
-          teamChanged = true;
-          isAnimating = true;
-        } else {
-          newTeamProgress[idx] = targetTeamProgress[idx];
-        }
-      }
-      if (teamChanged) {
-        currentTeamProgress = newTeamProgress;
-        setTeamCardProgress(currentTeamProgress);
-      }
-
       if (isAnimating) {
         animFrame = requestAnimationFrame(animate);
       } else {
@@ -245,63 +218,11 @@ export default function Home() {
       }
     };
 
-
-
-    // Track previous scroll position to detect scroll direction in compute()
-    let lastScrollY = typeof window !== 'undefined' ? window.scrollY : 0;
-
-    const lockSection = (direction) => {
-      if (lockCooldown.current || lockScrollY.current !== null) return;
-      const rect = teamContainer.getBoundingClientRect();
-      const lockY = window.scrollY + rect.top;
-      window.scrollTo(0, lockY);
-
-      const sbWidth = window.innerWidth - document.documentElement.clientWidth;
-      document.body.style.paddingRight = `${sbWidth}px`;
-      document.body.style.overflow = "hidden";
-      lockScrollY.current = lockY;
-
-      if (direction > 0) {
-        // Scrolling down: Card 1 visible, Cards 2 & 3 hidden
-        teamProgressVal.current = 0;
-        currentTeamProgress[0] = 1;
-        targetTeamProgress[0] = 1;
-        currentTeamProgress[1] = 0;
-        targetTeamProgress[1] = 0;
-        currentTeamProgress[2] = 0;
-        targetTeamProgress[2] = 0;
-        setTeamCardProgress([1, 0, 0]);
-      } else {
-        // Scrolling up: All cards visible
-        teamProgressVal.current = 1;
-        currentTeamProgress[0] = 1;
-        targetTeamProgress[0] = 1;
-        currentTeamProgress[1] = 1;
-        targetTeamProgress[1] = 1;
-        currentTeamProgress[2] = 1;
-        targetTeamProgress[2] = 1;
-        setTeamCardProgress([1, 1, 1]);
-      }
-    };
-
-    const unlockSection = () => {
-      lockScrollY.current = null;
-      document.body.style.overflow = "";
-      document.body.style.paddingRight = "";
-      lockCooldown.current = true;
-      setTimeout(() => {
-        lockCooldown.current = false;
-      }, 800);
-    };
-
     const compute = () => {
       const viewportHeight = window.innerHeight;
-      const currentScrollY = window.scrollY;
-      const scrollDirection = currentScrollY - lastScrollY; // positive = down
-      lastScrollY = currentScrollY;
 
       // 1. Timeline spine computation
-      if (timelineContainer && lockScrollY.current === null) {
+      if (timelineContainer) {
         const rect = timelineContainer.getBoundingClientRect();
         const triggerY = viewportHeight * 0.65;
         const progress = Math.max(0, Math.min(1, (triggerY - rect.top) / rect.height));
@@ -317,213 +238,22 @@ export default function Home() {
         setActivatedCount(count);
       }
 
-      // 2. Team cards — scroll-based lock fallback for fast scrolling
-      if (teamContainer && lockScrollY.current === null && !lockCooldown.current) {
-        const rect = teamContainer.getBoundingClientRect();
-
-        if (rect.bottom < 0) {
-          // Section is fully above viewport
-          teamProgressVal.current = 1;
-          targetTeamProgress[0] = 1;
-          targetTeamProgress[1] = 1;
-          targetTeamProgress[2] = 1;
-        } else if (rect.top > viewportHeight) {
-          // Section is fully below viewport
-          teamProgressVal.current = 0;
-          targetTeamProgress[0] = 0;
-          targetTeamProgress[1] = 0;
-          targetTeamProgress[2] = 0;
-        } else {
-          // Section is in/near viewport — check if we should lock
-          // Wide detection: if section top crossed into range [-300, 300] of viewport top
-          if (scrollDirection > 0 && teamProgressVal.current < 1 && rect.top <= 300 && rect.top >= -300) {
-            lockSection(1);
-          } else if (scrollDirection < 0 && teamProgressVal.current > 0 && rect.top <= 300 && rect.top >= -300) {
-            lockSection(-1);
-          } else {
-            // Inside scrolling zone but not locking
-            if (teamProgressVal.current === 1) {
-              targetTeamProgress[0] = 1;
-              targetTeamProgress[1] = 1;
-              targetTeamProgress[2] = 1;
-            } else {
-              const enterProgress = Math.max(0, Math.min(1, (viewportHeight * 0.95 - rect.top) / (viewportHeight * 0.4)));
-              targetTeamProgress[0] = enterProgress;
-              targetTeamProgress[1] = 0;
-              targetTeamProgress[2] = 0;
-            }
-          }
-        }
-      }
-
       if (!animFrame) {
         animFrame = requestAnimationFrame(animate);
       }
     };
 
     const onScroll = () => {
-      if (lockScrollY.current !== null) {
-        if (window.scrollY !== lockScrollY.current) {
-          window.scrollTo(0, lockScrollY.current);
-        }
-        return;
-      }
       compute();
-    };
-
-    const handleWheel = (e) => {
-      if (!teamContainer) return;
-
-      const rect = teamContainer.getBoundingClientRect();
-      const viewportHeight = window.innerHeight;
-
-      // When locked, always intercept
-      if (lockScrollY.current !== null) {
-        e.preventDefault();
-
-        const speedFactor = 0.0012;
-        let p = teamProgressVal.current + e.deltaY * speedFactor;
-        p = Math.max(0, Math.min(1, p));
-        teamProgressVal.current = p;
-
-        // Card 1 is always fully visible (1) when locked
-        targetTeamProgress[0] = 1;
-        // Card 2 slides in from p = 0 to 0.5
-        targetTeamProgress[1] = Math.max(0, Math.min(1, p / 0.5));
-        // Card 3 slides in from p = 0.5 to 1.0
-        targetTeamProgress[2] = Math.max(0, Math.min(1, (p - 0.5) / 0.5));
-
-        if (!animFrame) {
-          animFrame = requestAnimationFrame(animate);
-        }
-
-        if (p === 1 && e.deltaY > 0) {
-          unlockSection();
-        }
-        if (p === 0 && e.deltaY < 0) {
-          unlockSection();
-        }
-        return;
-      }
-
-      // Not locked — check if we should lock
-      if (lockCooldown.current) return;
-
-      // Wide detection zone: section top is near viewport top
-      const sectionNearTop = rect.top <= 300 && rect.top >= -300;
-
-      if (sectionNearTop) {
-        if (e.deltaY > 0 && teamProgressVal.current < 1) {
-          e.preventDefault();
-          lockSection(1);
-        } else if (e.deltaY < 0 && teamProgressVal.current > 0) {
-          e.preventDefault();
-          lockSection(-1);
-        }
-      }
-    };
-
-    const handleTouchStart = (e) => {
-      touchStartY.current = e.touches[0].clientY;
-    };
-
-    const handleTouchMove = (e) => {
-      if (!teamContainer || touchStartY.current === null) return;
-
-      const currentY = e.touches[0].clientY;
-      const deltaY = touchStartY.current - currentY;
-      touchStartY.current = currentY;
-
-      // When locked, always intercept
-      if (lockScrollY.current !== null) {
-        e.preventDefault();
-
-        const speedFactor = 0.0035;
-        let p = teamProgressVal.current + deltaY * speedFactor;
-        p = Math.max(0, Math.min(1, p));
-        teamProgressVal.current = p;
-
-        targetTeamProgress[0] = 1;
-        targetTeamProgress[1] = Math.max(0, Math.min(1, p / 0.5));
-        targetTeamProgress[2] = Math.max(0, Math.min(1, (p - 0.5) / 0.5));
-
-        if (!animFrame) {
-          animFrame = requestAnimationFrame(animate);
-        }
-
-        if (p === 1 && deltaY > 0) unlockSection();
-        if (p === 0 && deltaY < 0) unlockSection();
-        return;
-      }
-
-      // Not locked — check if we should lock
-      if (lockCooldown.current) return;
-
-      const rect = teamContainer.getBoundingClientRect();
-      const sectionNearTop = rect.top <= 300 && rect.top >= -300;
-
-      if (sectionNearTop) {
-        if (deltaY > 0 && teamProgressVal.current < 1) {
-          e.preventDefault();
-          lockSection(1);
-        } else if (deltaY < 0 && teamProgressVal.current > 0) {
-          e.preventDefault();
-          lockSection(-1);
-        }
-      }
-    };
-
-    const handleKeyDown = (e) => {
-      if (lockScrollY.current !== null) {
-        const keys = ["ArrowUp", "ArrowDown", "PageUp", "PageDown", " ", "Home", "End"];
-        if (keys.includes(e.key)) {
-          e.preventDefault();
-
-          let direction = 0;
-          if (e.key === "ArrowDown" || e.key === " " || e.key === "PageDown") {
-            direction = 1;
-          } else if (e.key === "ArrowUp" || e.key === "PageUp") {
-            direction = -1;
-          }
-
-          if (direction !== 0) {
-            const speedFactor = 0.05;
-            let p = teamProgressVal.current + direction * speedFactor;
-            p = Math.max(0, Math.min(1, p));
-            teamProgressVal.current = p;
-
-            targetTeamProgress[0] = 1;
-            targetTeamProgress[1] = Math.max(0, Math.min(1, p / 0.5));
-            targetTeamProgress[2] = Math.max(0, Math.min(1, (p - 0.5) / 0.5));
-
-            if (!animFrame) {
-              animFrame = requestAnimationFrame(animate);
-            }
-
-            if (p === 1 && direction > 0) unlockSection();
-            if (p === 0 && direction < 0) unlockSection();
-          }
-        }
-      }
     };
 
     compute();
     window.addEventListener("scroll", onScroll);
     window.addEventListener("resize", onScroll);
-    window.addEventListener("wheel", handleWheel, { passive: false });
-    window.addEventListener("touchstart", handleTouchStart);
-    window.addEventListener("touchmove", handleTouchMove, { passive: false });
-    window.addEventListener("keydown", handleKeyDown, { passive: false });
 
     return () => {
       window.removeEventListener("scroll", onScroll);
       window.removeEventListener("resize", onScroll);
-      window.removeEventListener("wheel", handleWheel);
-      window.removeEventListener("touchstart", handleTouchStart);
-      window.removeEventListener("touchmove", handleTouchMove);
-      window.removeEventListener("keydown", handleKeyDown);
-      document.body.style.overflow = "";
-      document.body.style.paddingRight = "";
       if (animFrame) cancelAnimationFrame(animFrame);
     };
   }, []);
@@ -937,36 +667,25 @@ export default function Home() {
         </div>
       </section>
 
-      {/* 3. MEET THE ARCHITECTS — Scroll-locked "After Effects" section */}
-      <section ref={teamRef} style={{
-        height: "100vh",
-        display: "flex",
-        alignItems: "center",
-        overflow: "hidden",
+      {/* 3. MEET THE ARCHITECTS */}
+      <section id="team" style={{
+        padding: "6rem 0",
+        borderTop: "1px solid var(--border-light)",
+        borderBottom: "1px solid var(--border-light)",
         position: "relative"
       }}>
         <div className="container" style={{ width: "100%" }}>
-          <div className="section-title-wrap" style={{
-            opacity: 1,
-            transform: "none",
-            transition: "none"
-          }}>
-            <span className="section-tag">Operational Structure</span>
-            <h2 className="section-title">Meet the Architects</h2>
-            <p className="section-subtitle">Zero Freelancers. Zero outsourcing layers. We are a structured, focused systems company.</p>
-          </div>
+          <ScrollReveal direction="up">
+            <div className="section-title-wrap">
+              <span className="section-tag">Operational Structure</span>
+              <h2 className="section-title">Meet the Architects</h2>
+              <p className="section-subtitle">Zero Freelancers. Zero outsourcing layers. We are a structured, focused systems company.</p>
+            </div>
+          </ScrollReveal>
 
           <div className="grid-3">
             {team.map((member, i) => (
-              <div
-                key={member.name}
-                style={{
-                  opacity: teamCardProgress[i],
-                  transform: `translateX(${(1 - teamCardProgress[i]) * 100}px)`,
-                  willChange: "transform, opacity",
-                  transition: "none"
-                }}
-              >
+              <ScrollReveal key={member.name} direction="up" delay={i * 100}>
                 <div className="glass-card" style={{ display: "flex", flexDirection: "column", height: "100%", textAlign: "center" }}>
                   <div className="glass-card-content" style={{ display: "flex", flexDirection: "column", height: "100%" }}>
 
@@ -1006,7 +725,7 @@ export default function Home() {
 
                   </div>
                 </div>
-              </div>
+              </ScrollReveal>
             ))}
           </div>
         </div>
