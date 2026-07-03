@@ -256,16 +256,16 @@ export default function Home() {
         setActivatedCount(count);
       }
 
-      // 2. Team cards scroll computation
+      // 2. Team cards scroll computation (sticky scroll-pinning)
       const teamContainer = teamRef.current;
       if (teamContainer) {
         const rect = teamContainer.getBoundingClientRect();
-        // Starts sliding when section top is at 95% of viewport height, finished when top is at 35% of viewport height
-        const startY = viewportHeight * 0.95;
-        const endY = viewportHeight * 0.35;
-        const totalDistance = startY - endY;
-        const currentPos = startY - rect.top;
-        const p = Math.max(0, Math.min(1, currentPos / totalDistance));
+        // The wrapper is 300vh tall, the sticky area is 100vh.
+        // Scrollable distance = wrapper height - viewport height (the extra 200vh).
+        const scrollableDistance = teamContainer.offsetHeight - viewportHeight;
+        // How far we've scrolled into the wrapper: 0 when top is at viewport top, increases as we scroll down.
+        const scrolledInto = -rect.top;
+        const p = Math.max(0, Math.min(1, scrolledInto / scrollableDistance));
 
         // Compute individual targets with strict sequential starts (non-overlapping)
         // Card 1: p from 0.0 to 0.33
@@ -704,72 +704,83 @@ export default function Home() {
         </div>
       </section>
 
-      {/* 3. MEET THE ARCHITECTS */}
-      <section ref={teamRef} style={{ padding: "6rem 0", overflow: "hidden" }}>
-        <div className="container">
-          <ScrollReveal direction="up">
-            <div className="section-title-wrap">
+      {/* 3. MEET THE ARCHITECTS — Scroll-pinned "After Effects" section */}
+      <div ref={teamRef} style={{ height: "300vh", position: "relative" }}>
+        <div style={{
+          position: "sticky",
+          top: 0,
+          height: "100vh",
+          display: "flex",
+          alignItems: "center",
+          overflow: "hidden"
+        }}>
+          <div className="container" style={{ width: "100%" }}>
+            <div className="section-title-wrap" style={{
+              opacity: Math.min(1, teamCardProgress[0] * 3),
+              transform: `translateY(${(1 - Math.min(1, teamCardProgress[0] * 3)) * 30}px)`,
+              transition: "none"
+            }}>
               <span className="section-tag">Operational Structure</span>
               <h2 className="section-title">Meet the Architects</h2>
               <p className="section-subtitle">Zero Freelancers. Zero outsourcing layers. We are a structured, focused systems company.</p>
             </div>
-          </ScrollReveal>
 
-          <div className="grid-3">
-            {team.map((member, i) => (
-              <div
-                key={member.name}
-                style={{
-                  opacity: teamCardProgress[i],
-                  transform: `translateX(${(1 - teamCardProgress[i]) * 70}px)`,
-                  willChange: "transform, opacity",
-                  transition: "none"
-                }}
-              >
-                <div className="glass-card" style={{ display: "flex", flexDirection: "column", height: "100%", textAlign: "center" }}>
-                  <div className="glass-card-content" style={{ display: "flex", flexDirection: "column", height: "100%" }}>
+            <div className="grid-3">
+              {team.map((member, i) => (
+                <div
+                  key={member.name}
+                  style={{
+                    opacity: teamCardProgress[i],
+                    transform: `translateX(${(1 - teamCardProgress[i]) * 100}px)`,
+                    willChange: "transform, opacity",
+                    transition: "none"
+                  }}
+                >
+                  <div className="glass-card" style={{ display: "flex", flexDirection: "column", height: "100%", textAlign: "center" }}>
+                    <div className="glass-card-content" style={{ display: "flex", flexDirection: "column", height: "100%" }}>
 
-                    {/* Architect Portrait Image */}
-                    <div className="architect-portrait-container">
-                      <Image
-                        src={architectImage}
-                        alt={member.name}
-                        className="architect-portrait-img"
-                        placeholder="blur"
-                      />
+                      {/* Architect Portrait Image */}
+                      <div className="architect-portrait-container">
+                        <Image
+                          src={architectImage}
+                          alt={member.name}
+                          className="architect-portrait-img"
+                          placeholder="blur"
+                        />
+                      </div>
+
+                      <h3 style={{ fontSize: "1.45rem", marginBottom: "0.35rem", color: "var(--text-primary)", fontWeight: "700" }}>{member.name}</h3>
+
+                      <p style={{
+                        fontSize: "0.78rem",
+                        color: "var(--text-muted)",
+                        fontWeight: "600",
+                        textTransform: "uppercase",
+                        letterSpacing: "0.1em",
+                        marginBottom: "1rem"
+                      }}>
+                        {member.role}
+                      </p>
+
+                      <p style={{ fontSize: "0.92rem", lineHeight: "1.6", color: "var(--text-secondary)", marginBottom: "1.5rem" }}>
+                        {member.desc}
+                      </p>
+
+                      {/* Co-founder Badge Tag */}
+                      <div style={{ marginTop: "auto", paddingTop: "1rem", display: "flex", justifyContent: "center" }}>
+                        <span className="co-founder-badge">
+                          Co-Founder
+                        </span>
+                      </div>
+
                     </div>
-
-                    <h3 style={{ fontSize: "1.45rem", marginBottom: "0.35rem", color: "var(--text-primary)", fontWeight: "700" }}>{member.name}</h3>
-
-                    <p style={{
-                      fontSize: "0.78rem",
-                      color: "var(--text-muted)",
-                      fontWeight: "600",
-                      textTransform: "uppercase",
-                      letterSpacing: "0.1em",
-                      marginBottom: "1rem"
-                    }}>
-                      {member.role}
-                    </p>
-
-                    <p style={{ fontSize: "0.92rem", lineHeight: "1.6", color: "var(--text-secondary)", marginBottom: "1.5rem" }}>
-                      {member.desc}
-                    </p>
-
-                    {/* Co-founder Badge Tag */}
-                    <div style={{ marginTop: "auto", paddingTop: "1rem", display: "flex", justifyContent: "center" }}>
-                      <span className="co-founder-badge">
-                        Co-Founder
-                      </span>
-                    </div>
-
                   </div>
                 </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
         </div>
-      </section>
+      </div>
 
       {/* 3.5. TECHNOLOGY STACK */}
       <section style={{ padding: "6rem 0", borderTop: "1px solid var(--border-light)" }}>
