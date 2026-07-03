@@ -267,11 +267,13 @@ export default function Home() {
         const currentPos = startY - rect.top;
         const p = Math.max(0, Math.min(1, currentPos / totalDistance));
 
-        // Compute individual targets with staggered starts
-        // Card 1 starts immediately, Card 2 after 15% section progress, Card 3 after 30% section progress
-        targetTeamProgress[0] = Math.max(0, Math.min(1, (p - 0.0) / 0.5));
-        targetTeamProgress[1] = Math.max(0, Math.min(1, (p - 0.15) / 0.5));
-        targetTeamProgress[2] = Math.max(0, Math.min(1, (p - 0.3) / 0.5));
+        // Compute individual targets with strict sequential starts (non-overlapping)
+        // Card 1: p from 0.0 to 0.33
+        // Card 2: p from 0.33 to 0.66
+        // Card 3: p from 0.66 to 1.0
+        targetTeamProgress[0] = Math.max(0, Math.min(1, (p - 0.0) / 0.33));
+        targetTeamProgress[1] = Math.max(0, Math.min(1, (p - 0.33) / 0.33));
+        targetTeamProgress[2] = Math.max(0, Math.min(1, (p - 0.66) / 0.34));
       }
 
       if (!animFrame) {
