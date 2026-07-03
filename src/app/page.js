@@ -185,16 +185,35 @@ export default function Home() {
   useEffect(() => {
     const container = timelineRef.current;
     if (!container) return;
-    let raf = null;
+    
+    let currentFill = 0;
+    let targetFill = 0;
+    let animFrame = null;
+
+    const animate = () => {
+      const diff = targetFill - currentFill;
+      if (Math.abs(diff) > 0.001) {
+        currentFill += diff * 0.06; // Easing speed factor: lower = slower and smoother
+        setSpineFill(currentFill);
+        animFrame = requestAnimationFrame(animate);
+      } else {
+        currentFill = targetFill;
+        setSpineFill(currentFill);
+        animFrame = null;
+      }
+    };
 
     const compute = () => {
-      raf = null;
       const rect = container.getBoundingClientRect();
       const triggerY = window.innerHeight * 0.65; // reveal line at 65% viewport
 
       // Continuous spine fill (0..1) as the trigger line passes through container
       const progress = Math.max(0, Math.min(1, (triggerY - rect.top) / rect.height));
-      setSpineFill(progress);
+      targetFill = progress;
+
+      if (!animFrame) {
+        animFrame = requestAnimationFrame(animate);
+      }
 
       // Discrete node activation: count nodes whose center is above the trigger line
       let count = 0;
@@ -207,7 +226,7 @@ export default function Home() {
     };
 
     const onScroll = () => {
-      if (raf == null) raf = requestAnimationFrame(compute);
+      compute();
     };
 
     compute();
@@ -216,7 +235,7 @@ export default function Home() {
     return () => {
       window.removeEventListener("scroll", onScroll);
       window.removeEventListener("resize", onScroll);
-      if (raf) cancelAnimationFrame(raf);
+      if (animFrame) cancelAnimationFrame(animFrame);
     };
   }, []);
 
