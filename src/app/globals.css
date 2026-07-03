@@ -484,7 +484,7 @@ a {
 /* Central Spine Timeline Styles */
 .timeline-container {
   position: relative;
-  max-width: 1000px;
+  max-width: 1200px;
   margin: 0 auto;
   padding: 2rem 0;
 }
@@ -511,7 +511,7 @@ a {
   align-items: center;
   position: relative;
   z-index: 2;
-  margin-bottom: 2.5rem;
+  margin-bottom: 3.5rem;
 }
 
 .timeline-row:last-child {
@@ -558,7 +558,11 @@ a {
 
 .timeline-card-wrapper {
   width: 100%;
-  max-width: 440px;
+  max-width: 530px;
+}
+
+.timeline-card-wrapper.glass-card {
+  padding: 2.5rem;
 }
 
 .timeline-connector-svg {
@@ -594,7 +598,7 @@ a {
   
   .timeline-row {
     grid-template-columns: 40px 1fr;
-    margin-bottom: 1.75rem;
+    margin-bottom: 2.25rem;
   }
   
   .timeline-col-left {
@@ -992,5 +996,180 @@ a {
   .detail-drawer-close {
     top: 1.25rem;
     right: 1.25rem;
+  }
+}
+
+/* Design System Upgrades for Technical Service Engine */
+.blueprint-grid-section {
+  position: relative;
+  background-color: var(--bg-tertiary);
+  background-image: radial-gradient(var(--border-active) 1.2px, transparent 1.2px);
+  background-size: 30px 30px;
+}
+
+/* Decorative axis coordinates */
+.blueprint-coord {
+  position: absolute;
+  font-family: var(--font-display);
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  opacity: 0.3;
+  pointer-events: none;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  user-select: none;
+}
+
+/* Card details upgrades */
+.card-watermark {
+  position: absolute;
+  bottom: -15px;
+  right: 15px;
+  font-size: 6.5rem;
+  font-family: var(--font-display);
+  font-weight: 700;
+  color: var(--text-primary);
+  opacity: 0.025;
+  pointer-events: none;
+  z-index: 0;
+  line-height: 1;
+  user-select: none;
+  transition: opacity var(--transition-normal);
+}
+
+[data-theme="dark"] .card-watermark {
+  opacity: 0.045;
+}
+
+.glass-card:hover .card-watermark {
+  opacity: 0.055;
+}
+
+[data-theme="dark"] .glass-card:hover .card-watermark {
+  opacity: 0.085;
+}
+
+.card-status-tag {
+  font-size: 0.72rem;
+  font-family: var(--font-display);
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  color: var(--accent-primary);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  text-transform: uppercase;
+  margin-bottom: 0.5rem;
+}
+
+.card-status-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: var(--accent-primary);
+  animation: status-pulse 2s infinite ease-in-out;
+}
+
+@keyframes status-pulse {
+  0%, 100% {
+    opacity: 0.35;
+    transform: scale(0.9);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.1);
+    box-shadow: 0 0 6px var(--accent-primary);
+  }
+}
+
+/* Background Animations: Circuit Paths & Floating Tech Glyphs */
+.circuit-paths-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+  overflow: hidden;
+}
+
+.circuit-path-bg {
+  stroke: var(--accent-primary);
+  opacity: 0.06;
+  stroke-width: 1.5;
+  fill: none;
+  transition: stroke-dashoffset 0.15s ease-out;
+}
+
+[data-theme="dark"] .circuit-path-bg {
+  opacity: 0.09;
+}
+
+.circuit-node-dot {
+  fill: var(--accent-primary);
+  opacity: 0.1;
+  transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+}
+
+.circuit-node-dot.active {
+  opacity: 0.6;
+  animation: pulse-node 1.5s infinite alternate ease-in-out;
+}
+
+@keyframes pulse-node {
+  0% {
+    r: 3px;
+    filter: drop-shadow(0 0 1px var(--accent-primary));
+  }
+  100% {
+    r: 5px;
+    filter: drop-shadow(0 0 4px var(--accent-primary));
+  }
+}
+
+.floating-glyphs-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+  overflow: hidden;
+}
+
+.tech-glyph {
+  position: absolute;
+  width: 4.8rem;
+  height: 4.8rem;
+  color: var(--accent-primary);
+  opacity: 0.12;
+  user-select: none;
+  will-change: transform;
+  pointer-events: none;
+  animation: glyph-float 8s infinite ease-in-out;
+}
+
+[data-theme="dark"] .tech-glyph {
+  opacity: 0.2;
+}
+
+@keyframes glyph-float {
+  0%, 100% {
+    transform: translateY(0) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-8px) rotate(4deg);
+  }
+}
+
+@media (max-width: 767px) {
+  .circuit-paths-container {
+    display: none;
+  }
+  .floating-glyphs-container {
+    opacity: 0.5; /* Fade them down further on mobile */
   }
 }
