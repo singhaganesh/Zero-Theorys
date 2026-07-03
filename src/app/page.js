@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import ThreeSphere from "@/components/ThreeSphere";
 import ScrollReveal from "@/components/ScrollReveal";
@@ -8,6 +9,7 @@ import SdlcStepper from "@/components/SdlcStepper";
 import CalendarScheduler from "@/components/CalendarScheduler";
 import IntakePlanner from "@/components/IntakePlanner";
 import ServiceDetailDrawer from "@/components/ServiceDetailDrawer";
+import architectImage from "@/assets/Ganesh Singha.jpeg";
 
 // SVG Tech Stack Logo components
 const ReactLogo = () => (
@@ -665,8 +667,15 @@ export default function Home() {
                 <div className="glass-card" style={{ display: "flex", flexDirection: "column", height: "100%", textAlign: "center" }}>
                   <div className="glass-card-content" style={{ display: "flex", flexDirection: "column", height: "100%" }}>
                     
-                    {/* Blank Image Portrait Slot */}
-                    <div className="architect-portrait-placeholder" />
+                    {/* Architect Portrait Image */}
+                    <div className="architect-portrait-container">
+                      <Image 
+                        src={architectImage} 
+                        alt={member.name}
+                        className="architect-portrait-img"
+                        placeholder="blur"
+                      />
+                    </div>
 
                     <h3 style={{ fontSize: "1.45rem", marginBottom: "0.35rem", color: "var(--text-primary)", fontWeight: "700" }}>{member.name}</h3>
                     
