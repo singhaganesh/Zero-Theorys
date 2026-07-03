@@ -395,6 +395,84 @@ export default function Home() {
     }
   ];
 
+  const techStack = [
+    {
+      title: "AI & Data Core",
+      color: "var(--accent-primary)",
+      icon: (
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--accent-primary)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ filter: "drop-shadow(0 0 8px rgba(16, 185, 129, 0.25))" }}>
+          <path d="M12 2a5 5 0 0 0-5 5v3.5a1.5 1.5 0 0 1-1.5 1.5H4a2 2 0 0 0-2 2v2a2 2 0 0 0 2 2h.5A1.5 1.5 0 0 1 6 19.5V20a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2v-.5a1.5 1.5 0 0 1 1.5-1.5H20a2 2 0 0 0 2-2v-2a2 2 0 0 0-2-2h-.5a1.5 1.5 0 0 1-1.5-1.5V7a5 5 0 0 0-5-5z" />
+          <path d="M9 9h.01" />
+          <path d="M15 9h.01" />
+          <path d="M8 13h8" />
+          <path d="M12 9v4" />
+        </svg>
+      ),
+      techs: ["LangChain", "LlamaIndex", "Vector DBs", "Pinecone", "Semantic Cache", "Multi-Agent Crews", "Fine-Tuning"]
+    },
+    {
+      title: "Web Ecosystems",
+      color: "var(--accent-secondary)",
+      icon: (
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--accent-secondary)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ filter: "drop-shadow(0 0 8px rgba(6, 182, 212, 0.25))" }}>
+          <rect x="2" y="3" width="20" height="14" rx="2" ry="2" />
+          <line x1="2" y1="13" x2="22" y2="13" />
+          <line x1="6" y1="21" x2="18" y2="21" />
+          <line x1="12" y1="17" x2="12" y2="21" />
+        </svg>
+      ),
+      techs: ["Next.js", "React", "TypeScript", "TailwindCSS", "Framer Motion", "WebSockets", "PWAs"]
+    },
+    {
+      title: "DevOps & Cloud",
+      color: "var(--accent-primary)",
+      icon: (
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--accent-primary)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ filter: "drop-shadow(0 0 8px rgba(16, 185, 129, 0.25))" }}>
+          <path d="M18 10h-.79A7 7 0 0 0 4 10h-.75a4 4 0 0 0 0 8h14.75a4 4 0 0 0 0-8z" />
+          <path d="M12 18v-4" />
+          <path d="M8 14h8" />
+        </svg>
+      ),
+      techs: ["Docker", "Kubernetes", "AWS CDK", "Terraform", "GitHub Actions", "OpenTelemetry", "Prometheus"]
+    },
+    {
+      title: "Mobile Engineering",
+      color: "var(--accent-secondary)",
+      icon: (
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--accent-secondary)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ filter: "drop-shadow(0 0 8px rgba(6, 182, 212, 0.25))" }}>
+          <rect x="5" y="2" width="14" height="20" rx="2" ry="2" />
+          <line x1="12" y1="18" x2="12.01" y2="18" />
+        </svg>
+      ),
+      techs: ["Flutter", "React Native", "Swift (iOS)", "Kotlin (Android)", "Offline-First Sync", "Push Notifications"]
+    },
+    {
+      title: "Backend Ecosystems",
+      color: "var(--accent-primary)",
+      icon: (
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--accent-primary)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ filter: "drop-shadow(0 0 8px rgba(16, 185, 129, 0.25))" }}>
+          <rect x="2" y="2" width="20" height="8" rx="2" ry="2" />
+          <rect x="2" y="14" width="20" height="8" rx="2" ry="2" />
+          <line x1="6" y1="6" x2="6.01" y2="6" />
+          <line x1="6" y1="18" x2="6.01" y2="18" />
+        </svg>
+      ),
+      techs: ["Node.js", "Go (Golang)", "Python (FastAPI)", "Spring Boot", "RabbitMQ / Kafka"]
+    },
+    {
+      title: "Database",
+      color: "var(--accent-secondary)",
+      icon: (
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--accent-secondary)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ filter: "drop-shadow(0 0 8px rgba(6, 182, 212, 0.25))" }}>
+          <ellipse cx="12" cy="5" rx="9" ry="3" />
+          <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5" />
+          <path d="M3 12c0 1.66 4 3 9 3s9-1.34 9-3" />
+        </svg>
+      ),
+      techs: ["PostgreSQL", "MongoDB", "Redis Cache", "SQLite", "Prisma ORM", "Supabase", "DynamoDB"]
+    }
+  ];
+
   return (
     <div className="fade-in-section">
       {/* 1. HERO SECTION */}
@@ -742,70 +820,26 @@ export default function Home() {
             </div>
           </ScrollReveal>
 
-          <div className="grid-4" style={{ gap: "1.5rem" }}>
-            {/* Category 1: AI & Intelligent Pipelines */}
-            <ScrollReveal direction="up" delay={0}>
-              <div className="glass-card" style={{ height: "100%" }}>
-                <div className="glass-card-content">
-                  <h3 style={{ fontSize: "1.15rem", marginBottom: "1rem", color: "var(--accent-primary)" }}>AI &amp; Data Core</h3>
-                  <div style={{ display: "flex", gap: "0.5rem", flexWrap: "wrap" }}>
-                    {["LangChain", "LlamaIndex", "Vector DBs", "Pinecone", "Redis Cache", "Multi-Agents", "Fine-Tuning"].map((tech) => (
-                      <span key={tech} style={{ fontSize: "0.75rem", background: "var(--bg-tertiary)", border: "1px solid var(--border-light)", padding: "0.25rem 0.65rem", borderRadius: "4px", color: "var(--text-secondary)", fontWeight: "500" }}>
-                        {tech}
-                      </span>
-                    ))}
+          <div className="grid-3" style={{ gap: "1.5rem" }}>
+            {techStack.map((category, i) => (
+              <ScrollReveal key={category.title} direction="up" delay={i * 100}>
+                <div className="glass-card" style={{ height: "100%" }}>
+                  <div className="glass-card-content">
+                    <div style={{ display: "flex", alignItems: "center", gap: "0.75rem", marginBottom: "1.25rem" }}>
+                      {category.icon}
+                      <h3 style={{ fontSize: "1.15rem", margin: 0, color: category.color }}>{category.title}</h3>
+                    </div>
+                    <div style={{ display: "flex", gap: "0.5rem", flexWrap: "wrap" }}>
+                      {category.techs.map((tech) => (
+                        <span key={tech} style={{ fontSize: "0.75rem", background: "var(--bg-tertiary)", border: "1px solid var(--border-light)", padding: "0.25rem 0.65rem", borderRadius: "4px", color: "var(--text-secondary)", fontWeight: "500", transition: "transform 0.2s" }} className="tech-badge-hover">
+                          {tech}
+                        </span>
+                      ))}
+                    </div>
                   </div>
                 </div>
-              </div>
-            </ScrollReveal>
-
-            {/* Category 2: Full-Stack Web */}
-            <ScrollReveal direction="up" delay={100}>
-              <div className="glass-card" style={{ height: "100%" }}>
-                <div className="glass-card-content">
-                  <h3 style={{ fontSize: "1.15rem", marginBottom: "1rem", color: "var(--accent-secondary)" }}>Web Ecosystems</h3>
-                  <div style={{ display: "flex", gap: "0.5rem", flexWrap: "wrap" }}>
-                    {["Next.js", "React", "TypeScript", "Node.js", "NestJS", "Fastify", "GraphQL", "Prisma"].map((tech) => (
-                      <span key={tech} style={{ fontSize: "0.75rem", background: "var(--bg-tertiary)", border: "1px solid var(--border-light)", padding: "0.25rem 0.65rem", borderRadius: "4px", color: "var(--text-secondary)", fontWeight: "500" }}>
-                        {tech}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            </ScrollReveal>
-
-            {/* Category 3: Cloud & DevOps */}
-            <ScrollReveal direction="up" delay={200}>
-              <div className="glass-card" style={{ height: "100%" }}>
-                <div className="glass-card-content">
-                  <h3 style={{ fontSize: "1.15rem", marginBottom: "1rem", color: "var(--accent-primary)" }}>DevOps &amp; Cloud</h3>
-                  <div style={{ display: "flex", gap: "0.5rem", flexWrap: "wrap" }}>
-                    {["Docker", "Kubernetes", "AWS CDK", "Terraform", "CI/CD Actions", "PostgreSQL", "OpenTelemetry"].map((tech) => (
-                      <span key={tech} style={{ fontSize: "0.75rem", background: "var(--bg-tertiary)", border: "1px solid var(--border-light)", padding: "0.25rem 0.65rem", borderRadius: "4px", color: "var(--text-secondary)", fontWeight: "500" }}>
-                        {tech}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            </ScrollReveal>
-
-            {/* Category 4: Mobile SDKs */}
-            <ScrollReveal direction="up" delay={300}>
-              <div className="glass-card" style={{ height: "100%" }}>
-                <div className="glass-card-content">
-                  <h3 style={{ fontSize: "1.15rem", marginBottom: "1rem", color: "var(--accent-secondary)" }}>Mobile Engineering</h3>
-                  <div style={{ display: "flex", gap: "0.5rem", flexWrap: "wrap" }}>
-                    {["Flutter", "React Native", "Swift (iOS)", "Kotlin (Android)", "SQLite", "Offline Sync", "Push Notifs"].map((tech) => (
-                      <span key={tech} style={{ fontSize: "0.75rem", background: "var(--bg-tertiary)", border: "1px solid var(--border-light)", padding: "0.25rem 0.65rem", borderRadius: "4px", color: "var(--text-secondary)", fontWeight: "500" }}>
-                        {tech}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            </ScrollReveal>
+              </ScrollReveal>
+            ))}
           </div>
         </div>
       </section>

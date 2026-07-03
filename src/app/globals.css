@@ -1270,3 +1270,14 @@ a {
   border-color: var(--accent-primary);
   box-shadow: 0 0 8px rgba(5, 150, 105, 0.15);
 }
+
+.tech-badge-hover {
+  cursor: default;
+  transition: transform var(--transition-fast), border-color var(--transition-fast), color var(--transition-fast) !important;
+}
+
+.tech-badge-hover:hover {
+  transform: translateY(-2px) scale(1.05);
+  border-color: var(--accent-primary) !important;
+  color: var(--text-primary) !important;
+}
