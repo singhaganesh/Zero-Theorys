@@ -9,8 +9,9 @@ import SdlcStepper from "@/components/SdlcStepper";
 import CalendarScheduler from "@/components/CalendarScheduler";
 import IntakePlanner from "@/components/IntakePlanner";
 import ServiceDetailDrawer from "@/components/ServiceDetailDrawer";
-import architectImage from "@/assets/Ganesh Singha.png";
-
+import debayanImage from "@/assets/Debayan Chakraborty.jpeg";
+import ganeshImage from "@/assets/Ganesh Singha.jpeg";
+import aniketImage from "@/assets/Aniket Karmakar.jpeg";
 // SVG Tech Stack Logo components
 const ReactLogo = () => (
   <svg viewBox="-11.5 -10.23174 23 20.46348" width="100%" height="100%" fill="none" stroke="currentColor" strokeWidth="1">
@@ -191,10 +192,10 @@ export default function Home() {
   // 3. Scroll-driven animations: timeline (with LERP physics)
   useEffect(() => {
     const timelineContainer = timelineRef.current;
-    
+
     let currentFill = 0;
     let targetFill = 0;
-    
+
     let animFrame = null;
 
     const animate = () => {
@@ -378,18 +379,21 @@ export default function Home() {
     {
       name: "Debayan Chakraborty",
       role: "UI / UX & Graphic Designer",
+      image: debayanImage,
       specialties: ["UI/UX Engineering", "Creative Design Strategy", "Global Client Management"],
       desc: "Architecting interactive digital products that resonate with users and drive commercial value for global partners."
     },
     {
       name: "Ganesh Singha",
       role: "Full-Stack Engineer",
+      image: ganeshImage,
       specialties: ["Autonomous AI Pipelines", "Cloud Infrastructure", "Mobile Architectures"],
       desc: "Designing and scaling low-latency agentic applications and secure distributed cloud systems."
     },
     {
       name: "Aniket Karmakar",
       role: "Prompt & Loop Engineer",
+      image: aniketImage,
       specialties: ["Core Distributed Systems", "Backend Infrastructure", "Web Ecosystems"],
       desc: "Structuring high-availability APIs, real-time sync systems, and optimized database systems."
     }
@@ -770,7 +774,7 @@ export default function Home() {
                     {/* Architect Portrait Image */}
                     <div className="architect-portrait-container">
                       <Image
-                        src={architectImage}
+                        src={member.image}
                         alt={member.name}
                         className="architect-portrait-img"
                         placeholder="blur"
