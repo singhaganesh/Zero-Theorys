@@ -9,16 +9,16 @@ import SdlcStepper from "@/components/SdlcStepper";
 import CalendarScheduler from "@/components/CalendarScheduler";
 import IntakePlanner from "@/components/IntakePlanner";
 import ServiceDetailDrawer from "@/components/ServiceDetailDrawer";
-import architectImage from "@/assets/Ganesh Singha.jpeg";
+import architectImage from "@/assets/Ganesh Singha.png";
 
 // SVG Tech Stack Logo components
 const ReactLogo = () => (
   <svg viewBox="-11.5 -10.23174 23 20.46348" width="100%" height="100%" fill="none" stroke="currentColor" strokeWidth="1">
-    <circle cx="0" cy="0" r="2.05" fill="currentColor"/>
+    <circle cx="0" cy="0" r="2.05" fill="currentColor" />
     <g stroke="currentColor">
-      <ellipse rx="11" ry="4.2"/>
-      <ellipse rx="11" ry="4.2" transform="rotate(60)"/>
-      <ellipse rx="11" ry="4.2" transform="rotate(120)"/>
+      <ellipse rx="11" ry="4.2" />
+      <ellipse rx="11" ry="4.2" transform="rotate(60)" />
+      <ellipse rx="11" ry="4.2" transform="rotate(120)" />
     </g>
   </svg>
 );
@@ -31,7 +31,7 @@ const JavaLogo = () => (
 
 const DockerLogo = () => (
   <svg viewBox="0 0 128 128" width="100%" height="100%" fill="currentColor">
-    <path d="M124.8 52.1c-4.3-2.5-10-2.8-14.8-1.4-.6-5.2-4-9.7-8-12.9l-1.6-1.3-1.4 1.6c-2.7 3.1-3.5 8.3-3.1 12.3.3 2.9 1.2 5.9 3 8.3-1.4.8-2.9 1.9-4.3 2.4-2.8 1-5.9 2-8.9 2H79V49H66V24H51v12H26v13H13v14H1.8l-.2 1.5c-.5 6.4.3 12.6 3 18.5l1.1 2.2.1.2c7.9 13.4 21.7 19 36.8 19 29.2 0 53.3-13.1 64.3-40.6 7.4.4 15-1.8 18.6-8.9l.9-1.8-1.6-1zM28 39h10v11H28V39zm13.1 44.2c0 1.7-1.4 3.1-3.1 3.1-1.7 0-3.1-1.4-3.1-3.1 0-1.7 1.4-3.1 3.1-3.1 1.7.1 3.1 1.4 3.1 3.1zM28 54h10v11H28V54zm15 0h10v11H43V54zm0-15h10v11H43V39zm15 15h10v11H58V54zm0-15h10v11H58V39zm15 15h10v11H73V54zm0-15h10v11H73V39zm15 15h10v11H88V54zm0-15h10v11H88V39zm0-15h10v11H88V24z"/>
+    <path d="M124.8 52.1c-4.3-2.5-10-2.8-14.8-1.4-.6-5.2-4-9.7-8-12.9l-1.6-1.3-1.4 1.6c-2.7 3.1-3.5 8.3-3.1 12.3.3 2.9 1.2 5.9 3 8.3-1.4.8-2.9 1.9-4.3 2.4-2.8 1-5.9 2-8.9 2H79V49H66V24H51v12H26v13H13v14H1.8l-.2 1.5c-.5 6.4.3 12.6 3 18.5l1.1 2.2.1.2c7.9 13.4 21.7 19 36.8 19 29.2 0 53.3-13.1 64.3-40.6 7.4.4 15-1.8 18.6-8.9l.9-1.8-1.6-1zM28 39h10v11H28V39zm13.1 44.2c0 1.7-1.4 3.1-3.1 3.1-1.7 0-3.1-1.4-3.1-3.1 0-1.7 1.4-3.1 3.1-3.1 1.7.1 3.1 1.4 3.1 3.1zM28 54h10v11H28V54zm15 0h10v11H43V54zm0-15h10v11H43V39zm15 15h10v11H58V54zm0-15h10v11H58V39zm15 15h10v11H73V54zm0-15h10v11H73V39zm15 15h10v11H88V54zm0-15h10v11H88V39zm0-15h10v11H88V24z" />
   </svg>
 );
 
@@ -45,14 +45,14 @@ const AwsLogo = () => (
 
 const PythonLogo = () => (
   <svg viewBox="0 0 128 128" width="100%" height="100%" fill="currentColor">
-    <path d="M49.33 62h29.159C86.606 62 93 55.132 93 46.981V19.183c0-7.912-6.632-13.856-14.555-15.176-5.014-.835-10.195-1.215-15.187-1.191-4.99.023-9.612.448-13.805 1.191C37.098 6.188 35 10.758 35 19.183V30h29v4H23.776c-8.484 0-15.914 5.108-18.237 14.811-2.681 11.12-2.8 17.919 0 29.53C7.614 86.983 12.569 93 21.054 93H31V79.952C31 70.315 39.428 62 49.33 62zm-1.838-39.11c-3.026 0-5.478-2.479-5.478-5.545 0-3.079 2.451-5.581 5.478-5.581 3.015 0 5.479 2.502 5.479 5.581-.001 3.066-2.465 5.545-5.479 5.545z"/>
-    <path d="M78.67 66H49.511C41.394 66 35 72.868 35 81.019v27.798c0 7.912 6.632 13.856 14.555 15.176 5.014.835 10.195 1.215 15.187 1.191 4.99-.023 9.612-.448 13.805-1.191C90.902 121.812 93 117.242 93 108.817V98H64v-4h40.224c8.484 0 15.914-5.108 18.237-14.811 2.681-11.12 2.8-17.919 0-29.53C120.386 41.017 115.431 35 106.946 35H97v13.048C97 57.685 88.572 66 78.67 66zm1.838 39.11c3.026 0 5.478 2.479 5.478 5.545 0 3.079-2.451 5.581-5.478 5.581-3.015 0-5.479-2.502-5.479-5.581.001-3.066 2.465-5.545 5.479-5.545z"/>
+    <path d="M49.33 62h29.159C86.606 62 93 55.132 93 46.981V19.183c0-7.912-6.632-13.856-14.555-15.176-5.014-.835-10.195-1.215-15.187-1.191-4.99.023-9.612.448-13.805 1.191C37.098 6.188 35 10.758 35 19.183V30h29v4H23.776c-8.484 0-15.914 5.108-18.237 14.811-2.681 11.12-2.8 17.919 0 29.53C7.614 86.983 12.569 93 21.054 93H31V79.952C31 70.315 39.428 62 49.33 62zm-1.838-39.11c-3.026 0-5.478-2.479-5.478-5.545 0-3.079 2.451-5.581 5.478-5.581 3.015 0 5.479 2.502 5.479 5.581-.001 3.066-2.465 5.545-5.479 5.545z" />
+    <path d="M78.67 66H49.511C41.394 66 35 72.868 35 81.019v27.798c0 7.912 6.632 13.856 14.555 15.176 5.014.835 10.195 1.215 15.187 1.191 4.99-.023 9.612-.448 13.805-1.191C90.902 121.812 93 117.242 93 108.817V98H64v-4h40.224c8.484 0 15.914-5.108 18.237-14.811 2.681-11.12 2.8-17.919 0-29.53C120.386 41.017 115.431 35 106.946 35H97v13.048C97 57.685 88.572 66 78.67 66zm1.838 39.11c3.026 0 5.478 2.479 5.478 5.545 0 3.079-2.451 5.581-5.478 5.581-3.015 0-5.479-2.502-5.479-5.581.001-3.066 2.465-5.545 5.479-5.545z" />
   </svg>
 );
 
 const FlutterLogo = () => (
   <svg viewBox="0 0 24 24" width="100%" height="100%" fill="currentColor">
-    <path d="M14.314 0L2.3 12l3.6 3.6 15.8-15.6h-7.386zM21.7 12l-3.6-3.6-9.1 9L12.6 21 21.7 12z"/>
+    <path d="M14.314 0L2.3 12l3.6 3.6 15.8-15.6h-7.386zM21.7 12l-3.6-3.6-9.1 9L12.6 21 21.7 12z" />
   </svg>
 );
 
@@ -64,15 +64,15 @@ const PostgresLogo = () => (
 
 const GithubLogo = () => (
   <svg viewBox="0 0 24 24" width="100%" height="100%" fill="currentColor">
-    <path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/>
+    <path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12" />
   </svg>
 );
 
 const NextLogo = () => (
   <svg viewBox="0 0 128 128" width="100%" height="100%" fill="none" stroke="currentColor" strokeWidth="4">
-    <circle cx="64" cy="64" r="62"/>
-    <path fill="currentColor" stroke="none" d="M106.317 112.014 49.167 38.4H38.4v51.179h8.614v-40.24l52.54 67.884a64.216 64.216 0 0 0 6.763-5.209z"/>
-    <path fill="currentColor" stroke="none" d="M81.778 38.4h8.533v51.2h-8.533z"/>
+    <circle cx="64" cy="64" r="62" />
+    <path fill="currentColor" stroke="none" d="M106.317 112.014 49.167 38.4H38.4v51.179h8.614v-40.24l52.54 67.884a64.216 64.216 0 0 0 6.763-5.209z" />
+    <path fill="currentColor" stroke="none" d="M81.778 38.4h8.533v51.2h-8.533z" />
   </svg>
 );
 
@@ -144,7 +144,7 @@ export default function Home() {
   // 2. Animate counter metrics on view
   useEffect(() => {
     let speedTimer, securityTimer, uptimeTimer;
-    
+
     // Simulate count up for trust verification metrics
     const startCountUp = () => {
       // Speed count down to 42ms
@@ -187,7 +187,7 @@ export default function Home() {
   useEffect(() => {
     const container = timelineRef.current;
     if (!container) return;
-    
+
     let currentFill = 0;
     let targetFill = 0;
     let animFrame = null;
@@ -524,7 +524,7 @@ export default function Home() {
                 r="3"
               />
             </svg>
-            
+
             {services.map((svc, i) => {
               const isEven = i % 2 === 0;
               const isHovered = hoveredService === i;
@@ -663,14 +663,14 @@ export default function Home() {
 
           <div className="grid-3">
             {team.map((member, i) => (
-              <ScrollReveal key={member.name} direction="up" delay={i * 150}>
+              <ScrollReveal key={member.name} direction="right" delay={i * 300} duration={1200}>
                 <div className="glass-card" style={{ display: "flex", flexDirection: "column", height: "100%", textAlign: "center" }}>
                   <div className="glass-card-content" style={{ display: "flex", flexDirection: "column", height: "100%" }}>
-                    
+
                     {/* Architect Portrait Image */}
                     <div className="architect-portrait-container">
-                      <Image 
-                        src={architectImage} 
+                      <Image
+                        src={architectImage}
                         alt={member.name}
                         className="architect-portrait-img"
                         placeholder="blur"
@@ -678,14 +678,14 @@ export default function Home() {
                     </div>
 
                     <h3 style={{ fontSize: "1.45rem", marginBottom: "0.35rem", color: "var(--text-primary)", fontWeight: "700" }}>{member.name}</h3>
-                    
-                    <p style={{ 
-                      fontSize: "0.78rem", 
-                      color: "var(--text-muted)", 
-                      fontWeight: "600", 
-                      textTransform: "uppercase", 
+
+                    <p style={{
+                      fontSize: "0.78rem",
+                      color: "var(--text-muted)",
+                      fontWeight: "600",
+                      textTransform: "uppercase",
                       letterSpacing: "0.1em",
-                      marginBottom: "1rem" 
+                      marginBottom: "1rem"
                     }}>
                       {member.role}
                     </p>
@@ -789,9 +789,9 @@ export default function Home() {
       </section>
 
       {/* 3.7. SDLC WORKFLOW */}
-      <section id="sdlc" style={{ 
-        padding: "6rem 0", 
-        background: "var(--bg-secondary)", 
+      <section id="sdlc" style={{
+        padding: "6rem 0",
+        background: "var(--bg-secondary)",
         borderTop: "1px solid var(--border-light)"
       }}>
         <div className="container">
@@ -905,9 +905,9 @@ export default function Home() {
       </section>
 
       {/* Service Details Slide-Over/Bottom-Sheet Panel */}
-      <ServiceDetailDrawer 
-        service={selectedService} 
-        onClose={() => setSelectedService(null)} 
+      <ServiceDetailDrawer
+        service={selectedService}
+        onClose={() => setSelectedService(null)}
         onStartProject={(svc) => {
           setPreselectedFormNeed(svc.id);
           setSelectedService(null);
@@ -916,7 +916,7 @@ export default function Home() {
           if (el) {
             el.scrollIntoView({ behavior: "smooth" });
           }
-        }} 
+        }}
       />
     </div>
   );
