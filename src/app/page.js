@@ -121,8 +121,10 @@ export default function Home() {
   const metricsRef = useRef(null);
   const timelineRef = useRef(null);
   const nodeRefs = useRef([]);
+  const teamRef = useRef(null);
   const [spineFill, setSpineFill] = useState(0);
   const [activatedCount, setActivatedCount] = useState(0);
+  const [teamCardProgress, setTeamCardProgress] = useState([0, 0, 0]);
   const [apiSpeed, setApiSpeed] = useState(0);
   const [hoveredService, setHoveredService] = useState(null);
   const [selectedService, setSelectedService] = useState(null);
@@ -183,48 +185,98 @@ export default function Home() {
     };
   }, []);
 
-  // 3. Scroll-driven timeline: grow spine + activate nodes/cards one-by-one
+  // 3. Scroll-driven animations: timeline + team cards (with LERP physics)
   useEffect(() => {
-    const container = timelineRef.current;
-    if (!container) return;
-
+    const timelineContainer = timelineRef.current;
+    
     let currentFill = 0;
     let targetFill = 0;
+    
+    let currentTeamProgress = [0, 0, 0];
+    let targetTeamProgress = [0, 0, 0];
+    
     let animFrame = null;
 
     const animate = () => {
-      const diff = targetFill - currentFill;
-      if (Math.abs(diff) > 0.001) {
-        currentFill += diff * 0.06; // Easing speed factor: lower = slower and smoother
+      let isAnimating = false;
+
+      // Timeline spine LERP
+      const diffFill = targetFill - currentFill;
+      if (Math.abs(diffFill) > 0.001) {
+        currentFill += diffFill * 0.06;
         setSpineFill(currentFill);
-        animFrame = requestAnimationFrame(animate);
+        isAnimating = true;
       } else {
         currentFill = targetFill;
         setSpineFill(currentFill);
+      }
+
+      // Team cards LERP (staggered sliders)
+      const newTeamProgress = [...currentTeamProgress];
+      let teamChanged = false;
+      for (let idx = 0; idx < 3; idx++) {
+        const diffTeam = targetTeamProgress[idx] - currentTeamProgress[idx];
+        if (Math.abs(diffTeam) > 0.001) {
+          newTeamProgress[idx] += diffTeam * 0.05; // slightly slower easing for cards
+          teamChanged = true;
+          isAnimating = true;
+        } else {
+          newTeamProgress[idx] = targetTeamProgress[idx];
+        }
+      }
+      if (teamChanged) {
+        currentTeamProgress = newTeamProgress;
+        setTeamCardProgress(currentTeamProgress);
+      }
+
+      if (isAnimating) {
+        animFrame = requestAnimationFrame(animate);
+      } else {
         animFrame = null;
       }
     };
 
     const compute = () => {
-      const rect = container.getBoundingClientRect();
-      const triggerY = window.innerHeight * 0.65; // reveal line at 65% viewport
+      const viewportHeight = window.innerHeight;
 
-      // Continuous spine fill (0..1) as the trigger line passes through container
-      const progress = Math.max(0, Math.min(1, (triggerY - rect.top) / rect.height));
-      targetFill = progress;
+      // 1. Timeline spine computation
+      if (timelineContainer) {
+        const rect = timelineContainer.getBoundingClientRect();
+        const triggerY = viewportHeight * 0.65;
+        const progress = Math.max(0, Math.min(1, (triggerY - rect.top) / rect.height));
+        targetFill = progress;
+
+        // Discrete node activation: count nodes whose center is above the trigger line
+        let count = 0;
+        nodeRefs.current.forEach((node) => {
+          if (!node) return;
+          const nr = node.getBoundingClientRect();
+          if (nr.top + nr.height / 2 <= triggerY) count++;
+        });
+        setActivatedCount(count);
+      }
+
+      // 2. Team cards scroll computation
+      const teamContainer = teamRef.current;
+      if (teamContainer) {
+        const rect = teamContainer.getBoundingClientRect();
+        // Starts sliding when section top is at 95% of viewport height, finished when top is at 35% of viewport height
+        const startY = viewportHeight * 0.95;
+        const endY = viewportHeight * 0.35;
+        const totalDistance = startY - endY;
+        const currentPos = startY - rect.top;
+        const p = Math.max(0, Math.min(1, currentPos / totalDistance));
+
+        // Compute individual targets with staggered starts
+        // Card 1 starts immediately, Card 2 after 15% section progress, Card 3 after 30% section progress
+        targetTeamProgress[0] = Math.max(0, Math.min(1, (p - 0.0) / 0.5));
+        targetTeamProgress[1] = Math.max(0, Math.min(1, (p - 0.15) / 0.5));
+        targetTeamProgress[2] = Math.max(0, Math.min(1, (p - 0.3) / 0.5));
+      }
 
       if (!animFrame) {
         animFrame = requestAnimationFrame(animate);
       }
-
-      // Discrete node activation: count nodes whose center is above the trigger line
-      let count = 0;
-      nodeRefs.current.forEach((node) => {
-        if (!node) return;
-        const nr = node.getBoundingClientRect();
-        if (nr.top + nr.height / 2 <= triggerY) count++;
-      });
-      setActivatedCount(count);
     };
 
     const onScroll = () => {
@@ -651,7 +703,7 @@ export default function Home() {
       </section>
 
       {/* 3. MEET THE ARCHITECTS */}
-      <section style={{ padding: "6rem 0" }}>
+      <section ref={teamRef} style={{ padding: "6rem 0", overflow: "hidden" }}>
         <div className="container">
           <ScrollReveal direction="up">
             <div className="section-title-wrap">
@@ -663,7 +715,15 @@ export default function Home() {
 
           <div className="grid-3">
             {team.map((member, i) => (
-              <ScrollReveal key={member.name} direction="right" delay={i * 300} duration={1200}>
+              <div
+                key={member.name}
+                style={{
+                  opacity: teamCardProgress[i],
+                  transform: `translateX(${(1 - teamCardProgress[i]) * 70}px)`,
+                  willChange: "transform, opacity",
+                  transition: "none"
+                }}
+              >
                 <div className="glass-card" style={{ display: "flex", flexDirection: "column", height: "100%", textAlign: "center" }}>
                   <div className="glass-card-content" style={{ display: "flex", flexDirection: "column", height: "100%" }}>
 
@@ -703,7 +763,7 @@ export default function Home() {
 
                   </div>
                 </div>
-              </ScrollReveal>
+              </div>
             ))}
           </div>
         </div>
