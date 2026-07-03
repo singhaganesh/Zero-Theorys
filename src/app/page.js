@@ -12,6 +12,10 @@ import ServiceDetailDrawer from "@/components/ServiceDetailDrawer";
 export default function Home() {
   const cardsRef = useRef([]);
   const metricsRef = useRef(null);
+  const timelineRef = useRef(null);
+  const nodeRefs = useRef([]);
+  const [spineFill, setSpineFill] = useState(0);
+  const [activatedCount, setActivatedCount] = useState(0);
   const [apiSpeed, setApiSpeed] = useState(0);
   const [hoveredService, setHoveredService] = useState(null);
   const [selectedService, setSelectedService] = useState(null);
@@ -69,6 +73,45 @@ export default function Home() {
       clearInterval(speedTimer);
       clearInterval(securityTimer);
       clearInterval(uptimeTimer);
+    };
+  }, []);
+
+  // 3. Scroll-driven timeline: grow spine + activate nodes/cards one-by-one
+  useEffect(() => {
+    const container = timelineRef.current;
+    if (!container) return;
+    let raf = null;
+
+    const compute = () => {
+      raf = null;
+      const rect = container.getBoundingClientRect();
+      const triggerY = window.innerHeight * 0.65; // reveal line at 65% viewport
+
+      // Continuous spine fill (0..1) as the trigger line passes through container
+      const progress = Math.max(0, Math.min(1, (triggerY - rect.top) / rect.height));
+      setSpineFill(progress);
+
+      // Discrete node activation: count nodes whose center is above the trigger line
+      let count = 0;
+      nodeRefs.current.forEach((node) => {
+        if (!node) return;
+        const nr = node.getBoundingClientRect();
+        if (nr.top + nr.height / 2 <= triggerY) count++;
+      });
+      setActivatedCount(count);
+    };
+
+    const onScroll = () => {
+      if (raf == null) raf = requestAnimationFrame(compute);
+    };
+
+    compute();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+      if (raf) cancelAnimationFrame(raf);
     };
   }, []);
 
@@ -254,32 +297,33 @@ export default function Home() {
             </div>
           </ScrollReveal>
 
-          <div className="timeline-container">
+          <div className="timeline-container" ref={timelineRef}>
             {/* Animated Electric Spine */}
             <svg className="timeline-spine-line" style={{ width: "2px", height: "100%", overflow: "visible" }}>
               <line x1="1" y1="0" x2="1" y2="100%" stroke="var(--border-light)" strokeWidth="2" />
-              <line 
+              <line
                 className="timeline-spine-pulse"
-                x1="1" 
-                y1="0" 
-                x2="1" 
-                y2="100%" 
-                stroke="var(--accent-primary)" 
-                strokeWidth="2" 
+                x1="1"
+                y1="0"
+                x2="1"
+                y2={`${spineFill * 100}%`}
+                stroke="var(--accent-primary)"
+                strokeWidth="2"
               />
             </svg>
             
             {services.map((svc, i) => {
               const isEven = i % 2 === 0;
               const isHovered = hoveredService === i;
-              
+              const isActivated = i < activatedCount;
+
               return (
                 <div key={svc.title} className="timeline-row">
                   {/* Left Column */}
                   <div className="timeline-col-left">
                     {isEven && (
-                      <ScrollReveal direction="left" delay={100} style={{ width: "100%", display: "flex", justifyContent: "flex-end" }}>
-                        <div 
+                      <div className={`timeline-card-reveal ${isActivated ? "revealed" : ""}`} style={{ width: "100%", display: "flex", justifyContent: "flex-end" }}>
+                        <div
                           onMouseEnter={() => setHoveredService(i)}
                           onMouseLeave={() => setHoveredService(null)}
                           onMouseMove={(e) => handleMouseMove(e, i)}
@@ -298,39 +342,43 @@ export default function Home() {
                             <p style={{ marginBottom: "0.5rem", fontSize: "0.95rem" }}>{svc.description}</p>
                           </div>
                         </div>
-                        
+
                         {/* Wavy Connector Line - Flows OUTWARD (Spine to Left Card) */}
                         <svg className="timeline-connector-svg" viewBox="0 0 40 20">
                           {/* Base Wire Channel */}
-                          <path 
-                            d="M 40 10 C 30 14, 10 6, 0 10" 
-                            stroke="var(--border-light)" 
-                            strokeWidth="1.5" 
-                            fill="none" 
+                          <path
+                            d="M 40 10 C 30 14, 10 6, 0 10"
+                            stroke="var(--border-light)"
+                            strokeWidth="1.5"
+                            fill="none"
                           />
                           {/* Electric Current Pulse */}
-                          <path 
-                            className={`timeline-connector-pulse ${isHovered ? "active" : ""}`}
-                            d="M 40 10 C 30 14, 10 6, 0 10" 
-                            stroke="var(--accent-primary)" 
-                            strokeWidth="2.5" 
-                            fill="none" 
+                          <path
+                            pathLength="1"
+                            className={`timeline-connector-pulse timeline-connector-draw ${isHovered ? "active" : ""} ${isActivated ? "drawn" : ""}`}
+                            d="M 40 10 C 30 14, 10 6, 0 10"
+                            stroke="var(--accent-primary)"
+                            strokeWidth="2.5"
+                            fill="none"
                           />
                         </svg>
-                      </ScrollReveal>
+                      </div>
                     )}
                   </div>
 
                   {/* Middle Column (Node) */}
                   <div className="timeline-col-middle">
-                    <div className={`timeline-node ${isHovered ? "active" : ""}`} />
+                    <div
+                      ref={(el) => (nodeRefs.current[i] = el)}
+                      className={`timeline-node ${isHovered || isActivated ? "active" : ""}`}
+                    />
                   </div>
 
                   {/* Right Column */}
                   <div className="timeline-col-right">
                     {!isEven && (
-                      <ScrollReveal direction="right" delay={100} style={{ width: "100%", display: "flex", justifyContent: "flex-start" }}>
-                        <div 
+                      <div className={`timeline-card-reveal ${isActivated ? "revealed" : ""}`} style={{ width: "100%", display: "flex", justifyContent: "flex-start" }}>
+                        <div
                           onMouseEnter={() => setHoveredService(i)}
                           onMouseLeave={() => setHoveredService(null)}
                           onMouseMove={(e) => handleMouseMove(e, i)}
@@ -349,26 +397,27 @@ export default function Home() {
                             <p style={{ marginBottom: "0.5rem", fontSize: "0.95rem" }}>{svc.description}</p>
                           </div>
                         </div>
-                        
+
                         {/* Wavy Connector Line - Flows OUTWARD (Spine to Right Card) */}
                         <svg className="timeline-connector-svg" viewBox="0 0 40 20">
                           {/* Base Wire Channel */}
-                          <path 
-                            d="M 0 10 C 10 6, 30 14, 40 10" 
-                            stroke="var(--border-light)" 
-                            strokeWidth="1.5" 
-                            fill="none" 
+                          <path
+                            d="M 0 10 C 10 6, 30 14, 40 10"
+                            stroke="var(--border-light)"
+                            strokeWidth="1.5"
+                            fill="none"
                           />
                           {/* Electric Current Pulse */}
-                          <path 
-                            className={`timeline-connector-pulse ${isHovered ? "active" : ""}`}
-                            d="M 0 10 C 10 6, 30 14, 40 10" 
-                            stroke="var(--accent-primary)" 
-                            strokeWidth="2.5" 
-                            fill="none" 
+                          <path
+                            pathLength="1"
+                            className={`timeline-connector-pulse timeline-connector-draw ${isHovered ? "active" : ""} ${isActivated ? "drawn" : ""}`}
+                            d="M 0 10 C 10 6, 30 14, 40 10"
+                            stroke="var(--accent-primary)"
+                            strokeWidth="2.5"
+                            fill="none"
                           />
                         </svg>
-                      </ScrollReveal>
+                      </div>
                     )}
                   </div>
                 </div>

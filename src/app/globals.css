@@ -671,6 +671,54 @@ a {
   }
 }
 
+/* Scroll-driven timeline card reveal (one-by-one) */
+.timeline-card-reveal {
+  opacity: 0;
+  filter: blur(8px);
+  transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+              filter 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform, filter;
+}
+
+.timeline-col-left .timeline-card-reveal {
+  transform: translateX(-30px);
+}
+
+.timeline-col-right .timeline-card-reveal {
+  transform: translateX(30px);
+}
+
+.timeline-card-reveal.revealed {
+  opacity: 1;
+  filter: blur(0);
+  transform: translateX(0);
+}
+
+/* Connector "draws in" from spine to card when the node activates */
+.timeline-connector-draw {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+}
+
+.timeline-connector-draw.drawn {
+  stroke-dashoffset: 0;
+  transition: stroke-dashoffset 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.15s;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .timeline-card-reveal {
+    opacity: 1;
+    filter: none;
+    transform: none;
+    transition: none;
+  }
+  .timeline-connector-draw {
+    stroke-dasharray: none;
+    stroke-dashoffset: 0;
+  }
+}
+
 /* 3D Glassmorphic Icon Styling */
 .glass-icon-container {
   width: 48px;
