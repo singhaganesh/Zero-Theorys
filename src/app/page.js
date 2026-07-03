@@ -245,8 +245,60 @@ export default function Home() {
       }
     };
 
+
+
+    // Track previous scroll position to detect scroll direction in compute()
+    let lastScrollY = typeof window !== 'undefined' ? window.scrollY : 0;
+
+    const lockSection = (direction) => {
+      if (lockCooldown.current || lockScrollY.current !== null) return;
+      const rect = teamContainer.getBoundingClientRect();
+      const lockY = window.scrollY + rect.top;
+      window.scrollTo(0, lockY);
+
+      const sbWidth = window.innerWidth - document.documentElement.clientWidth;
+      document.body.style.paddingRight = `${sbWidth}px`;
+      document.body.style.overflow = "hidden";
+      lockScrollY.current = lockY;
+
+      if (direction > 0) {
+        // Scrolling down: Card 1 visible, Cards 2 & 3 hidden
+        teamProgressVal.current = 0;
+        currentTeamProgress[0] = 1;
+        targetTeamProgress[0] = 1;
+        currentTeamProgress[1] = 0;
+        targetTeamProgress[1] = 0;
+        currentTeamProgress[2] = 0;
+        targetTeamProgress[2] = 0;
+        setTeamCardProgress([1, 0, 0]);
+      } else {
+        // Scrolling up: All cards visible
+        teamProgressVal.current = 1;
+        currentTeamProgress[0] = 1;
+        targetTeamProgress[0] = 1;
+        currentTeamProgress[1] = 1;
+        targetTeamProgress[1] = 1;
+        currentTeamProgress[2] = 1;
+        targetTeamProgress[2] = 1;
+        setTeamCardProgress([1, 1, 1]);
+      }
+    };
+
+    const unlockSection = () => {
+      lockScrollY.current = null;
+      document.body.style.overflow = "";
+      document.body.style.paddingRight = "";
+      lockCooldown.current = true;
+      setTimeout(() => {
+        lockCooldown.current = false;
+      }, 800);
+    };
+
     const compute = () => {
       const viewportHeight = window.innerHeight;
+      const currentScrollY = window.scrollY;
+      const scrollDirection = currentScrollY - lastScrollY; // positive = down
+      lastScrollY = currentScrollY;
 
       // 1. Timeline spine computation
       if (timelineContainer && lockScrollY.current === null) {
@@ -265,32 +317,41 @@ export default function Home() {
         setActivatedCount(count);
       }
 
-      // 2. Team cards off-screen sync / Card 1 enter animation (when not locked)
-      if (teamContainer && lockScrollY.current === null) {
+      // 2. Team cards — scroll-based lock fallback for fast scrolling
+      if (teamContainer && lockScrollY.current === null && !lockCooldown.current) {
         const rect = teamContainer.getBoundingClientRect();
+
         if (rect.bottom < 0) {
+          // Section is fully above viewport
           teamProgressVal.current = 1;
           targetTeamProgress[0] = 1;
           targetTeamProgress[1] = 1;
           targetTeamProgress[2] = 1;
         } else if (rect.top > viewportHeight) {
+          // Section is fully below viewport
           teamProgressVal.current = 0;
           targetTeamProgress[0] = 0;
           targetTeamProgress[1] = 0;
           targetTeamProgress[2] = 0;
         } else {
-          // Inside scrolling zone (not locked)
-          if (teamProgressVal.current === 1) {
-            // Came from below or already finished: keep all cards visible
-            targetTeamProgress[0] = 1;
-            targetTeamProgress[1] = 1;
-            targetTeamProgress[2] = 1;
+          // Section is in/near viewport — check if we should lock
+          // Wide detection: if section top crossed into range [-300, 300] of viewport top
+          if (scrollDirection > 0 && teamProgressVal.current < 1 && rect.top <= 300 && rect.top >= -300) {
+            lockSection(1);
+          } else if (scrollDirection < 0 && teamProgressVal.current > 0 && rect.top <= 300 && rect.top >= -300) {
+            lockSection(-1);
           } else {
-            // Came from above (or reset): only animate Card 1 based on entry scroll
-            const enterProgress = Math.max(0, Math.min(1, (viewportHeight * 0.95 - rect.top) / (viewportHeight * 0.4)));
-            targetTeamProgress[0] = enterProgress;
-            targetTeamProgress[1] = 0;
-            targetTeamProgress[2] = 0;
+            // Inside scrolling zone but not locking
+            if (teamProgressVal.current === 1) {
+              targetTeamProgress[0] = 1;
+              targetTeamProgress[1] = 1;
+              targetTeamProgress[2] = 1;
+            } else {
+              const enterProgress = Math.max(0, Math.min(1, (viewportHeight * 0.95 - rect.top) / (viewportHeight * 0.4)));
+              targetTeamProgress[0] = enterProgress;
+              targetTeamProgress[1] = 0;
+              targetTeamProgress[2] = 0;
+            }
           }
         }
       }
@@ -315,93 +376,49 @@ export default function Home() {
 
       const rect = teamContainer.getBoundingClientRect();
       const viewportHeight = window.innerHeight;
-      
-      // Allow wheel handlers to fire if the section is aligned in viewport
-      const isVisible = rect.top <= 15 && rect.bottom >= viewportHeight - 15;
 
-      if (isVisible) {
-        if (lockScrollY.current !== null) {
+      // When locked, always intercept
+      if (lockScrollY.current !== null) {
+        e.preventDefault();
+
+        const speedFactor = 0.0012;
+        let p = teamProgressVal.current + e.deltaY * speedFactor;
+        p = Math.max(0, Math.min(1, p));
+        teamProgressVal.current = p;
+
+        // Card 1 is always fully visible (1) when locked
+        targetTeamProgress[0] = 1;
+        // Card 2 slides in from p = 0 to 0.5
+        targetTeamProgress[1] = Math.max(0, Math.min(1, p / 0.5));
+        // Card 3 slides in from p = 0.5 to 1.0
+        targetTeamProgress[2] = Math.max(0, Math.min(1, (p - 0.5) / 0.5));
+
+        if (!animFrame) {
+          animFrame = requestAnimationFrame(animate);
+        }
+
+        if (p === 1 && e.deltaY > 0) {
+          unlockSection();
+        }
+        if (p === 0 && e.deltaY < 0) {
+          unlockSection();
+        }
+        return;
+      }
+
+      // Not locked — check if we should lock
+      if (lockCooldown.current) return;
+
+      // Wide detection zone: section top is near viewport top
+      const sectionNearTop = rect.top <= 300 && rect.top >= -300;
+
+      if (sectionNearTop) {
+        if (e.deltaY > 0 && teamProgressVal.current < 1) {
           e.preventDefault();
-
-          // Increment/decrement progress based on deltaY
-          const speedFactor = 0.0012;
-          let p = teamProgressVal.current + e.deltaY * speedFactor;
-          p = Math.max(0, Math.min(1, p));
-          teamProgressVal.current = p;
-
-          // Card 1 is always fully visible (1) when locked
-          targetTeamProgress[0] = 1;
-          // Card 2 slides in from p = 0 to 0.5
-          targetTeamProgress[1] = Math.max(0, Math.min(1, p / 0.5));
-          // Card 3 slides in from p = 0.5 to 1.0
-          targetTeamProgress[2] = Math.max(0, Math.min(1, (p - 0.5) / 0.5));
-
-          if (!animFrame) {
-            animFrame = requestAnimationFrame(animate);
-          }
-
-          if (p === 1 && e.deltaY > 0) {
-            lockScrollY.current = null;
-            document.body.style.overflow = "";
-            document.body.style.paddingRight = "";
-            lockCooldown.current = true;
-            setTimeout(() => {
-              lockCooldown.current = false;
-            }, 800);
-          }
-          if (p === 0 && e.deltaY < 0) {
-            lockScrollY.current = null;
-            document.body.style.overflow = "";
-            document.body.style.paddingRight = "";
-            lockCooldown.current = true;
-            setTimeout(() => {
-              lockCooldown.current = false;
-            }, 800);
-          }
-        } else {
-          // Lock scroll if entering section and not in cooldown
-          if (lockCooldown.current) return;
-
-          // Lock scroll if scrolling down into section
-          if (e.deltaY > 0 && teamProgressVal.current < 1 && rect.top <= 15 && rect.top >= -50) {
-            e.preventDefault();
-            const lockY = window.scrollY + rect.top;
-            window.scrollTo(0, lockY);
-
-            const sbWidth = window.innerWidth - document.documentElement.clientWidth;
-            document.body.style.paddingRight = `${sbWidth}px`;
-            document.body.style.overflow = "hidden";
-            lockScrollY.current = lockY;
-            teamProgressVal.current = 0;
-            // Snap Card 1 visible immediately (no LERP delay)
-            currentTeamProgress[0] = 1;
-            targetTeamProgress[0] = 1;
-            currentTeamProgress[1] = 0;
-            targetTeamProgress[1] = 0;
-            currentTeamProgress[2] = 0;
-            targetTeamProgress[2] = 0;
-            setTeamCardProgress([1, 0, 0]);
-          }
-          // Lock scroll if scrolling up into section
-          if (e.deltaY < 0 && teamProgressVal.current > 0 && rect.top <= 15 && rect.top >= -50) {
-            e.preventDefault();
-            const lockY = window.scrollY + rect.top;
-            window.scrollTo(0, lockY);
-
-            const sbWidth = window.innerWidth - document.documentElement.clientWidth;
-            document.body.style.paddingRight = `${sbWidth}px`;
-            document.body.style.overflow = "hidden";
-            lockScrollY.current = lockY;
-            teamProgressVal.current = 1;
-            // Snap all cards visible immediately
-            currentTeamProgress[0] = 1;
-            targetTeamProgress[0] = 1;
-            currentTeamProgress[1] = 1;
-            targetTeamProgress[1] = 1;
-            currentTeamProgress[2] = 1;
-            targetTeamProgress[2] = 1;
-            setTeamCardProgress([1, 1, 1]);
-          }
+          lockSection(1);
+        } else if (e.deltaY < 0 && teamProgressVal.current > 0) {
+          e.preventDefault();
+          lockSection(-1);
         }
       }
     };
@@ -413,88 +430,45 @@ export default function Home() {
     const handleTouchMove = (e) => {
       if (!teamContainer || touchStartY.current === null) return;
 
+      const currentY = e.touches[0].clientY;
+      const deltaY = touchStartY.current - currentY;
+      touchStartY.current = currentY;
+
+      // When locked, always intercept
+      if (lockScrollY.current !== null) {
+        e.preventDefault();
+
+        const speedFactor = 0.0035;
+        let p = teamProgressVal.current + deltaY * speedFactor;
+        p = Math.max(0, Math.min(1, p));
+        teamProgressVal.current = p;
+
+        targetTeamProgress[0] = 1;
+        targetTeamProgress[1] = Math.max(0, Math.min(1, p / 0.5));
+        targetTeamProgress[2] = Math.max(0, Math.min(1, (p - 0.5) / 0.5));
+
+        if (!animFrame) {
+          animFrame = requestAnimationFrame(animate);
+        }
+
+        if (p === 1 && deltaY > 0) unlockSection();
+        if (p === 0 && deltaY < 0) unlockSection();
+        return;
+      }
+
+      // Not locked — check if we should lock
+      if (lockCooldown.current) return;
+
       const rect = teamContainer.getBoundingClientRect();
-      const viewportHeight = window.innerHeight;
-      const isVisible = rect.top <= 15 && rect.bottom >= viewportHeight - 15;
+      const sectionNearTop = rect.top <= 300 && rect.top >= -300;
 
-      if (isVisible) {
-        const currentY = e.touches[0].clientY;
-        const deltaY = touchStartY.current - currentY;
-        touchStartY.current = currentY;
-
-        if (lockScrollY.current !== null) {
+      if (sectionNearTop) {
+        if (deltaY > 0 && teamProgressVal.current < 1) {
           e.preventDefault();
-
-          const speedFactor = 0.0035;
-          let p = teamProgressVal.current + deltaY * speedFactor;
-          p = Math.max(0, Math.min(1, p));
-          teamProgressVal.current = p;
-
-          targetTeamProgress[0] = 1;
-          targetTeamProgress[1] = Math.max(0, Math.min(1, p / 0.5));
-          targetTeamProgress[2] = Math.max(0, Math.min(1, (p - 0.5) / 0.5));
-
-          if (!animFrame) {
-            animFrame = requestAnimationFrame(animate);
-          }
-
-          if (p === 1 && deltaY > 0) {
-            lockScrollY.current = null;
-            document.body.style.overflow = "";
-            document.body.style.paddingRight = "";
-            lockCooldown.current = true;
-            setTimeout(() => {
-              lockCooldown.current = false;
-            }, 800);
-          }
-          if (p === 0 && deltaY < 0) {
-            lockScrollY.current = null;
-            document.body.style.overflow = "";
-            document.body.style.paddingRight = "";
-            lockCooldown.current = true;
-            setTimeout(() => {
-              lockCooldown.current = false;
-            }, 800);
-          }
-        } else {
-          if (lockCooldown.current) return;
-
-          if (deltaY > 0 && teamProgressVal.current < 1 && rect.top <= 15 && rect.top >= -50) {
-            e.preventDefault();
-            const lockY = window.scrollY + rect.top;
-            window.scrollTo(0, lockY);
-
-            const sbWidth = window.innerWidth - document.documentElement.clientWidth;
-            document.body.style.paddingRight = `${sbWidth}px`;
-            document.body.style.overflow = "hidden";
-            lockScrollY.current = lockY;
-            teamProgressVal.current = 0;
-            currentTeamProgress[0] = 1;
-            targetTeamProgress[0] = 1;
-            currentTeamProgress[1] = 0;
-            targetTeamProgress[1] = 0;
-            currentTeamProgress[2] = 0;
-            targetTeamProgress[2] = 0;
-            setTeamCardProgress([1, 0, 0]);
-          }
-          if (deltaY < 0 && teamProgressVal.current > 0 && rect.top <= 15 && rect.top >= -50) {
-            e.preventDefault();
-            const lockY = window.scrollY + rect.top;
-            window.scrollTo(0, lockY);
-
-            const sbWidth = window.innerWidth - document.documentElement.clientWidth;
-            document.body.style.paddingRight = `${sbWidth}px`;
-            document.body.style.overflow = "hidden";
-            lockScrollY.current = lockY;
-            teamProgressVal.current = 1;
-            currentTeamProgress[0] = 1;
-            targetTeamProgress[0] = 1;
-            currentTeamProgress[1] = 1;
-            targetTeamProgress[1] = 1;
-            currentTeamProgress[2] = 1;
-            targetTeamProgress[2] = 1;
-            setTeamCardProgress([1, 1, 1]);
-          }
+          lockSection(1);
+        } else if (deltaY < 0 && teamProgressVal.current > 0) {
+          e.preventDefault();
+          lockSection(-1);
         }
       }
     };
@@ -526,24 +500,8 @@ export default function Home() {
               animFrame = requestAnimationFrame(animate);
             }
 
-            if (p === 1 && direction > 0) {
-              lockScrollY.current = null;
-              document.body.style.overflow = "";
-              document.body.style.paddingRight = "";
-              lockCooldown.current = true;
-              setTimeout(() => {
-                lockCooldown.current = false;
-              }, 800);
-            }
-            if (p === 0 && direction < 0) {
-              lockScrollY.current = null;
-              document.body.style.overflow = "";
-              document.body.style.paddingRight = "";
-              lockCooldown.current = true;
-              setTimeout(() => {
-                lockCooldown.current = false;
-              }, 800);
-            }
+            if (p === 1 && direction > 0) unlockSection();
+            if (p === 0 && direction < 0) unlockSection();
           }
         }
       }
