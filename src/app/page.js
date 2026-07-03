@@ -318,21 +318,35 @@ export default function Home() {
 
           if (p === 1 && e.deltaY > 0) {
             lockScrollY.current = null;
+            document.body.style.overflow = "";
+            document.body.style.paddingRight = "";
           }
           if (p === 0 && e.deltaY < 0) {
             lockScrollY.current = null;
+            document.body.style.overflow = "";
+            document.body.style.paddingRight = "";
           }
         } else {
           // Lock scroll if entering section (always align section top to viewport top)
           if (e.deltaY > 0 && teamProgressVal.current < 1 && rect.top <= 10 && rect.top >= -50) {
             e.preventDefault();
-            lockScrollY.current = window.scrollY + rect.top;
-            window.scrollTo(0, lockScrollY.current);
+            const lockY = window.scrollY + rect.top;
+            window.scrollTo(0, lockY);
+
+            const sbWidth = window.innerWidth - document.documentElement.clientWidth;
+            document.body.style.paddingRight = `${sbWidth}px`;
+            document.body.style.overflow = "hidden";
+            lockScrollY.current = lockY;
           }
           if (e.deltaY < 0 && teamProgressVal.current > 0 && rect.top <= 10 && rect.top >= -50) {
             e.preventDefault();
-            lockScrollY.current = window.scrollY + rect.top;
-            window.scrollTo(0, lockScrollY.current);
+            const lockY = window.scrollY + rect.top;
+            window.scrollTo(0, lockY);
+
+            const sbWidth = window.innerWidth - document.documentElement.clientWidth;
+            document.body.style.paddingRight = `${sbWidth}px`;
+            document.body.style.overflow = "hidden";
+            lockScrollY.current = lockY;
           }
         }
       }
@@ -372,20 +386,34 @@ export default function Home() {
 
           if (p === 1 && deltaY > 0) {
             lockScrollY.current = null;
+            document.body.style.overflow = "";
+            document.body.style.paddingRight = "";
           }
           if (p === 0 && deltaY < 0) {
             lockScrollY.current = null;
+            document.body.style.overflow = "";
+            document.body.style.paddingRight = "";
           }
         } else {
           if (deltaY > 0 && teamProgressVal.current < 1 && rect.top <= 10 && rect.top >= -50) {
             e.preventDefault();
-            lockScrollY.current = window.scrollY + rect.top;
-            window.scrollTo(0, lockScrollY.current);
+            const lockY = window.scrollY + rect.top;
+            window.scrollTo(0, lockY);
+
+            const sbWidth = window.innerWidth - document.documentElement.clientWidth;
+            document.body.style.paddingRight = `${sbWidth}px`;
+            document.body.style.overflow = "hidden";
+            lockScrollY.current = lockY;
           }
           if (deltaY < 0 && teamProgressVal.current > 0 && rect.top <= 10 && rect.top >= -50) {
             e.preventDefault();
-            lockScrollY.current = window.scrollY + rect.top;
-            window.scrollTo(0, lockScrollY.current);
+            const lockY = window.scrollY + rect.top;
+            window.scrollTo(0, lockY);
+
+            const sbWidth = window.innerWidth - document.documentElement.clientWidth;
+            document.body.style.paddingRight = `${sbWidth}px`;
+            document.body.style.overflow = "hidden";
+            lockScrollY.current = lockY;
           }
         }
       }
@@ -420,9 +448,13 @@ export default function Home() {
 
             if (p === 1 && direction > 0) {
               lockScrollY.current = null;
+              document.body.style.overflow = "";
+              document.body.style.paddingRight = "";
             }
             if (p === 0 && direction < 0) {
               lockScrollY.current = null;
+              document.body.style.overflow = "";
+              document.body.style.paddingRight = "";
             }
           }
         }
@@ -444,6 +476,8 @@ export default function Home() {
       window.removeEventListener("touchstart", handleTouchStart);
       window.removeEventListener("touchmove", handleTouchMove);
       window.removeEventListener("keydown", handleKeyDown);
+      document.body.style.overflow = "";
+      document.body.style.paddingRight = "";
       if (animFrame) cancelAnimationFrame(animFrame);
     };
   }, []);
