@@ -372,7 +372,15 @@ export default function Home() {
             document.body.style.paddingRight = `${sbWidth}px`;
             document.body.style.overflow = "hidden";
             lockScrollY.current = lockY;
-            teamProgressVal.current = 0; // starts at Card 1 fully visible
+            teamProgressVal.current = 0;
+            // Snap Card 1 visible immediately (no LERP delay)
+            currentTeamProgress[0] = 1;
+            targetTeamProgress[0] = 1;
+            currentTeamProgress[1] = 0;
+            targetTeamProgress[1] = 0;
+            currentTeamProgress[2] = 0;
+            targetTeamProgress[2] = 0;
+            setTeamCardProgress([1, 0, 0]);
           }
           // Lock scroll if scrolling up into section
           if (e.deltaY < 0 && teamProgressVal.current > 0 && rect.top <= 15 && rect.top >= -50) {
@@ -384,7 +392,15 @@ export default function Home() {
             document.body.style.paddingRight = `${sbWidth}px`;
             document.body.style.overflow = "hidden";
             lockScrollY.current = lockY;
-            teamProgressVal.current = 1; // starts at Card 3 fully visible
+            teamProgressVal.current = 1;
+            // Snap all cards visible immediately
+            currentTeamProgress[0] = 1;
+            targetTeamProgress[0] = 1;
+            currentTeamProgress[1] = 1;
+            targetTeamProgress[1] = 1;
+            currentTeamProgress[2] = 1;
+            targetTeamProgress[2] = 1;
+            setTeamCardProgress([1, 1, 1]);
           }
         }
       }
@@ -453,6 +469,13 @@ export default function Home() {
             document.body.style.overflow = "hidden";
             lockScrollY.current = lockY;
             teamProgressVal.current = 0;
+            currentTeamProgress[0] = 1;
+            targetTeamProgress[0] = 1;
+            currentTeamProgress[1] = 0;
+            targetTeamProgress[1] = 0;
+            currentTeamProgress[2] = 0;
+            targetTeamProgress[2] = 0;
+            setTeamCardProgress([1, 0, 0]);
           }
           if (deltaY < 0 && teamProgressVal.current > 0 && rect.top <= 15 && rect.top >= -50) {
             e.preventDefault();
@@ -464,6 +487,13 @@ export default function Home() {
             document.body.style.overflow = "hidden";
             lockScrollY.current = lockY;
             teamProgressVal.current = 1;
+            currentTeamProgress[0] = 1;
+            targetTeamProgress[0] = 1;
+            currentTeamProgress[1] = 1;
+            targetTeamProgress[1] = 1;
+            currentTeamProgress[2] = 1;
+            targetTeamProgress[2] = 1;
+            setTeamCardProgress([1, 1, 1]);
           }
         }
       }
@@ -959,8 +989,8 @@ export default function Home() {
       }}>
         <div className="container" style={{ width: "100%" }}>
           <div className="section-title-wrap" style={{
-            opacity: Math.min(1, teamCardProgress[0] * 3),
-            transform: `translateY(${(1 - Math.min(1, teamCardProgress[0] * 3)) * 30}px)`,
+            opacity: 1,
+            transform: "none",
             transition: "none"
           }}>
             <span className="section-tag">Operational Structure</span>
