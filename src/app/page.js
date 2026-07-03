@@ -675,7 +675,7 @@ export default function Home() {
         position: "relative"
       }}>
         <div className="container" style={{ width: "100%" }}>
-          <ScrollReveal direction="up">
+          <ScrollReveal direction="up" duration={1200}>
             <div className="section-title-wrap">
               <span className="section-tag">Operational Structure</span>
               <h2 className="section-title">Meet the Architects</h2>
@@ -685,7 +685,7 @@ export default function Home() {
 
           <div className="grid-3">
             {team.map((member, i) => (
-              <ScrollReveal key={member.name} direction="up" delay={i * 100}>
+              <ScrollReveal key={member.name} direction="up" delay={i * 250} duration={1400}>
                 <div className="glass-card" style={{ display: "flex", flexDirection: "column", height: "100%", textAlign: "center" }}>
                   <div className="glass-card-content" style={{ display: "flex", flexDirection: "column", height: "100%" }}>
 
