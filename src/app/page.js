@@ -358,19 +358,19 @@ export default function Home() {
   const team = [
     {
       name: "Debayan Chakraborty",
-      role: "Principal Product Designer & Client Partner",
+      role: "UI / UX & Graphic Designer",
       specialties: ["UI/UX Engineering", "Creative Design Strategy", "Global Client Management"],
       desc: "Architecting interactive digital products that resonate with users and drive commercial value for global partners."
     },
     {
       name: "Ganesh Singha",
-      role: "Principal Full-Stack Engineer & AI Solutions Architect",
+      role: "Full-Stack Engineer",
       specialties: ["Autonomous AI Pipelines", "Cloud Infrastructure", "Mobile Architectures"],
       desc: "Designing and scaling low-latency agentic applications and secure distributed cloud systems."
     },
     {
       name: "Aniket Karmakar",
-      role: "Principal Full-Stack Engineer & Systems Architect",
+      role: "Prompt & Loop Engineer",
       specialties: ["Core Distributed Systems", "Backend Infrastructure", "Web Ecosystems"],
       desc: "Structuring high-availability APIs, real-time sync systems, and optimized database systems."
     }
@@ -662,47 +662,36 @@ export default function Home() {
           <div className="grid-3">
             {team.map((member, i) => (
               <ScrollReveal key={member.name} direction="up" delay={i * 150}>
-                <div className="glass-card" style={{ display: "flex", flexDirection: "column", height: "100%" }}>
-                  <div className="glass-card-content" style={{ display: "flex", flexDirection: "column", height: "100%", justifyContent: "space-between" }}>
-                    <div>
-                      <h3 style={{ fontSize: "1.35rem", marginBottom: "0.25rem", color: "var(--text-primary)" }}>{member.name}</h3>
-                      <p style={{ 
-                        fontSize: "0.85rem", 
-                        color: "var(--accent-primary)", 
-                        fontWeight: "600", 
-                        textTransform: "uppercase", 
-                        letterSpacing: "0.05em",
-                        marginBottom: "1.5rem" 
-                      }}>
-                        {member.role}
-                      </p>
-                      <p style={{ fontSize: "0.95rem", marginBottom: "1.5rem", color: "var(--text-secondary)" }}>{member.desc}</p>
-                    </div>
+                <div className="glass-card" style={{ display: "flex", flexDirection: "column", height: "100%", textAlign: "center" }}>
+                  <div className="glass-card-content" style={{ display: "flex", flexDirection: "column", height: "100%" }}>
                     
-                    <div>
-                      <h4 style={{ 
-                        fontFamily: "var(--font-display)", 
-                        fontSize: "0.8rem", 
-                        textTransform: "uppercase", 
-                        letterSpacing: "0.08em",
-                        color: "var(--text-primary)", 
-                        marginBottom: "0.75rem",
-                        borderTop: "1px solid var(--border-light)",
-                        paddingTop: "1rem" 
-                      }}>
-                        Core Capabilities
-                      </h4>
-                      <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
-                        {member.specialties.map((spec) => (
-                          <div key={spec} style={{ display: "flex", alignItems: "center", gap: "0.5rem", fontSize: "0.85rem", color: "var(--text-secondary)" }}>
-                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--accent-secondary)" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
-                              <polyline points="20 6 9 17 4 12"></polyline>
-                            </svg>
-                            {spec}
-                          </div>
-                        ))}
-                      </div>
+                    {/* Blank Image Portrait Slot */}
+                    <div className="architect-portrait-placeholder" />
+
+                    <h3 style={{ fontSize: "1.45rem", marginBottom: "0.35rem", color: "var(--text-primary)", fontWeight: "700" }}>{member.name}</h3>
+                    
+                    <p style={{ 
+                      fontSize: "0.78rem", 
+                      color: "var(--text-muted)", 
+                      fontWeight: "600", 
+                      textTransform: "uppercase", 
+                      letterSpacing: "0.1em",
+                      marginBottom: "1rem" 
+                    }}>
+                      {member.role}
+                    </p>
+
+                    <p style={{ fontSize: "0.92rem", lineHeight: "1.6", color: "var(--text-secondary)", marginBottom: "1.5rem" }}>
+                      {member.desc}
+                    </p>
+
+                    {/* Co-founder Badge Tag */}
+                    <div style={{ marginTop: "auto", paddingTop: "1rem", display: "flex", justifyContent: "center" }}>
+                      <span className="co-founder-badge">
+                        Co-Founder
+                      </span>
                     </div>
+
                   </div>
                 </div>
               </ScrollReveal>
