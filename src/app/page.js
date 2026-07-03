@@ -122,6 +122,9 @@ export default function Home() {
   const timelineRef = useRef(null);
   const nodeRefs = useRef([]);
   const teamRef = useRef(null);
+  const teamProgressVal = useRef(0);
+  const lockScrollY = useRef(null);
+  const touchStartY = useRef(null);
   const [spineFill, setSpineFill] = useState(0);
   const [activatedCount, setActivatedCount] = useState(0);
   const [teamCardProgress, setTeamCardProgress] = useState([0, 0, 0]);
@@ -185,9 +188,10 @@ export default function Home() {
     };
   }, []);
 
-  // 3. Scroll-driven animations: timeline + team cards (with LERP physics)
+  // 3. Scroll-driven animations: timeline + team cards (with LERP physics and scroll-locking)
   useEffect(() => {
     const timelineContainer = timelineRef.current;
+    const teamContainer = teamRef.current;
     
     let currentFill = 0;
     let targetFill = 0;
@@ -217,7 +221,7 @@ export default function Home() {
       for (let idx = 0; idx < 3; idx++) {
         const diffTeam = targetTeamProgress[idx] - currentTeamProgress[idx];
         if (Math.abs(diffTeam) > 0.001) {
-          newTeamProgress[idx] += diffTeam * 0.05; // slightly slower easing for cards
+          newTeamProgress[idx] += diffTeam * 0.05; // Easing speed
           teamChanged = true;
           isAnimating = true;
         } else {
@@ -240,13 +244,13 @@ export default function Home() {
       const viewportHeight = window.innerHeight;
 
       // 1. Timeline spine computation
-      if (timelineContainer) {
+      if (timelineContainer && lockScrollY.current === null) {
         const rect = timelineContainer.getBoundingClientRect();
         const triggerY = viewportHeight * 0.65;
         const progress = Math.max(0, Math.min(1, (triggerY - rect.top) / rect.height));
         targetFill = progress;
 
-        // Discrete node activation: count nodes whose center is above the trigger line
+        // Discrete node activation
         let count = 0;
         nodeRefs.current.forEach((node) => {
           if (!node) return;
@@ -256,24 +260,20 @@ export default function Home() {
         setActivatedCount(count);
       }
 
-      // 2. Team cards scroll computation (sticky scroll-pinning)
-      const teamContainer = teamRef.current;
-      if (teamContainer) {
+      // 2. Team cards off-screen sync (when not locked)
+      if (teamContainer && lockScrollY.current === null) {
         const rect = teamContainer.getBoundingClientRect();
-        // The wrapper is 300vh tall, the sticky area is 100vh.
-        // Scrollable distance = wrapper height - viewport height (the extra 200vh).
-        const scrollableDistance = teamContainer.offsetHeight - viewportHeight;
-        // How far we've scrolled into the wrapper: 0 when top is at viewport top, increases as we scroll down.
-        const scrolledInto = -rect.top;
-        const p = Math.max(0, Math.min(1, scrolledInto / scrollableDistance));
-
-        // Compute individual targets with strict sequential starts (non-overlapping)
-        // Card 1: p from 0.0 to 0.33
-        // Card 2: p from 0.33 to 0.66
-        // Card 3: p from 0.66 to 1.0
-        targetTeamProgress[0] = Math.max(0, Math.min(1, (p - 0.0) / 0.33));
-        targetTeamProgress[1] = Math.max(0, Math.min(1, (p - 0.33) / 0.33));
-        targetTeamProgress[2] = Math.max(0, Math.min(1, (p - 0.66) / 0.34));
+        if (rect.bottom < 0) {
+          teamProgressVal.current = 1;
+          targetTeamProgress[0] = 1;
+          targetTeamProgress[1] = 1;
+          targetTeamProgress[2] = 1;
+        } else if (rect.top > viewportHeight) {
+          teamProgressVal.current = 0;
+          targetTeamProgress[0] = 0;
+          targetTeamProgress[1] = 0;
+          targetTeamProgress[2] = 0;
+        }
       }
 
       if (!animFrame) {
@@ -282,15 +282,128 @@ export default function Home() {
     };
 
     const onScroll = () => {
+      if (lockScrollY.current !== null) {
+        if (window.scrollY !== lockScrollY.current) {
+          window.scrollTo(0, lockScrollY.current);
+        }
+        return;
+      }
       compute();
     };
 
+    const handleWheel = (e) => {
+      if (!teamContainer) return;
+
+      const rect = teamContainer.getBoundingClientRect();
+      const viewportHeight = window.innerHeight;
+      const isVisible = rect.top <= 10 && rect.bottom >= viewportHeight - 10;
+
+      if (isVisible) {
+        if (lockScrollY.current !== null) {
+          e.preventDefault();
+
+          // Increment/decrement progress based on deltaY
+          const speedFactor = 0.0012;
+          let p = teamProgressVal.current + e.deltaY * speedFactor;
+          p = Math.max(0, Math.min(1, p));
+          teamProgressVal.current = p;
+
+          targetTeamProgress[0] = Math.max(0, Math.min(1, (p - 0.0) / 0.33));
+          targetTeamProgress[1] = Math.max(0, Math.min(1, (p - 0.33) / 0.33));
+          targetTeamProgress[2] = Math.max(0, Math.min(1, (p - 0.66) / 0.34));
+
+          if (!animFrame) {
+            animFrame = requestAnimationFrame(animate);
+          }
+
+          if (p === 1 && e.deltaY > 0) {
+            lockScrollY.current = null;
+          }
+          if (p === 0 && e.deltaY < 0) {
+            lockScrollY.current = null;
+          }
+        } else {
+          // Lock scroll if entering section
+          if (e.deltaY > 0 && teamProgressVal.current < 1 && rect.top <= 10 && rect.top >= -50) {
+            e.preventDefault();
+            lockScrollY.current = window.scrollY + rect.top;
+            window.scrollTo(0, lockScrollY.current);
+          }
+          if (e.deltaY < 0 && teamProgressVal.current > 0 && rect.bottom >= viewportHeight - 10 && rect.bottom <= viewportHeight + 50) {
+            e.preventDefault();
+            lockScrollY.current = window.scrollY + rect.top;
+            window.scrollTo(0, lockScrollY.current);
+          }
+        }
+      }
+    };
+
+    const handleTouchStart = (e) => {
+      touchStartY.current = e.touches[0].clientY;
+    };
+
+    const handleTouchMove = (e) => {
+      if (!teamContainer || touchStartY.current === null) return;
+
+      const rect = teamContainer.getBoundingClientRect();
+      const viewportHeight = window.innerHeight;
+      const isVisible = rect.top <= 10 && rect.bottom >= viewportHeight - 10;
+
+      if (isVisible) {
+        const currentY = e.touches[0].clientY;
+        const deltaY = touchStartY.current - currentY;
+        touchStartY.current = currentY;
+
+        if (lockScrollY.current !== null) {
+          e.preventDefault();
+
+          const speedFactor = 0.0035;
+          let p = teamProgressVal.current + deltaY * speedFactor;
+          p = Math.max(0, Math.min(1, p));
+          teamProgressVal.current = p;
+
+          targetTeamProgress[0] = Math.max(0, Math.min(1, (p - 0.0) / 0.33));
+          targetTeamProgress[1] = Math.max(0, Math.min(1, (p - 0.33) / 0.33));
+          targetTeamProgress[2] = Math.max(0, Math.min(1, (p - 0.66) / 0.34));
+
+          if (!animFrame) {
+            animFrame = requestAnimationFrame(animate);
+          }
+
+          if (p === 1 && deltaY > 0) {
+            lockScrollY.current = null;
+          }
+          if (p === 0 && deltaY < 0) {
+            lockScrollY.current = null;
+          }
+        } else {
+          if (deltaY > 0 && teamProgressVal.current < 1 && rect.top <= 10 && rect.top >= -50) {
+            e.preventDefault();
+            lockScrollY.current = window.scrollY + rect.top;
+            window.scrollTo(0, lockScrollY.current);
+          }
+          if (deltaY < 0 && teamProgressVal.current > 0 && rect.bottom >= viewportHeight - 10 && rect.bottom <= viewportHeight + 50) {
+            e.preventDefault();
+            lockScrollY.current = window.scrollY + rect.top;
+            window.scrollTo(0, lockScrollY.current);
+          }
+        }
+      }
+    };
+
     compute();
-    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("scroll", onScroll);
     window.addEventListener("resize", onScroll);
+    window.addEventListener("wheel", handleWheel, { passive: false });
+    window.addEventListener("touchstart", handleTouchStart);
+    window.addEventListener("touchmove", handleTouchMove, { passive: false });
+
     return () => {
       window.removeEventListener("scroll", onScroll);
       window.removeEventListener("resize", onScroll);
+      window.removeEventListener("wheel", handleWheel);
+      window.removeEventListener("touchstart", handleTouchStart);
+      window.removeEventListener("touchmove", handleTouchMove);
       if (animFrame) cancelAnimationFrame(animFrame);
     };
   }, []);
@@ -704,83 +817,80 @@ export default function Home() {
         </div>
       </section>
 
-      {/* 3. MEET THE ARCHITECTS — Scroll-pinned "After Effects" section */}
-      <div ref={teamRef} style={{ height: "300vh", position: "relative" }}>
-        <div style={{
-          position: "sticky",
-          top: 0,
-          height: "100vh",
-          display: "flex",
-          alignItems: "center",
-          overflow: "hidden"
-        }}>
-          <div className="container" style={{ width: "100%" }}>
-            <div className="section-title-wrap" style={{
-              opacity: Math.min(1, teamCardProgress[0] * 3),
-              transform: `translateY(${(1 - Math.min(1, teamCardProgress[0] * 3)) * 30}px)`,
-              transition: "none"
-            }}>
-              <span className="section-tag">Operational Structure</span>
-              <h2 className="section-title">Meet the Architects</h2>
-              <p className="section-subtitle">Zero Freelancers. Zero outsourcing layers. We are a structured, focused systems company.</p>
-            </div>
+      {/* 3. MEET THE ARCHITECTS — Scroll-locked "After Effects" section */}
+      <section ref={teamRef} style={{
+        height: "100vh",
+        display: "flex",
+        alignItems: "center",
+        overflow: "hidden",
+        position: "relative"
+      }}>
+        <div className="container" style={{ width: "100%" }}>
+          <div className="section-title-wrap" style={{
+            opacity: Math.min(1, teamCardProgress[0] * 3),
+            transform: `translateY(${(1 - Math.min(1, teamCardProgress[0] * 3)) * 30}px)`,
+            transition: "none"
+          }}>
+            <span className="section-tag">Operational Structure</span>
+            <h2 className="section-title">Meet the Architects</h2>
+            <p className="section-subtitle">Zero Freelancers. Zero outsourcing layers. We are a structured, focused systems company.</p>
+          </div>
 
-            <div className="grid-3">
-              {team.map((member, i) => (
-                <div
-                  key={member.name}
-                  style={{
-                    opacity: teamCardProgress[i],
-                    transform: `translateX(${(1 - teamCardProgress[i]) * 100}px)`,
-                    willChange: "transform, opacity",
-                    transition: "none"
-                  }}
-                >
-                  <div className="glass-card" style={{ display: "flex", flexDirection: "column", height: "100%", textAlign: "center" }}>
-                    <div className="glass-card-content" style={{ display: "flex", flexDirection: "column", height: "100%" }}>
+          <div className="grid-3">
+            {team.map((member, i) => (
+              <div
+                key={member.name}
+                style={{
+                  opacity: teamCardProgress[i],
+                  transform: `translateX(${(1 - teamCardProgress[i]) * 100}px)`,
+                  willChange: "transform, opacity",
+                  transition: "none"
+                }}
+              >
+                <div className="glass-card" style={{ display: "flex", flexDirection: "column", height: "100%", textAlign: "center" }}>
+                  <div className="glass-card-content" style={{ display: "flex", flexDirection: "column", height: "100%" }}>
 
-                      {/* Architect Portrait Image */}
-                      <div className="architect-portrait-container">
-                        <Image
-                          src={architectImage}
-                          alt={member.name}
-                          className="architect-portrait-img"
-                          placeholder="blur"
-                        />
-                      </div>
-
-                      <h3 style={{ fontSize: "1.45rem", marginBottom: "0.35rem", color: "var(--text-primary)", fontWeight: "700" }}>{member.name}</h3>
-
-                      <p style={{
-                        fontSize: "0.78rem",
-                        color: "var(--text-muted)",
-                        fontWeight: "600",
-                        textTransform: "uppercase",
-                        letterSpacing: "0.1em",
-                        marginBottom: "1rem"
-                      }}>
-                        {member.role}
-                      </p>
-
-                      <p style={{ fontSize: "0.92rem", lineHeight: "1.6", color: "var(--text-secondary)", marginBottom: "1.5rem" }}>
-                        {member.desc}
-                      </p>
-
-                      {/* Co-founder Badge Tag */}
-                      <div style={{ marginTop: "auto", paddingTop: "1rem", display: "flex", justifyContent: "center" }}>
-                        <span className="co-founder-badge">
-                          Co-Founder
-                        </span>
-                      </div>
-
+                    {/* Architect Portrait Image */}
+                    <div className="architect-portrait-container">
+                      <Image
+                        src={architectImage}
+                        alt={member.name}
+                        className="architect-portrait-img"
+                        placeholder="blur"
+                      />
                     </div>
+
+                    <h3 style={{ fontSize: "1.45rem", marginBottom: "0.35rem", color: "var(--text-primary)", fontWeight: "700" }}>{member.name}</h3>
+
+                    <p style={{
+                      fontSize: "0.78rem",
+                      color: "var(--text-muted)",
+                      fontWeight: "600",
+                      textTransform: "uppercase",
+                      letterSpacing: "0.1em",
+                      marginBottom: "1rem"
+                    }}>
+                      {member.role}
+                    </p>
+
+                    <p style={{ fontSize: "0.92rem", lineHeight: "1.6", color: "var(--text-secondary)", marginBottom: "1.5rem" }}>
+                      {member.desc}
+                    </p>
+
+                    {/* Co-founder Badge Tag */}
+                    <div style={{ marginTop: "auto", paddingTop: "1rem", display: "flex", justifyContent: "center" }}>
+                      <span className="co-founder-badge">
+                        Co-Founder
+                      </span>
+                    </div>
+
                   </div>
                 </div>
-              ))}
-            </div>
+              </div>
+            ))}
           </div>
         </div>
-      </div>
+      </section>
 
       {/* 3.5. TECHNOLOGY STACK */}
       <section style={{ padding: "6rem 0", borderTop: "1px solid var(--border-light)" }}>
