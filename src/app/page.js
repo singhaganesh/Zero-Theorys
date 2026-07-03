@@ -323,13 +323,13 @@ export default function Home() {
             lockScrollY.current = null;
           }
         } else {
-          // Lock scroll if entering section
+          // Lock scroll if entering section (always align section top to viewport top)
           if (e.deltaY > 0 && teamProgressVal.current < 1 && rect.top <= 10 && rect.top >= -50) {
             e.preventDefault();
             lockScrollY.current = window.scrollY + rect.top;
             window.scrollTo(0, lockScrollY.current);
           }
-          if (e.deltaY < 0 && teamProgressVal.current > 0 && rect.bottom >= viewportHeight - 10 && rect.bottom <= viewportHeight + 50) {
+          if (e.deltaY < 0 && teamProgressVal.current > 0 && rect.top <= 10 && rect.top >= -50) {
             e.preventDefault();
             lockScrollY.current = window.scrollY + rect.top;
             window.scrollTo(0, lockScrollY.current);
@@ -382,10 +382,48 @@ export default function Home() {
             lockScrollY.current = window.scrollY + rect.top;
             window.scrollTo(0, lockScrollY.current);
           }
-          if (deltaY < 0 && teamProgressVal.current > 0 && rect.bottom >= viewportHeight - 10 && rect.bottom <= viewportHeight + 50) {
+          if (deltaY < 0 && teamProgressVal.current > 0 && rect.top <= 10 && rect.top >= -50) {
             e.preventDefault();
             lockScrollY.current = window.scrollY + rect.top;
             window.scrollTo(0, lockScrollY.current);
+          }
+        }
+      }
+    };
+
+    const handleKeyDown = (e) => {
+      if (lockScrollY.current !== null) {
+        const keys = ["ArrowUp", "ArrowDown", "PageUp", "PageDown", " ", "Home", "End"];
+        if (keys.includes(e.key)) {
+          e.preventDefault();
+
+          let direction = 0;
+          if (e.key === "ArrowDown" || e.key === " " || e.key === "PageDown") {
+            direction = 1;
+          } else if (e.key === "ArrowUp" || e.key === "PageUp") {
+            direction = -1;
+          }
+
+          if (direction !== 0) {
+            const speedFactor = 0.05;
+            let p = teamProgressVal.current + direction * speedFactor;
+            p = Math.max(0, Math.min(1, p));
+            teamProgressVal.current = p;
+
+            targetTeamProgress[0] = Math.max(0, Math.min(1, (p - 0.0) / 0.33));
+            targetTeamProgress[1] = Math.max(0, Math.min(1, (p - 0.33) / 0.33));
+            targetTeamProgress[2] = Math.max(0, Math.min(1, (p - 0.66) / 0.34));
+
+            if (!animFrame) {
+              animFrame = requestAnimationFrame(animate);
+            }
+
+            if (p === 1 && direction > 0) {
+              lockScrollY.current = null;
+            }
+            if (p === 0 && direction < 0) {
+              lockScrollY.current = null;
+            }
           }
         }
       }
@@ -397,6 +435,7 @@ export default function Home() {
     window.addEventListener("wheel", handleWheel, { passive: false });
     window.addEventListener("touchstart", handleTouchStart);
     window.addEventListener("touchmove", handleTouchMove, { passive: false });
+    window.addEventListener("keydown", handleKeyDown, { passive: false });
 
     return () => {
       window.removeEventListener("scroll", onScroll);
@@ -404,6 +443,7 @@ export default function Home() {
       window.removeEventListener("wheel", handleWheel);
       window.removeEventListener("touchstart", handleTouchStart);
       window.removeEventListener("touchmove", handleTouchMove);
+      window.removeEventListener("keydown", handleKeyDown);
       if (animFrame) cancelAnimationFrame(animFrame);
     };
   }, []);
