@@ -761,7 +761,7 @@ export default function Home() {
             <div className="section-title-wrap">
               <span className="section-tag">The team</span>
               <h2 className="section-title">Built by founders who ship.</h2>
-              <p className="section-subtitle">Three specialists. One shared standard — deliver work that moves the needle.</p>
+              <p className="section-subtitle">Zero outsourcing layers. We are a structured, focused systems company.</p>
             </div>
           </ScrollReveal>
 
