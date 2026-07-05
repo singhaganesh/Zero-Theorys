@@ -321,6 +321,24 @@ export default function CalendarScheduler() {
               </p>
             </div>
 
+            <div style={{
+              background: "rgba(234, 179, 8, 0.03)",
+              border: "1px dashed rgba(234, 179, 8, 0.2)",
+              borderRadius: "8px",
+              padding: "1rem",
+              maxWidth: "350px",
+              margin: "0 auto 1.5rem auto",
+              textAlign: "left",
+              display: "flex",
+              gap: "0.5rem",
+              alignItems: "flex-start"
+            }}>
+              <span style={{ fontSize: "1rem", marginTop: "-1px" }}>ℹ️</span>
+              <p style={{ fontSize: "0.8rem", color: "var(--text-secondary)", margin: 0, lineHeight: "1.4" }}>
+                As this is an automated confirmation email, please check your <strong>Spam or Junk folder</strong> if it does not appear in your inbox within a few minutes.
+              </p>
+            </div>
+
             <button onClick={() => {
               setIsBooked(false);
               setSelectedDate(null);
