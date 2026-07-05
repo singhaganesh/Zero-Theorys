@@ -1144,7 +1144,7 @@ export default function Home() {
                 background: "rgba(0, 0, 0, 0.7)",
                 backdropFilter: "blur(4px)",
                 border: "1px solid var(--border-light)",
-                color: "var(--text-secondary)",
+                color: "#ffffff",
                 fontSize: "0.75rem",
                 padding: "0.35rem 0.85rem",
                 borderRadius: "20px",
