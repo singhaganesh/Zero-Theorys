@@ -222,6 +222,7 @@ export default function Header() {
       {mounted && createPortal(
         <div className={`mobile-drawer-overlay ${isMobileMenuOpen ? "open" : ""}`} onClick={() => setIsMobileMenuOpen(false)}>
           <div className={`mobile-drawer-panel ${isMobileMenuOpen ? "open" : ""}`} onClick={(e) => e.stopPropagation()}>
+            <div className="drawer-blob" />
             <button className="mobile-drawer-close" aria-label="Close menu" onClick={() => setIsMobileMenuOpen(false)}>
               <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                 <line x1="18" y1="6" x2="6" y2="18"></line>
