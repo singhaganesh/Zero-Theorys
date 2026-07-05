@@ -120,6 +120,8 @@ export default function SdlcStepper() {
               onClick={() => setActiveStep(idx)}
               style={{
                 display: "flex",
+                position: "relative",
+                zIndex: 2,
                 gap: "1.25rem",
                 padding: "1.25rem",
                 borderRadius: "12px",
