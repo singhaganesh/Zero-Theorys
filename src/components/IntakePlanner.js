@@ -7,7 +7,6 @@ export default function IntakePlanner({ preselectedNeed }) {
   const [formData, setFormData] = useState({
     industry: "",
     needs: [],
-    budget: "",
     timeline: "",
     name: "",
     email: "",
@@ -31,7 +30,8 @@ export default function IntakePlanner({ preselectedNeed }) {
     { id: "Marketplace", label: "Digital Marketplaces", desc: "Two-sided platforms & e-commerce" },
     { id: "FinTech", label: "Financial Technology", desc: "Secure transaction & banking systems" },
     { id: "HealthTech", label: "Health Technology", desc: "HIPAA-compliant patient portals & tools" },
-    { id: "CustomAI", label: "Custom AI / Enterprise", desc: "Bespoke internal systems & AI tooling" }
+    { id: "CustomAI", label: "Custom AI / Enterprise", desc: "Bespoke internal systems & AI tooling" },
+    { id: "Other", label: "Other / Custom", desc: "Bespoke projects in unlisted domains" }
   ];
 
   const technicalNeeds = [
@@ -41,13 +41,6 @@ export default function IntakePlanner({ preselectedNeed }) {
     { id: "Mobile", label: "Cross-Platform Mobile Engineering", desc: "High-performance native iOS & Android systems" },
     { id: "Website", label: "Website Development & SEO Engine", desc: "SEO-optimized Jamstack pages and Web Vitals tuning" },
     { id: "Software", label: "Custom Software Engineering", desc: "Secure SaaS platforms and distributed enterprise systems" }
-  ];
-
-  const budgets = [
-    { id: "under-25k", label: "< $25,000 USD", desc: "MVP or core architecture validation" },
-    { id: "25k-50k", label: "$25,000 – $50,000 USD", desc: "Production pilot or beta system launch" },
-    { id: "50k-100k", label: "$50,000 – $100,000 USD", desc: "Enterprise scale product implementation" },
-    { id: "over-100k", label: "$100,000+ USD", desc: "Comprehensive ecosystem engineering" }
   ];
 
   const timelines = [
@@ -83,7 +76,7 @@ export default function IntakePlanner({ preselectedNeed }) {
   const isStepValid = () => {
     if (step === 1) return formData.industry !== "";
     if (step === 2) return formData.needs.length > 0;
-    if (step === 3) return formData.budget !== "" && formData.timeline !== "";
+    if (step === 3) return formData.timeline !== "";
     return formData.name !== "" && formData.email !== "";
   };
 
@@ -200,67 +193,34 @@ export default function IntakePlanner({ preselectedNeed }) {
               </div>
             )}
 
-            {/* STEP 3: BUDGET & TIMELINE */}
+            {/* STEP 3: EXPECTED DELIVERY TIMELINE */}
             {step === 3 && (
-              <div className="grid-2" style={{ gap: "2.5rem" }}>
-                {/* Budget Column */}
-                <div>
-                  <h4 style={{ fontSize: "1.1rem", marginBottom: "1.25rem", color: "var(--text-primary)" }}>
-                    Estimated Budget Tier:
-                  </h4>
-                  <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
-                    {budgets.map((b) => {
-                      const isSelected = formData.budget === b.id;
-                      return (
-                        <div
-                          key={b.id}
-                          onClick={() => setFormData({ ...formData, budget: b.id })}
-                          style={{
-                            padding: "1rem",
-                            border: isSelected ? "2px solid var(--accent-primary)" : "1px solid var(--border-light)",
-                            borderRadius: "10px",
-                            background: isSelected ? "rgba(5, 150, 105, 0.04)" : "var(--bg-secondary)",
-                            cursor: "pointer",
-                            transition: "all var(--transition-fast)"
-                          }}
-                          className="selectable-item"
-                        >
-                          <h5 style={{ fontSize: "0.95rem", color: "var(--text-primary)" }}>{b.label}</h5>
-                          <p style={{ fontSize: "0.8rem", color: "var(--text-secondary)" }}>{b.desc}</p>
-                        </div>
-                      );
-                    })}
-                  </div>
-                </div>
-
-                {/* Timeline Column */}
-                <div>
-                  <h4 style={{ fontSize: "1.1rem", marginBottom: "1.25rem", color: "var(--text-primary)" }}>
-                    Expected Delivery Timeline:
-                  </h4>
-                  <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
-                    {timelines.map((t) => {
-                      const isSelected = formData.timeline === t.id;
-                      return (
-                        <div
-                          key={t.id}
-                          onClick={() => setFormData({ ...formData, timeline: t.id })}
-                          style={{
-                            padding: "1rem",
-                            border: isSelected ? "2px solid var(--accent-primary)" : "1px solid var(--border-light)",
-                            borderRadius: "10px",
-                            background: isSelected ? "rgba(5, 150, 105, 0.04)" : "var(--bg-secondary)",
-                            cursor: "pointer",
-                            transition: "all var(--transition-fast)"
-                          }}
-                          className="selectable-item"
-                        >
-                          <h5 style={{ fontSize: "0.95rem", color: "var(--text-primary)" }}>{t.label}</h5>
-                          <p style={{ fontSize: "0.8rem", color: "var(--text-secondary)" }}>{t.desc}</p>
-                        </div>
-                      );
-                    })}
-                  </div>
+              <div>
+                <h4 style={{ fontSize: "1.1rem", marginBottom: "1.25rem", color: "var(--text-primary)" }}>
+                  Expected Delivery Timeline:
+                </h4>
+                <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: "1rem" }}>
+                  {timelines.map((t) => {
+                    const isSelected = formData.timeline === t.id;
+                    return (
+                      <div
+                        key={t.id}
+                        onClick={() => setFormData({ ...formData, timeline: t.id })}
+                        style={{
+                          padding: "1.25rem",
+                          border: isSelected ? "2px solid var(--accent-primary)" : "1px solid var(--border-light)",
+                          borderRadius: "12px",
+                          background: isSelected ? "rgba(5, 150, 105, 0.04)" : "var(--bg-secondary)",
+                          cursor: "pointer",
+                          transition: "all var(--transition-fast)"
+                        }}
+                        className="selectable-item"
+                      >
+                        <h5 style={{ fontSize: "1rem", color: "var(--text-primary)", marginBottom: "0.25rem" }}>{t.label}</h5>
+                        <p style={{ fontSize: "0.85rem", color: "var(--text-secondary)" }}>{t.desc}</p>
+                      </div>
+                    );
+                  })}
                 </div>
               </div>
             )}
@@ -289,12 +249,6 @@ export default function IntakePlanner({ preselectedNeed }) {
                           </span>
                         ))}
                       </div>
-                    </div>
-                    <div>
-                      <span style={{ fontSize: "0.75rem", color: "var(--text-muted)", fontWeight: "600", textTransform: "uppercase" }}>Budget Tier</span>
-                      <p style={{ fontSize: "0.95rem", fontWeight: "500", color: "var(--text-primary)" }}>
-                        {budgets.find(b => b.id === formData.budget)?.label}
-                      </p>
                     </div>
                     <div>
                       <span style={{ fontSize: "0.75rem", color: "var(--text-muted)", fontWeight: "600", textTransform: "uppercase" }}>Target Timeline</span>
@@ -399,7 +353,7 @@ export default function IntakePlanner({ preselectedNeed }) {
             
             <h3 style={{ fontSize: "2rem", marginBottom: "0.5rem", color: "var(--text-primary)" }}>Proposal Received</h3>
             <p style={{ fontSize: "1.1rem", color: "var(--text-secondary)", marginBottom: "2rem", maxWidth: "480px", margin: "0 auto 2rem auto" }}>
-              Thank you, {formData.name}. Ganesh &amp; Aniket have been notified and are reviewing your tech specifications.
+              Thank you, {formData.name}. Debayan has been notified and is reviewing your tech specifications.
             </p>
 
             <div style={{
@@ -418,9 +372,6 @@ export default function IntakePlanner({ preselectedNeed }) {
                 <strong>Sector:</strong> {industries.find(i => i.id === formData.industry)?.label}
               </p>
               <p style={{ fontSize: "0.9rem", color: "var(--text-primary)", marginTop: "0.25rem" }}>
-                <strong>Budget Limit:</strong> {budgets.find(b => b.id === formData.budget)?.label}
-              </p>
-              <p style={{ fontSize: "0.9rem", color: "var(--text-primary)", marginTop: "0.25rem" }}>
                 <strong>Target SLA:</strong> Review within 12 Hours
               </p>
             </div>
@@ -428,7 +379,7 @@ export default function IntakePlanner({ preselectedNeed }) {
             <button onClick={() => {
               setIsSubmitted(false);
               setStep(1);
-              setFormData({ industry: "", needs: [], budget: "", timeline: "", name: "", email: "", description: "" });
+              setFormData({ industry: "", needs: [], timeline: "", name: "", email: "", description: "" });
             }} className="btn-secondary">
               Plan Another Project
             </button>

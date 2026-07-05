@@ -1244,7 +1244,7 @@ export default function Home() {
                 <div style={{ marginBottom: "2rem" }}>
                   <h3 style={{ fontSize: "1.25rem", color: "var(--text-primary)", marginBottom: "0.5rem" }}>Smart Technical Planner</h3>
                   <p style={{ color: "var(--text-secondary)", fontSize: "0.9rem" }}>
-                    Define your target industry, architectural dependencies, budget levels, and timeline.
+                    Define your target industry, architectural dependencies, and timeline.
                   </p>
                 </div>
                 <IntakePlanner preselectedNeed={preselectedFormNeed} />
