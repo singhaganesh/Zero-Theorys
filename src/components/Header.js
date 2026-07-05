@@ -3,13 +3,16 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState, useEffect } from "react";
+import { createPortal } from "react-dom";
 
 export default function Header() {
   const pathname = usePathname();
   const [theme, setTheme] = useState("light");
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
+    setMounted(true);
     const activeTheme = document.documentElement.getAttribute("data-theme") || "light";
     setTheme(activeTheme);
   }, []);
@@ -213,7 +216,10 @@ export default function Header() {
           </button>
         </div>
 
-        {/* Mobile Menu Drawer Overlay */}
+      </div>
+
+      {/* Mobile Menu Drawer Overlay */}
+      {mounted && createPortal(
         <div className={`mobile-drawer-overlay ${isMobileMenuOpen ? "open" : ""}`} onClick={() => setIsMobileMenuOpen(false)}>
           <div className={`mobile-drawer-panel ${isMobileMenuOpen ? "open" : ""}`} onClick={(e) => e.stopPropagation()}>
             <button className="mobile-drawer-close" aria-label="Close menu" onClick={() => setIsMobileMenuOpen(false)}>
@@ -248,8 +254,9 @@ export default function Header() {
               </Link>
             </div>
           </div>
-        </div>
-      </div>
+        </div>,
+        document.body
+      )}
     </header>
   );
 }
