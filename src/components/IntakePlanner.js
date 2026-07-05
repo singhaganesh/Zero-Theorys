@@ -14,6 +14,8 @@ export default function IntakePlanner({ preselectedNeed }) {
     description: ""
   });
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [formError, setFormError] = useState("");
 
   useEffect(() => {
     if (preselectedNeed) {
@@ -68,9 +70,38 @@ export default function IntakePlanner({ preselectedNeed }) {
     if (step > 1) setStep(step - 1);
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    setIsSubmitted(true);
+  const handleSubmit = async (e) => {
+    if (e) e.preventDefault();
+    if (!formData.name || !formData.email) {
+      setFormError("Name and Email are required to submit proposal.");
+      return;
+    }
+
+    setIsSubmitting(true);
+    setFormError("");
+
+    try {
+      const response = await fetch("/api/send-blueprint", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || "Failed to submit blueprint proposal.");
+      }
+
+      setIsSubmitted(true);
+    } catch (err) {
+      console.error(err);
+      setFormError(err.message || "An unexpected error occurred while submitting.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   // Helper validation to prevent next step without selection
@@ -315,6 +346,7 @@ export default function IntakePlanner({ preselectedNeed }) {
                       style={{ padding: "0.65rem 0.85rem", borderRadius: "8px", border: "1px solid var(--border-light)", outline: "none", fontSize: "0.95rem", resize: "none", fontFamily: "var(--font-body)", background: "var(--bg-primary)", color: "var(--text-primary)" }}
                     />
                   </div>
+                  {formError && <span style={{ color: "red", fontSize: "0.85rem", marginTop: "0.5rem" }}>{formError}</span>}
                 </form>
               </div>
             )}
@@ -341,12 +373,12 @@ export default function IntakePlanner({ preselectedNeed }) {
                 </button>
               ) : (
                 <button
-                  disabled={!isStepValid()}
+                  disabled={!isStepValid() || isSubmitting}
                   onClick={handleSubmit}
                   className="btn-primary"
-                  style={{ opacity: !isStepValid() ? 0.6 : 1, cursor: !isStepValid() ? "not-allowed" : "pointer" }}
+                  style={{ opacity: (!isStepValid() || isSubmitting) ? 0.6 : 1, cursor: (!isStepValid() || isSubmitting) ? "not-allowed" : "pointer" }}
                 >
-                  Submit Project Blueprint
+                  {isSubmitting ? "Submitting Specs..." : "Submit Project Blueprint"}
                 </button>
               )}
             </div>
