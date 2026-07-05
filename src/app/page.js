@@ -121,8 +121,53 @@ const glyphsData = [
   { type: "next", top: "95%", left: "86%", factor: 80 }
 ];
 
+const brandColors = {
+  "LangChain": "#10b981",
+  "LlamaIndex": "#3b82f6",
+  "Vector DBs": "#06b6d4",
+  "Pinecone": "#8b7a5f",
+  "Semantic Cache": "#dcb88f",
+  "CrewAI": "#10b981",
+  "Fine-Tuning": "#3b82f6",
+  "Next.js": "#ffffff",
+  "React": "#06b6d4",
+  "TypeScript": "#3b82f6",
+  "TailwindCSS": "#38bdf8",
+  "Framer Motion": "#ec4899",
+  "WebSockets": "#10b981",
+  "PWAs": "#f59e0b",
+  "Docker": "#0ea5e9",
+  "Kubernetes": "#3b82f6",
+  "AWS CDK": "#f59e0b",
+  "Terraform": "#6366f1",
+  "GitHub Actions": "#10b981",
+  "OpenTelemetry": "#ec4899",
+  "Prometheus": "#f97316",
+  "Flutter": "#0284c7",
+  "React Native": "#06b6d4",
+  "Swift (iOS)": "#f97316",
+  "Kotlin (Android)": "#10b981",
+  "Offline-First": "#3b82f6",
+  "Push Notifications": "#f59e0b",
+  "SQLite": "#0284c7",
+  "Node.js": "#10b981",
+  "Go (Golang)": "#00add8",
+  "FastAPI (Python)": "#009688",
+  "Spring Boot": "#6db33f",
+  "RabbitMQ": "#ff6600",
+  "Kafka": "#10b981",
+  "gRPC": "#00add8",
+  "PostgreSQL": "#336791",
+  "MongoDB": "#13aa52",
+  "Redis Cache": "#d82c20",
+  "Prisma ORM": "#10b981",
+  "Supabase": "#3ecf8e",
+  "DynamoDB": "#f90"
+};
+
 export default function Home() {
   const cardsRef = useRef([]);
+  const techCardsRef = useRef([]);
   const metricsRef = useRef(null);
   const timelineRef = useRef(null);
   const nodeRefs = useRef([]);
@@ -135,10 +180,22 @@ export default function Home() {
   const [preselectedFormNeed, setPreselectedFormNeed] = useState(null);
   const [securityScore, setSecurityScore] = useState(0);
   const [uptime, setUptime] = useState(0.0);
+  const [activeTechCategory, setActiveTechCategory] = useState(0);
 
   // 1. Mouse movement tracking for the radial-glow borders on service cards
   const handleMouseMove = (e, index) => {
     const card = cardsRef.current[index];
+    if (!card) return;
+    const rect = card.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    card.style.setProperty("--mouse-x", `${x}px`);
+    card.style.setProperty("--mouse-y", `${y}px`);
+  };
+
+  // Mouse movement tracking for radial glow borders on tech stack cards
+  const handleTechMouseMove = (e, index) => {
+    const card = techCardsRef.current[index];
     if (!card) return;
     const rect = card.getBoundingClientRect();
     const x = e.clientX - rect.left;
@@ -412,7 +469,25 @@ export default function Home() {
           <path d="M12 9v4" />
         </svg>
       ),
-      techs: ["LangChain", "LlamaIndex", "Vector DBs", "Pinecone", "Semantic Cache", "Multi-Agent Crews", "Fine-Tuning"]
+      nodes: [
+        { name: "LangChain", x: 50, y: 50, size: "large", glow: "#10b981" },
+        { name: "LlamaIndex", x: 25, y: 30, size: "medium", glow: "#3b82f6" },
+        { name: "Vector DBs", x: 75, y: 25, size: "medium", glow: "#10b981" },
+        { name: "Pinecone", x: 15, y: 65, size: "small", glow: "#8b7a5f" },
+        { name: "Semantic Cache", x: 85, y: 70, size: "small", glow: "#dcb88f" },
+        { name: "CrewAI", x: 35, y: 80, size: "medium", glow: "#10b981" },
+        { name: "Fine-Tuning", x: 65, y: 78, size: "small", glow: "#3b82f6" }
+      ],
+      connections: [
+        { from: 0, to: 1 },
+        { from: 0, to: 2 },
+        { from: 1, to: 3 },
+        { from: 2, to: 4 },
+        { from: 0, to: 5 },
+        { from: 0, to: 6 },
+        { from: 3, to: 5 },
+        { from: 4, to: 6 }
+      ]
     },
     {
       title: "Web Ecosystems",
@@ -425,7 +500,25 @@ export default function Home() {
           <line x1="12" y1="17" x2="12" y2="21" />
         </svg>
       ),
-      techs: ["Next.js", "React", "TypeScript", "TailwindCSS", "Framer Motion", "WebSockets", "PWAs"]
+      nodes: [
+        { name: "Next.js", x: 50, y: 50, size: "large", glow: "#dcb88f" },
+        { name: "React", x: 25, y: 25, size: "medium", glow: "#06b6d4" },
+        { name: "TypeScript", x: 75, y: 30, size: "medium", glow: "#3b82f6" },
+        { name: "TailwindCSS", x: 15, y: 60, size: "small", glow: "#06b6d4" },
+        { name: "Framer Motion", x: 85, y: 65, size: "small", glow: "#ec4899" },
+        { name: "WebSockets", x: 35, y: 80, size: "medium", glow: "#10b981" },
+        { name: "PWAs", x: 65, y: 78, size: "small", glow: "#f59e0b" }
+      ],
+      connections: [
+        { from: 0, to: 1 },
+        { from: 0, to: 2 },
+        { from: 1, to: 3 },
+        { from: 2, to: 4 },
+        { from: 0, to: 5 },
+        { from: 0, to: 6 },
+        { from: 3, to: 5 },
+        { from: 4, to: 6 }
+      ]
     },
     {
       title: "DevOps & Cloud",
@@ -437,7 +530,25 @@ export default function Home() {
           <path d="M8 14h8" />
         </svg>
       ),
-      techs: ["Docker", "Kubernetes", "AWS CDK", "Terraform", "GitHub Actions", "OpenTelemetry", "Prometheus"]
+      nodes: [
+        { name: "Kubernetes", x: 50, y: 50, size: "large", glow: "#3b82f6" },
+        { name: "Docker", x: 25, y: 30, size: "medium", glow: "#0ea5e9" },
+        { name: "AWS CDK", x: 75, y: 25, size: "medium", glow: "#f59e0b" },
+        { name: "Terraform", x: 15, y: 65, size: "small", glow: "#6366f1" },
+        { name: "GitHub Actions", x: 85, y: 70, size: "small", glow: "#10b981" },
+        { name: "OpenTelemetry", x: 35, y: 80, size: "medium", glow: "#ec4899" },
+        { name: "Prometheus", x: 65, y: 78, size: "small", glow: "#f97316" }
+      ],
+      connections: [
+        { from: 0, to: 1 },
+        { from: 0, to: 2 },
+        { from: 1, to: 3 },
+        { from: 2, to: 4 },
+        { from: 0, to: 5 },
+        { from: 0, to: 6 },
+        { from: 3, to: 5 },
+        { from: 4, to: 6 }
+      ]
     },
     {
       title: "Mobile Engineering",
@@ -448,7 +559,25 @@ export default function Home() {
           <line x1="12" y1="18" x2="12.01" y2="18" />
         </svg>
       ),
-      techs: ["Flutter", "React Native", "Swift (iOS)", "Kotlin (Android)", "Offline-First Sync", "Push Notifications"]
+      nodes: [
+        { name: "Flutter", x: 50, y: 50, size: "large", glow: "#0284c7" },
+        { name: "React Native", x: 25, y: 25, size: "medium", glow: "#06b6d4" },
+        { name: "Swift (iOS)", x: 75, y: 30, size: "medium", glow: "#f97316" },
+        { name: "Kotlin (Android)", x: 15, y: 60, size: "small", glow: "#10b981" },
+        { name: "Offline-First", x: 85, y: 65, size: "small", glow: "#3b82f6" },
+        { name: "Push Notifications", x: 35, y: 80, size: "medium", glow: "#f59e0b" },
+        { name: "SQLite", x: 65, y: 78, size: "small", glow: "#0284c7" }
+      ],
+      connections: [
+        { from: 0, to: 1 },
+        { from: 0, to: 2 },
+        { from: 1, to: 3 },
+        { from: 2, to: 4 },
+        { from: 0, to: 5 },
+        { from: 0, to: 6 },
+        { from: 3, to: 5 },
+        { from: 4, to: 6 }
+      ]
     },
     {
       title: "Backend Ecosystems",
@@ -461,10 +590,28 @@ export default function Home() {
           <line x1="6" y1="18" x2="6.01" y2="18" />
         </svg>
       ),
-      techs: ["Node.js", "Go (Golang)", "Python (FastAPI)", "Spring Boot", "RabbitMQ / Kafka"]
+      nodes: [
+        { name: "Node.js", x: 50, y: 50, size: "large", glow: "#10b981" },
+        { name: "Go (Golang)", x: 25, y: 30, size: "medium", glow: "#00add8" },
+        { name: "FastAPI (Python)", x: 75, y: 25, size: "medium", glow: "#009688" },
+        { name: "Spring Boot", x: 15, y: 65, size: "small", glow: "#6db33f" },
+        { name: "RabbitMQ", x: 85, y: 70, size: "small", glow: "#ff6600" },
+        { name: "Kafka", x: 35, y: 80, size: "medium", glow: "#10b981" },
+        { name: "gRPC", x: 65, y: 78, size: "small", glow: "#00add8" }
+      ],
+      connections: [
+        { from: 0, to: 1 },
+        { from: 0, to: 2 },
+        { from: 1, to: 3 },
+        { from: 2, to: 4 },
+        { from: 0, to: 5 },
+        { from: 0, to: 6 },
+        { from: 3, to: 5 },
+        { from: 4, to: 6 }
+      ]
     },
     {
-      title: "Database",
+      title: "Databases & Cache",
       color: "var(--accent-secondary)",
       icon: (
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--accent-secondary)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ filter: "drop-shadow(0 0 8px rgba(6, 182, 212, 0.25))" }}>
@@ -473,7 +620,25 @@ export default function Home() {
           <path d="M3 12c0 1.66 4 3 9 3s9-1.34 9-3" />
         </svg>
       ),
-      techs: ["PostgreSQL", "MongoDB", "Redis Cache", "SQLite", "Prisma ORM", "Supabase", "DynamoDB"]
+      nodes: [
+        { name: "PostgreSQL", x: 50, y: 50, size: "large", glow: "#336791" },
+        { name: "MongoDB", x: 25, y: 25, size: "medium", glow: "#13aa52" },
+        { name: "Redis Cache", x: 75, y: 30, size: "medium", glow: "#d82c20" },
+        { name: "SQLite", x: 15, y: 60, size: "small", glow: "#003b57" },
+        { name: "Prisma ORM", x: 85, y: 65, size: "small", glow: "#10b981" },
+        { name: "Supabase", x: 35, y: 80, size: "medium", glow: "#3ecf8e" },
+        { name: "DynamoDB", x: 65, y: 78, size: "small", glow: "#f90" }
+      ],
+      connections: [
+        { from: 0, to: 1 },
+        { from: 0, to: 2 },
+        { from: 1, to: 3 },
+        { from: 2, to: 4 },
+        { from: 0, to: 5 },
+        { from: 0, to: 6 },
+        { from: 3, to: 5 },
+        { from: 4, to: 6 }
+      ]
     }
   ];
 
@@ -824,26 +989,151 @@ export default function Home() {
             </div>
           </ScrollReveal>
 
-          <div className="grid-3" style={{ gap: "1.5rem" }}>
-            {techStack.map((category, i) => (
-              <ScrollReveal key={category.title} direction="up" delay={i * 100}>
-                <div className="glass-card" style={{ height: "100%" }}>
-                  <div className="glass-card-content">
-                    <div style={{ display: "flex", alignItems: "center", gap: "0.75rem", marginBottom: "1.25rem" }}>
+          <div className="grid-2 constellation-section" style={{ gap: "2.5rem", alignItems: "start", marginTop: "3rem" }}>
+            {/* Left Column: Tab Selectors */}
+            <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem", width: "100%" }}>
+              {techStack.map((category, idx) => {
+                const isActive = activeTechCategory === idx;
+                return (
+                  <button
+                    key={category.title}
+                    onClick={() => setActiveTechCategory(idx)}
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "1rem",
+                      padding: "1.25rem",
+                      borderRadius: "14px",
+                      border: isActive ? "2px solid var(--accent-primary)" : "1px solid var(--border-light)",
+                      background: isActive ? "var(--bg-secondary)" : "transparent",
+                      color: "var(--text-primary)",
+                      textAlign: "left",
+                      cursor: "pointer",
+                      transition: "all var(--transition-fast)",
+                      boxShadow: isActive ? "var(--shadow-md)" : "none",
+                      width: "100%",
+                      outline: "none"
+                    }}
+                    className="tech-tab-button"
+                  >
+                    <div style={{
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      width: "36px",
+                      height: "36px",
+                      borderRadius: "8px",
+                      background: isActive ? "rgba(5, 150, 105, 0.08)" : "var(--bg-tertiary)",
+                      color: isActive ? "var(--accent-primary)" : "var(--text-secondary)",
+                      transition: "all var(--transition-fast)",
+                      flexShrink: 0
+                    }}>
                       {category.icon}
-                      <h3 style={{ fontSize: "1.15rem", margin: 0, color: category.color }}>{category.title}</h3>
                     </div>
-                    <div style={{ display: "flex", gap: "0.5rem", flexWrap: "wrap" }}>
-                      {category.techs.map((tech) => (
-                        <span key={tech} style={{ fontSize: "0.75rem", background: "var(--bg-tertiary)", border: "1px solid var(--border-light)", padding: "0.25rem 0.65rem", borderRadius: "4px", color: "var(--text-secondary)", fontWeight: "500", transition: "transform 0.2s" }} className="tech-badge-hover">
-                          {tech}
-                        </span>
-                      ))}
+                    <div>
+                      <h4 style={{ fontSize: "1.1rem", fontWeight: "600", margin: 0 }}>
+                        {category.title}
+                      </h4>
+                      <p style={{ fontSize: "0.8rem", color: "var(--text-secondary)", margin: "0.15rem 0 0 0" }}>
+                        {category.nodes.length} Key Technologies
+                      </p>
                     </div>
-                  </div>
-                </div>
-              </ScrollReveal>
-            ))}
+                  </button>
+                );
+              })}
+            </div>
+
+            {/* Right Column: Visual Constellation Canvas */}
+            <div className="glass-card constellation-card" style={{ height: "480px", width: "100%", position: "relative", background: "var(--bg-secondary)", overflow: "hidden", display: "flex", justifyContent: "center", alignItems: "center" }}>
+              <div className="glass-card-content constellation-wrapper" style={{ width: "100%", height: "100%", position: "relative" }}>
+                
+                {/* SVG Connections layer */}
+                <svg style={{ position: "absolute", top: 0, left: 0, width: "100%", height: "100%", zIndex: 1, pointerEvents: "none" }}>
+                  {techStack[activeTechCategory].connections.map((conn, i) => {
+                    const fromNode = techStack[activeTechCategory].nodes[conn.from];
+                    const toNode = techStack[activeTechCategory].nodes[conn.to];
+                    if (!fromNode || !toNode) return null;
+                    return (
+                      <g key={i}>
+                        <line
+                          x1={`${fromNode.x}%`}
+                          y1={`${fromNode.y}%`}
+                          x2={`${toNode.x}%`}
+                          y2={`${toNode.y}%`}
+                          stroke="var(--border-active)"
+                          strokeWidth="1.5"
+                          opacity="0.3"
+                        />
+                        <line
+                          x1={`${fromNode.x}%`}
+                          y1={`${fromNode.y}%`}
+                          x2={`${toNode.x}%`}
+                          y2={`${toNode.y}%`}
+                          stroke={fromNode.glow}
+                          strokeWidth="2"
+                          opacity="0.6"
+                          className="constellation-pulse-line"
+                        />
+                      </g>
+                    );
+                  })}
+                </svg>
+
+                {/* Nodes Layer */}
+                {techStack[activeTechCategory].nodes.map((node, i) => {
+                  const sizeMultiplier = node.size === "large" ? 1.5 : node.size === "medium" ? 1.1 : 0.8;
+                  return (
+                    <div
+                      key={node.name}
+                      style={{
+                        position: "absolute",
+                        left: `${node.x}%`,
+                        top: `${node.y}%`,
+                        transform: "translate(-50%, -50%)",
+                        zIndex: 2,
+                        display: "flex",
+                        flexDirection: "column",
+                        alignItems: "center",
+                        gap: "0.35rem"
+                      }}
+                      className="constellation-node-wrapper"
+                    >
+                      {/* Interactive circular dot */}
+                      <div
+                        style={{
+                          width: `${16 * sizeMultiplier}px`,
+                          height: `${16 * sizeMultiplier}px`,
+                          borderRadius: "50%",
+                          background: node.glow,
+                          boxShadow: `0 0 ${12 * sizeMultiplier}px ${node.glow}`,
+                          transition: "all var(--transition-fast)"
+                        }}
+                        className="constellation-node-dot"
+                      />
+                      {/* Technology Text label */}
+                      <span
+                        style={{
+                          fontSize: node.size === "large" ? "0.85rem" : "0.78rem",
+                          fontWeight: node.size === "large" ? "700" : "500",
+                          color: "var(--text-primary)",
+                          background: "var(--bg-secondary)",
+                          border: "1px solid var(--border-light)",
+                          padding: "0.2rem 0.5rem",
+                          borderRadius: "6px",
+                          boxShadow: "var(--shadow-sm)",
+                          whiteSpace: "nowrap",
+                          pointerEvents: "none",
+                          userSelect: "none"
+                        }}
+                        className="constellation-node-label"
+                      >
+                        {node.name}
+                      </span>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
           </div>
         </div>
       </section>

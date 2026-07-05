@@ -603,11 +603,13 @@ a {
   
   .timeline-col-left {
     grid-column: 2;
+    grid-row: 1;
     justify-content: flex-start;
   }
   
   .timeline-col-right {
     grid-column: 2;
+    grid-row: 1;
     justify-content: flex-start;
   }
   
@@ -629,6 +631,10 @@ a {
   
   .timeline-card-wrapper {
     max-width: 100%;
+  }
+
+  .timeline-card-reveal {
+    justify-content: flex-start !important;
   }
 }
 
@@ -727,6 +733,7 @@ a {
 .glass-icon-container {
   width: 48px;
   height: 48px;
+  flex-shrink: 0;
   border-radius: 12px;
   display: flex;
   justify-content: center;
@@ -1460,4 +1467,116 @@ a {
   flex-direction: column;
   position: relative;
   z-index: 2;
+}
+
+/* Constellation Stack Styling - Option 1 */
+.constellation-wrapper {
+  animation: constellation-drift 12s ease-in-out infinite alternate;
+}
+
+@keyframes constellation-drift {
+  0% {
+    transform: translate(-6px, -6px) scale(0.98);
+  }
+  100% {
+    transform: translate(6px, 6px) scale(1.02);
+  }
+}
+
+.constellation-pulse-line {
+  stroke-dasharray: 8;
+  animation: constellation-flow 3s linear infinite;
+}
+
+@keyframes constellation-flow {
+  to {
+    stroke-dashoffset: -16;
+  }
+}
+
+.constellation-node-wrapper {
+  cursor: pointer;
+}
+
+.constellation-node-wrapper:hover .constellation-node-dot {
+  transform: scale(1.35);
+  box-shadow: 0 0 18px currentColor;
+}
+
+.tech-tab-button {
+  transition: all var(--transition-fast);
+}
+
+.tech-tab-button:hover {
+  border-color: var(--accent-primary) !important;
+  background: var(--bg-secondary) !important;
+  transform: translateY(-2px);
+}
+
+@media (max-width: 991px) {
+  .constellation-section {
+    grid-template-columns: 1fr !important;
+  }
+  .constellation-card {
+    height: 380px !important;
+  }
+}
+
+/* Stepper Progress & Active Animations */
+.stepper-item {
+  transition: all var(--transition-normal);
+}
+
+.stepper-item:hover {
+  transform: translateX(4px);
+}
+
+.stepper-item:hover .stepper-item-number {
+  border-color: var(--accent-primary) !important;
+  color: var(--accent-primary) !important;
+  background: rgba(5, 150, 105, 0.04) !important;
+}
+
+.active-step-pulse {
+  position: relative;
+}
+
+.active-step-pulse::after {
+  content: "";
+  position: absolute;
+  top: -4px;
+  left: -4px;
+  right: -4px;
+  bottom: -4px;
+  border-radius: 50%;
+  border: 1px solid var(--accent-primary);
+  opacity: 0;
+  animation: active-ring-pulse 2s cubic-bezier(0.16, 1, 0.3, 1) infinite;
+  pointer-events: none;
+}
+
+@keyframes active-ring-pulse {
+  0% {
+    transform: scale(0.9);
+    opacity: 0.8;
+  }
+  100% {
+    transform: scale(1.3);
+    opacity: 0;
+  }
+}
+
+.stepper-fade-slide {
+  animation: stepper-fade-slide-in 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes stepper-fade-slide-in {
+  from {
+    opacity: 0;
+    transform: translateY(15px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
