@@ -9,6 +9,7 @@ export default function CalendarScheduler() {
   const [isBooked, setIsBooked] = useState(false);
   const [bookingForm, setBookingForm] = useState({ name: "", email: "", desc: "" });
   const [formError, setFormError] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const monthNames = [
     "January", "February", "March", "April", "May", "June",
@@ -57,14 +58,44 @@ export default function CalendarScheduler() {
     return day !== 0 && day !== 6 && date >= today;
   };
 
-  const handleBookingSubmit = (e) => {
+  const handleBookingSubmit = async (e) => {
     e.preventDefault();
     if (!bookingForm.name || !bookingForm.email) {
       setFormError("Name and Email are required to confirm booking.");
       return;
     }
+    
+    setIsSubmitting(true);
     setFormError("");
-    setIsBooked(true);
+
+    try {
+      const response = await fetch("/api/send-booking", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name: bookingForm.name,
+          email: bookingForm.email,
+          date: selectedDate.toLocaleDateString("en-US", { weekday: 'long', month: 'short', day: 'numeric', year: 'numeric' }),
+          time: selectedTime,
+          description: bookingForm.desc,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || "Failed to book slot.");
+      }
+
+      setIsBooked(true);
+    } catch (err) {
+      console.error(err);
+      setFormError(err.message || "An unexpected error occurred while booking.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -194,9 +225,29 @@ export default function CalendarScheduler() {
                             style={{ padding: "0.6rem 0.8rem", borderRadius: "6px", border: "1px solid var(--border-light)", outline: "none", fontSize: "0.9rem", background: "var(--bg-primary)", color: "var(--text-primary)" }}
                           />
                         </div>
+                        <div style={{ display: "flex", flexDirection: "column", gap: "0.25rem" }}>
+                          <label style={{ fontSize: "0.8rem", fontWeight: "600", color: "var(--text-secondary)" }}>Project Notes (Optional)</label>
+                          <textarea 
+                            rows="2"
+                            placeholder="Details about your system goals..."
+                            value={bookingForm.desc} 
+                            onChange={(e) => setBookingForm({...bookingForm, desc: e.target.value})}
+                            style={{ padding: "0.6rem 0.8rem", borderRadius: "6px", border: "1px solid var(--border-light)", outline: "none", fontSize: "0.9rem", resize: "none", fontFamily: "var(--font-body)", background: "var(--bg-primary)", color: "var(--text-primary)" }}
+                          />
+                        </div>
                         {formError && <span style={{ color: "red", fontSize: "0.8rem" }}>{formError}</span>}
-                        <button type="submit" className="btn-primary" style={{ width: "100%", marginTop: "0.5rem" }}>
-                          Confirm Booking Slot
+                        <button 
+                          type="submit" 
+                          className="btn-primary" 
+                          disabled={isSubmitting}
+                          style={{ 
+                            width: "100%", 
+                            marginTop: "0.5rem", 
+                            opacity: isSubmitting ? 0.6 : 1, 
+                            cursor: isSubmitting ? "not-allowed" : "pointer" 
+                          }}
+                        >
+                          {isSubmitting ? "Confirming Slot..." : "Confirm Booking Slot"}
                         </button>
                       </form>
                     )}
@@ -266,7 +317,7 @@ export default function CalendarScheduler() {
                 ⏰ <strong>Time:</strong> {selectedTime} (EST)
               </p>
               <p style={{ fontSize: "0.9rem", color: "var(--text-secondary)", marginTop: "0.25rem" }}>
-                👤 <strong>Host:</strong> Debayan / Ganesh (Zero Theorys)
+                👤 <strong>Host:</strong> Debayan (Zero Theorys)
               </p>
             </div>
 
