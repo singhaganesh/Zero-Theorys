@@ -1133,6 +1133,27 @@ export default function Home() {
                   );
                 })}
               </div>
+              
+              {/* Mobile Swipe Guide */}
+              <div style={{
+                display: "none",
+                position: "absolute",
+                bottom: "1rem",
+                left: "50%",
+                transform: "translateX(-50%)",
+                background: "rgba(0, 0, 0, 0.7)",
+                backdropFilter: "blur(4px)",
+                border: "1px solid var(--border-light)",
+                color: "var(--text-secondary)",
+                fontSize: "0.75rem",
+                padding: "0.35rem 0.85rem",
+                borderRadius: "20px",
+                zIndex: 10,
+                pointerEvents: "none",
+                whiteSpace: "nowrap"
+              }} className="mobile-swipe-guide">
+                Swipe to explore map ↔
+              </div>
             </div>
           </div>
         </div>

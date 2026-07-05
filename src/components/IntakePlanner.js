@@ -146,7 +146,7 @@ export default function IntakePlanner({ preselectedNeed }) {
                 <h4 style={{ fontSize: "1.1rem", marginBottom: "1.25rem", color: "var(--text-primary)" }}>
                   Select your project's target industry:
                 </h4>
-                <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: "1rem" }}>
+                <div className="responsive-selection-grid">
                   {industries.map((ind) => {
                     const isSelected = formData.industry === ind.id;
                     return (
@@ -178,7 +178,7 @@ export default function IntakePlanner({ preselectedNeed }) {
                 <h4 style={{ fontSize: "1.1rem", marginBottom: "1.25rem", color: "var(--text-primary)" }}>
                   Select the required architectural capabilities (Select all that apply):
                 </h4>
-                <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: "1rem" }}>
+                <div className="responsive-selection-grid">
                   {technicalNeeds.map((need) => {
                     const isSelected = formData.needs.includes(need.id);
                     return (
@@ -231,7 +231,7 @@ export default function IntakePlanner({ preselectedNeed }) {
                 <h4 style={{ fontSize: "1.1rem", marginBottom: "1.25rem", color: "var(--text-primary)" }}>
                   Expected Delivery Timeline:
                 </h4>
-                <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: "1rem" }}>
+                <div className="responsive-selection-grid">
                   {timelines.map((t) => {
                     const isSelected = formData.timeline === t.id;
                     return (

@@ -1580,3 +1580,33 @@ a {
     transform: translateY(0);
   }
 }
+
+/* Mobile Responsiveness Additions */
+.responsive-selection-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+}
+
+@media (max-width: 640px) {
+  .responsive-selection-grid {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+@media (max-width: 767px) {
+  .constellation-card {
+    overflow-x: auto !important;
+    justify-content: flex-start !important;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+  }
+  .constellation-wrapper {
+    min-width: 620px !important;
+    flex-shrink: 0 !important;
+  }
+  .mobile-swipe-guide {
+    display: block !important;
+  }
+}
+
