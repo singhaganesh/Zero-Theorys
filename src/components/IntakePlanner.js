@@ -10,6 +10,7 @@ export default function IntakePlanner({ preselectedNeed }) {
     timeline: "",
     name: "",
     email: "",
+    whatsapp: "",
     description: ""
   });
   const [isSubmitted, setIsSubmitted] = useState(false);
@@ -256,6 +257,14 @@ export default function IntakePlanner({ preselectedNeed }) {
                         {timelines.find(t => t.id === formData.timeline)?.label}
                       </p>
                     </div>
+                    {formData.whatsapp && (
+                      <div>
+                        <span style={{ fontSize: "0.75rem", color: "var(--text-muted)", fontWeight: "600", textTransform: "uppercase" }}>WhatsApp</span>
+                        <p style={{ fontSize: "0.95rem", fontWeight: "500", color: "var(--text-primary)" }}>
+                          {formData.whatsapp}
+                        </p>
+                      </div>
+                    )}
                   </div>
                 </div>
 
@@ -281,6 +290,17 @@ export default function IntakePlanner({ preselectedNeed }) {
                       placeholder="e.g. john@company.com"
                       value={formData.email} 
                       onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                      style={{ padding: "0.65rem 0.85rem", borderRadius: "8px", border: "1px solid var(--border-light)", outline: "none", fontSize: "0.95rem", background: "var(--bg-primary)", color: "var(--text-primary)" }}
+                    />
+                  </div>
+
+                  <div style={{ display: "flex", flexDirection: "column", gap: "0.25rem" }}>
+                    <label style={{ fontSize: "0.85rem", fontWeight: "600", color: "var(--text-secondary)" }}>WhatsApp Number (Optional)</label>
+                    <input 
+                      type="tel" 
+                      placeholder="e.g. +1 234 567 8900"
+                      value={formData.whatsapp} 
+                      onChange={(e) => setFormData({ ...formData, whatsapp: e.target.value })}
                       style={{ padding: "0.65rem 0.85rem", borderRadius: "8px", border: "1px solid var(--border-light)", outline: "none", fontSize: "0.95rem", background: "var(--bg-primary)", color: "var(--text-primary)" }}
                     />
                   </div>
@@ -379,7 +399,7 @@ export default function IntakePlanner({ preselectedNeed }) {
             <button onClick={() => {
               setIsSubmitted(false);
               setStep(1);
-              setFormData({ industry: "", needs: [], timeline: "", name: "", email: "", description: "" });
+              setFormData({ industry: "", needs: [], timeline: "", name: "", email: "", whatsapp: "", description: "" });
             }} className="btn-secondary">
               Plan Another Project
             </button>

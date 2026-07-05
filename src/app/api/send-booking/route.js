@@ -3,7 +3,7 @@ import nodemailer from "nodemailer";
 
 export async function POST(request) {
   try {
-    const { name, email, date, time, description } = await request.json();
+    const { name, email, whatsapp, date, time, description } = await request.json();
 
     const smtpEmail = process.env.SMTP_EMAIL;
     const smtpPassword = process.env.SMTP_PASSWORD;
@@ -64,6 +64,7 @@ export async function POST(request) {
           <div style="background-color: #f3f4f6; border-radius: 8px; padding: 15px; margin: 20px 0;">
             <p style="margin: 5px 0;">👤 <strong>Client Name:</strong> ${name}</p>
             <p style="margin: 5px 0;">✉️ <strong>Client Email:</strong> ${email}</p>
+            <p style="margin: 5px 0;">📱 <strong>Client WhatsApp:</strong> ${whatsapp || "Not provided"}</p>
             <p style="margin: 5px 0;">📅 <strong>Date:</strong> ${date}</p>
             <p style="margin: 5px 0;">⏰ <strong>Time:</strong> ${time}</p>
             <p style="margin: 5px 0;">🔗 <strong>Google Meet Link:</strong> <a href="${meetLink}" style="color: #3b82f6; text-decoration: underline; font-weight: bold;">${meetLink}</a></p>

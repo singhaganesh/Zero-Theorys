@@ -7,7 +7,7 @@ export default function CalendarScheduler() {
   const [selectedDate, setSelectedDate] = useState(null);
   const [selectedTime, setSelectedTime] = useState(null);
   const [isBooked, setIsBooked] = useState(false);
-  const [bookingForm, setBookingForm] = useState({ name: "", email: "", desc: "" });
+  const [bookingForm, setBookingForm] = useState({ name: "", email: "", whatsapp: "", desc: "" });
   const [formError, setFormError] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -77,6 +77,7 @@ export default function CalendarScheduler() {
         body: JSON.stringify({
           name: bookingForm.name,
           email: bookingForm.email,
+          whatsapp: bookingForm.whatsapp,
           date: selectedDate.toLocaleDateString("en-US", { weekday: 'long', month: 'short', day: 'numeric', year: 'numeric' }),
           time: selectedTime,
           description: bookingForm.desc,
@@ -226,6 +227,16 @@ export default function CalendarScheduler() {
                           />
                         </div>
                         <div style={{ display: "flex", flexDirection: "column", gap: "0.25rem" }}>
+                          <label style={{ fontSize: "0.8rem", fontWeight: "600", color: "var(--text-secondary)" }}>WhatsApp Number (Optional)</label>
+                          <input 
+                            type="tel" 
+                            placeholder="e.g. +1 234 567 8900"
+                            value={bookingForm.whatsapp} 
+                            onChange={(e) => setBookingForm({...bookingForm, whatsapp: e.target.value})}
+                            style={{ padding: "0.6rem 0.8rem", borderRadius: "6px", border: "1px solid var(--border-light)", outline: "none", fontSize: "0.9rem", background: "var(--bg-primary)", color: "var(--text-primary)" }}
+                          />
+                        </div>
+                        <div style={{ display: "flex", flexDirection: "column", gap: "0.25rem" }}>
                           <label style={{ fontSize: "0.8rem", fontWeight: "600", color: "var(--text-secondary)" }}>Project Notes (Optional)</label>
                           <textarea 
                             rows="2"
@@ -343,7 +354,7 @@ export default function CalendarScheduler() {
               setIsBooked(false);
               setSelectedDate(null);
               setSelectedTime(null);
-              setBookingForm({ name: "", email: "", desc: "" });
+              setBookingForm({ name: "", email: "", whatsapp: "", desc: "" });
             }} className="btn-secondary">
               Book Another Meeting
             </button>
