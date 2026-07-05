@@ -77,8 +77,7 @@ export async function POST(request) {
             ${whatsapp ? `<p style="margin: 5px 0;">📱 <strong>WhatsApp:</strong> ${whatsapp}</p>` : ""}
           </div>
           
-          <p><strong>What happens next?</strong></p>
-          <p>Our review target is within <strong>12 hours</strong>. If you would like to lock in a slot to discuss your architecture blueprint live, you can book a 15-minute briefing directly on our calendar. (Just scroll down to our live calendar section on the landing page!).</p>
+          <p><strong>What happens next?</strong> Our lead architect, Debayan, is currently reviewing your technical specifications. We will compile our analysis and reach out to you directly via email (or WhatsApp) within 12 hours.</p>
           
           <p style="margin-top: 30px; font-size: 0.9rem; color: #6b7280; border-top: 1px solid #e5e7eb; padding-top: 10px;">Zero Theorys Engineering — Zero Fluff. Just Code.</p>
         </div>
