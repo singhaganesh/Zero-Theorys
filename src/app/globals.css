@@ -1610,3 +1610,64 @@ a {
   }
 }
 
+/* Mobile Viewport Sizing & Spacing Adjustments */
+@media (max-width: 767px) {
+  /* Scale down section heights */
+  section {
+    padding: 3.25rem 0 !important;
+  }
+  
+  #home {
+    padding: 4.5rem 0 2.5rem 0 !important;
+  }
+
+  /* Shrink container horizontal margin */
+  .container {
+    padding: 0 1rem !important;
+  }
+
+  /* Shrink section titles spacing */
+  .section-title-wrap {
+    margin-bottom: 2.25rem !important;
+  }
+
+  /* Typography scale down */
+  #home h1, #home h1[style] {
+    font-size: 2.25rem !important;
+    line-height: 1.25 !important;
+    margin-bottom: 1rem !important;
+  }
+
+  .section-title {
+    font-size: 1.85rem !important;
+    line-height: 1.3 !important;
+  }
+
+  .section-subtitle {
+    font-size: 0.95rem !important;
+    line-height: 1.5 !important;
+  }
+
+  /* Card padding scale down to maximize viewport data density */
+  .glass-card, .glass-card[style] {
+    padding: 1.25rem !important;
+  }
+
+  .glass-card h3, .glass-card h3[style] {
+    font-size: 1.15rem !important;
+    line-height: 1.4 !important;
+    margin-bottom: 0.5rem !important;
+  }
+
+  .glass-card p, .glass-card p[style] {
+    font-size: 0.88rem !important;
+    line-height: 1.5 !important;
+    margin-bottom: 0.75rem !important;
+  }
+
+  /* SdlcStepper spacing tuning */
+  .stepper-item {
+    margin-bottom: 1.25rem !important;
+  }
+}
+
