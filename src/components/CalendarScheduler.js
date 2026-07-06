@@ -291,59 +291,31 @@ export default function CalendarScheduler() {
           </div>
         ) : (
           /* Confirmation State */
-          <div style={{ textAlign: "center", padding: "3rem 1.5rem" }}>
-            <div style={{
-              width: "64px",
-              height: "64px",
-              borderRadius: "50%",
-              background: "rgba(16, 185, 129, 0.1)",
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              margin: "0 auto 1.5rem auto"
-            }}>
+          <div className="planner-success-screen">
+            <div className="success-icon-circle" style={{ background: "rgba(16, 185, 129, 0.1)", animation: "none" }}>
               <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#10b981" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
                 <polyline points="20 6 9 17 4 12"></polyline>
               </svg>
             </div>
             
-            <h3 style={{ fontSize: "1.75rem", marginBottom: "0.5rem", color: "var(--text-primary)" }}>Slot Confirmed!</h3>
-            <p style={{ fontSize: "1.05rem", color: "var(--text-secondary)", marginBottom: "1.5rem" }}>
+            <h3 className="success-title">Slot Confirmed!</h3>
+            <p className="success-desc">
               Your 15-min introductory call is locked.
             </p>
             
-            <div style={{ 
-              background: "var(--bg-tertiary)", 
-              border: "1px solid var(--border-light)", 
-              borderRadius: "8px", 
-              padding: "1.25rem", 
-              maxWidth: "350px", 
-              margin: "0 auto 2rem auto",
-              textAlign: "left"
-            }}>
-              <p style={{ fontSize: "0.9rem", color: "var(--text-secondary)" }}>
+            <div className="success-data-box" style={{ maxWidth: "350px" }}>
+              <p style={{ fontSize: "0.9rem", color: "var(--text-secondary)", margin: 0 }}>
                 📅 <strong>Date:</strong> {selectedDate.toLocaleDateString("en-US", { weekday: 'long', month: 'short', day: 'numeric', year: 'numeric' })}
               </p>
-              <p style={{ fontSize: "0.9rem", color: "var(--text-secondary)", marginTop: "0.25rem" }}>
+              <p style={{ fontSize: "0.9rem", color: "var(--text-secondary)", marginTop: "0.25rem", marginBottom: 0 }}>
                 ⏰ <strong>Time:</strong> {selectedTime} (EST)
               </p>
-              <p style={{ fontSize: "0.9rem", color: "var(--text-secondary)", marginTop: "0.25rem" }}>
+              <p style={{ fontSize: "0.9rem", color: "var(--text-secondary)", marginTop: "0.25rem", marginBottom: 0 }}>
                 👤 <strong>Host:</strong> Debayan (Zero Theorys)
               </p>
             </div>
 
-            <div style={{
-              background: "rgba(234, 179, 8, 0.03)",
-              border: "1px dashed rgba(234, 179, 8, 0.2)",
-              borderRadius: "8px",
-              padding: "1rem",
-              maxWidth: "350px",
-              margin: "0 auto 1.5rem auto",
-              textAlign: "left",
-              display: "flex",
-              gap: "0.5rem",
-              alignItems: "flex-start"
-            }}>
+            <div className="success-warning-box" style={{ maxWidth: "350px" }}>
               <span style={{ fontSize: "1rem", marginTop: "-1px" }}>ℹ️</span>
               <p style={{ fontSize: "0.8rem", color: "var(--text-secondary)", margin: 0, lineHeight: "1.4" }}>
                 As this is an automated confirmation email, please check your <strong>Spam or Junk folder</strong> if it does not appear in your inbox within a few minutes.

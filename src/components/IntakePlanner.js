@@ -395,61 +395,32 @@ export default function IntakePlanner({ preselectedNeed }) {
           </div>
         ) : (
           /* Success Screen */
-          <div style={{ textAlign: "center", padding: "4rem 2rem" }}>
-            <div style={{
-              width: "72px",
-              height: "72px",
-              borderRadius: "50%",
-              background: "rgba(79, 70, 229, 0.08)",
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              margin: "0 auto 1.5rem auto",
-              animation: "pulse-glow 2.5s infinite"
-            }}>
-              <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="var(--accent-primary)" strokeWidth="2.5">
+          <div className="planner-success-screen">
+            <div className="success-icon-circle">
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--accent-primary)" strokeWidth="2.5">
                 <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
                 <polyline points="22 4 12 14.01 9 11.01"></polyline>
               </svg>
             </div>
             
-            <h3 style={{ fontSize: "2rem", marginBottom: "0.5rem", color: "var(--text-primary)" }}>Proposal Received</h3>
-            <p style={{ fontSize: "1.1rem", color: "var(--text-secondary)", marginBottom: "2rem", maxWidth: "480px", margin: "0 auto 2rem auto" }}>
+            <h3 className="success-title">Proposal Received</h3>
+            <p className="success-desc">
               Thank you, {formData.name}. Debayan has been notified and is reviewing your tech specifications.
             </p>
 
-            <div style={{
-              background: "var(--bg-tertiary)",
-              border: "1px solid var(--border-light)",
-              borderRadius: "8px",
-              padding: "1.25rem",
-              maxWidth: "400px",
-              margin: "0 auto 2.5rem auto",
-              textAlign: "left"
-            }}>
-              <p style={{ fontSize: "0.85rem", color: "var(--text-muted)", textTransform: "uppercase", fontWeight: "600", marginBottom: "0.5rem" }}>
+            <div className="success-data-box">
+              <p style={{ fontSize: "0.8rem", color: "var(--text-muted)", textTransform: "uppercase", fontWeight: "600", marginBottom: "0.5rem", letterSpacing: "0.05em" }}>
                 Auto-Generated Ticket Coords:
               </p>
-              <p style={{ fontSize: "0.9rem", color: "var(--text-primary)" }}>
+              <p style={{ fontSize: "0.9rem", color: "var(--text-primary)", margin: 0 }}>
                 <strong>Sector:</strong> {industries.find(i => i.id === formData.industry)?.label}
               </p>
-              <p style={{ fontSize: "0.9rem", color: "var(--text-primary)", marginTop: "0.25rem" }}>
+              <p style={{ fontSize: "0.9rem", color: "var(--text-primary)", marginTop: "0.25rem", marginBottom: 0 }}>
                 <strong>Target SLA:</strong> Review within 12 Hours
               </p>
             </div>
 
-            <div style={{
-              background: "rgba(234, 179, 8, 0.03)",
-              border: "1px dashed rgba(234, 179, 8, 0.2)",
-              borderRadius: "8px",
-              padding: "1rem",
-              maxWidth: "400px",
-              margin: "0 auto 2.5rem auto",
-              textAlign: "left",
-              display: "flex",
-              gap: "0.5rem",
-              alignItems: "flex-start"
-            }}>
+            <div className="success-warning-box">
               <span style={{ fontSize: "1rem", marginTop: "-1px" }}>ℹ️</span>
               <p style={{ fontSize: "0.8rem", color: "var(--text-secondary)", margin: 0, lineHeight: "1.4" }}>
                 As this is an automated confirmation email, please check your <strong>Spam or Junk folder</strong> if it does not appear in your inbox within a few minutes.
