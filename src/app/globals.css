@@ -1472,6 +1472,7 @@ a {
 /* Constellation Stack Styling - Option 1 */
 .constellation-wrapper {
   animation: constellation-drift 12s ease-in-out infinite alternate;
+  pointer-events: none;
 }
 
 @keyframes constellation-drift {
@@ -1496,6 +1497,7 @@ a {
 
 .constellation-node-wrapper {
   cursor: pointer;
+  pointer-events: auto;
 }
 
 .constellation-node-wrapper:hover .constellation-node-dot {
@@ -1827,7 +1829,7 @@ a {
     border: none !important;
     box-shadow: none !important;
     padding: 0 !important;
-    overflow-x: scroll !important;
+    overflow-x: auto !important;
     overflow-y: hidden !important;
     display: block !important;
     scroll-behavior: smooth;
