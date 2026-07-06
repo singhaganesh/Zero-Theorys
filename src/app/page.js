@@ -181,6 +181,62 @@ export default function Home() {
   const [securityScore, setSecurityScore] = useState(0);
   const [uptime, setUptime] = useState(0.0);
   const [activeTechCategory, setActiveTechCategory] = useState(0);
+  const [displayedLine1, setDisplayedLine1] = useState("");
+  const [displayedLine2, setDisplayedLine2] = useState("");
+  const [displayedLine3, setDisplayedLine3] = useState("");
+  const [isHeaderTyped, setIsHeaderTyped] = useState(false);
+  const [activeCursor, setActiveCursor] = useState("line1");
+
+  useEffect(() => {
+    const l1Text = "Zero Fluff.";
+    const l2Text = "Zero Theories.";
+    const l3Text = "Just Production-Ready Code.";
+    
+    let i = 0;
+    let j = 0;
+    let k = 0;
+    
+    const typeLine1 = () => {
+      if (i < l1Text.length) {
+        setDisplayedLine1(l1Text.slice(0, i + 1));
+        i++;
+        setTimeout(typeLine1, 60);
+      } else {
+        setTimeout(() => {
+          setActiveCursor("line2");
+          typeLine2();
+        }, 400);
+      }
+    };
+    
+    const typeLine2 = () => {
+      if (j < l2Text.length) {
+        setDisplayedLine2(l2Text.slice(0, j + 1));
+        j++;
+        setTimeout(typeLine2, 60);
+      } else {
+        setTimeout(() => {
+          setActiveCursor("line3");
+          typeLine3();
+        }, 400);
+      }
+    };
+    
+    const typeLine3 = () => {
+      if (k < l3Text.length) {
+        setDisplayedLine3(l3Text.slice(0, k + 1));
+        k++;
+        setTimeout(typeLine3, 60);
+      } else {
+        setIsHeaderTyped(true);
+        setTimeout(() => {
+          setActiveCursor("none");
+        }, 1500);
+      }
+    };
+    
+    typeLine1();
+  }, []);
 
   // 1. Mouse movement tracking for the radial-glow borders on service cards
   const handleMouseMove = (e, index) => {
@@ -749,12 +805,23 @@ export default function Home() {
               <span className="section-tag" style={{ animation: "pulse-glow 2s infinite" }}>
                 Elite Systems Agency
               </span>
-              <h1 style={{ fontSize: "3.5rem", lineHeight: "1.1", marginBottom: "1.5rem" }}>
-                Zero Fluff.<br />
-                Zero Theories.<br />
-                <span className="gradient-text">Just Production-Ready Code.</span>
+              <h1 style={{ fontSize: "3.5rem", lineHeight: "1.1", marginBottom: "1.5rem", fontFamily: "var(--font-display)" }}>
+                <span style={{ minHeight: "1.2em", display: "inline-block" }}>
+                  {displayedLine1}
+                  {activeCursor === "line1" && <span className="typing-cursor">|</span>}
+                </span>
+                <br />
+                <span style={{ minHeight: "1.2em", display: "inline-block" }}>
+                  {displayedLine2}
+                  {activeCursor === "line2" && <span className="typing-cursor">|</span>}
+                </span>
+                <br />
+                <span className="gradient-text" style={{ minHeight: "1.2em", display: "inline-block" }}>
+                  {displayedLine3}
+                </span>
+                {activeCursor === "line3" && <span className="typing-cursor" style={{ color: "var(--accent-secondary)" }}>|</span>}
               </h1>
-              <p style={{ fontSize: "1.2rem", color: "var(--text-secondary)", marginBottom: "2.5rem", maxWidth: "480px" }}>
+              <p className={`hero-desc ${isHeaderTyped ? "visible" : ""}`} style={{ fontSize: "1.2rem", color: "var(--text-secondary)", marginBottom: "2.5rem", maxWidth: "480px" }}>
                 Zero Theorys designs and deploys next-gen AI pipelines, scalable clouds, and cross-platform systems for international enterprises.
               </p>
               <div style={{ display: "flex", gap: "1rem", alignItems: "center" }}>
