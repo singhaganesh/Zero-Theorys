@@ -1988,3 +1988,42 @@ a {
   }
 }
 
+/* Responsive Hero 3D Canvas Sizing */
+.hero-three-container {
+  height: 450px;
+  width: 100%;
+  position: relative;
+}
+
+@media (max-width: 767px) {
+  .hero-three-container {
+    height: 300px !important;
+  }
+}
+
+/* Extra-Small Mobile Typographic Scale */
+@media (max-width: 400px) {
+  #home h1, #home h1[style] {
+    font-size: 1.85rem !important;
+    line-height: 1.3 !important;
+  }
+}
+
+/* Custom Scrollbar Cue for Horizontal Team Swipe */
+@media (max-width: 767px) {
+  .team-grid::-webkit-scrollbar {
+    height: 4px !important;
+    display: block !important;
+  }
+  
+  .team-grid::-webkit-scrollbar-track {
+    background: var(--border-light) !important;
+    border-radius: 2px !important;
+  }
+  
+  .team-grid::-webkit-scrollbar-thumb {
+    background: var(--accent-primary) !important;
+    border-radius: 2px !important;
+  }
+}
+

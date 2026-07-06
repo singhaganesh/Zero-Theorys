@@ -833,7 +833,7 @@ export default function Home() {
           </ScrollReveal>
 
           <ScrollReveal direction="fade" delay={300} duration={1000}>
-            <div style={{ height: "450px", width: "100%", position: "relative" }}>
+            <div className="hero-three-container">
               <ThreeSphere />
             </div>
           </ScrollReveal>
