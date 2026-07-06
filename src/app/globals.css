@@ -1524,6 +1524,10 @@ a {
   display: none;
 }
 
+.mobile-stepper-details {
+  display: none;
+}
+
 .tech-tab-button {
   transition: all var(--transition-fast);
 }
@@ -1751,6 +1755,7 @@ a {
   }
 
   .mobile-stepper-details {
+    display: block !important;
     padding: 0.5rem 0.75rem 1.25rem 0.75rem;
     border-top: 1px solid var(--border-light);
     animation: accordion-slide-down 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
@@ -1810,6 +1815,8 @@ a {
     display: block !important;
     border-top: 1px solid var(--border-light);
     padding: 1rem 0;
+    overflow: visible !important;
+    max-width: 100% !important;
     animation: accordion-slide-down 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
   }
 
@@ -1820,12 +1827,13 @@ a {
     border: none !important;
     box-shadow: none !important;
     padding: 0 !important;
-    overflow-x: auto !important;
-    display: flex !important;
-    justify-content: flex-start !important;
+    overflow-x: scroll !important;
+    overflow-y: hidden !important;
+    display: block !important;
     scroll-behavior: smooth;
     -webkit-overflow-scrolling: touch;
     width: 100% !important;
+    max-width: 100% !important;
   }
 
   .mobile-tech-details .constellation-wrapper {
