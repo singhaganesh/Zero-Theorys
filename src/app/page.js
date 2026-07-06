@@ -930,7 +930,12 @@ export default function Home() {
             </div>
           </ScrollReveal>
 
-          <div className="grid-3">
+          {/* Mobile Swipe Guide */}
+          <div className="mobile-swipe-guide" style={{ display: "none", textAlign: "center", marginBottom: "1.5rem", fontSize: "0.8rem", color: "var(--text-muted)", fontWeight: "600", letterSpacing: "0.05em", textTransform: "uppercase" }}>
+            Swipe horizontally to view architects ↔
+          </div>
+
+          <div className="grid-3 team-grid">
             {team.map((member, i) => (
               <ScrollReveal key={member.name} direction="up" delay={i * 250} duration={1400}>
                 <div className="glass-card" style={{ display: "flex", flexDirection: "column", height: "100%", textAlign: "center" }}>
@@ -959,7 +964,7 @@ export default function Home() {
                       {member.role}
                     </p>
 
-                    <p style={{ fontSize: "0.92rem", lineHeight: "1.6", color: "var(--text-secondary)", marginBottom: "1.5rem" }}>
+                    <p className="architect-desc" style={{ fontSize: "0.92rem", lineHeight: "1.6", color: "var(--text-secondary)", marginBottom: "1.5rem" }}>
                       {member.desc}
                     </p>
 

@@ -1669,5 +1669,90 @@ a {
   .stepper-item {
     margin-bottom: 1.25rem !important;
   }
+
+  /* Mobile Swipe Slider for Team grid */
+  .team-grid {
+    display: flex !important;
+    flex-wrap: nowrap !important;
+    overflow-x: auto !important;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+    gap: 1.25rem !important;
+    margin: 0 -1rem !important;
+    padding: 0.75rem 1rem 1.5rem 1rem !important;
+    scroll-snap-type: x mandatory;
+  }
+
+  .team-grid > div {
+    width: 240px !important;
+    flex-shrink: 0 !important;
+    scroll-snap-align: center;
+  }
+
+  /* Hide Team bios on mobile to make room for full rectangular images */
+  .architect-desc {
+    display: none !important;
+  }
+
+  /* Mobile Accordion overrides for SDLC Stepper */
+  .desktop-only-specs {
+    display: none !important;
+  }
+
+  .stepper-spine {
+    display: none !important;
+  }
+
+  .sdlc-grid {
+    grid-template-columns: 1fr !important;
+    gap: 1.5rem !important;
+  }
+
+  .stepper-item-wrapper {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-light);
+    border-radius: 12px;
+    padding: 0.25rem 0.5rem;
+    transition: all var(--transition-fast);
+    margin-bottom: 0.75rem;
+  }
+
+  .stepper-item-wrapper.active {
+    border-color: var(--accent-primary);
+    box-shadow: var(--shadow-md);
+  }
+
+  .stepper-item-wrapper .stepper-item {
+    border: none !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    padding: 1rem 0.5rem !important;
+  }
+
+  .mobile-stepper-details {
+    padding: 0.5rem 0.75rem 1.25rem 0.75rem;
+    border-top: 1px solid var(--border-light);
+    animation: accordion-slide-down 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+
+  /* Hide repetitive titles inside accordion */
+  .mobile-stepper-details .desktop-only-specs-header,
+  .mobile-stepper-details .desktop-only-specs-title {
+    display: none !important;
+  }
+
+  @keyframes accordion-slide-down {
+    from {
+      opacity: 0;
+      transform: translateY(-8px);
+      max-height: 0;
+      overflow: hidden;
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+      max-height: 1000px;
+    }
+  }
 }
 
