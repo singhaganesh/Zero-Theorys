@@ -646,8 +646,8 @@ export default function Home() {
     const category = techStack[idx];
     if (!category) return null;
     return (
-      <div className="glass-card constellation-card" style={{ height: "480px", width: "100%", position: "relative", background: "var(--bg-secondary)", overflow: "hidden", display: "flex", justifyContent: "center", alignItems: "center" }}>
-        <div className="glass-card-content constellation-wrapper" style={{ width: "100%", height: "100%", position: "relative" }}>
+      <div className="glass-card constellation-card">
+        <div className="glass-card-content constellation-wrapper">
           
           {/* SVG Connections layer */}
           <svg style={{ position: "absolute", top: 0, left: 0, width: "100%", height: "100%", zIndex: 1, pointerEvents: "none" }}>
