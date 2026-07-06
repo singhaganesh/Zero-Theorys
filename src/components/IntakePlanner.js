@@ -28,29 +28,29 @@ export default function IntakePlanner({ preselectedNeed }) {
   }, [preselectedNeed]);
 
   const industries = [
-    { id: "SaaS", label: "Software-as-a-Service (SaaS)", desc: "Subscription-based cloud platforms" },
-    { id: "Logistics", label: "Logistics & Supply Chain", desc: "Routing, dispatching, and tracking systems" },
-    { id: "Marketplace", label: "Digital Marketplaces", desc: "Two-sided platforms & e-commerce" },
-    { id: "FinTech", label: "Financial Technology", desc: "Secure transaction & banking systems" },
-    { id: "HealthTech", label: "Health Technology", desc: "HIPAA-compliant patient portals & tools" },
-    { id: "CustomAI", label: "Custom AI / Enterprise", desc: "Bespoke internal systems & AI tooling" },
-    { id: "Other", label: "Other / Custom", desc: "Bespoke projects in unlisted domains" }
+    { id: "SaaS", label: "Software-as-a-Service (SaaS)" },
+    { id: "Logistics", label: "Logistics & Supply Chain" },
+    { id: "Marketplace", label: "Digital Marketplaces" },
+    { id: "FinTech", label: "Financial Technology" },
+    { id: "HealthTech", label: "Health Technology" },
+    { id: "CustomAI", label: "Custom AI / Enterprise" },
+    { id: "Other", label: "Other / Custom" }
   ];
 
   const technicalNeeds = [
-    { id: "AICore", label: "Next-Gen AI Core Architecture", desc: "LLMs, Vector databases, and Multi-Agent frameworks" },
-    { id: "AIAgents", label: "Autonomous AI Agent Orchestration", desc: "RAG pipelines, Semantic caching, and Fine-tuning" },
-    { id: "FullStack", label: "Full-Stack Web Ecosystems & Cloud", desc: "Decoupled APIs, databases, microservices, and kubernetes" },
-    { id: "Mobile", label: "Cross-Platform Mobile Engineering", desc: "High-performance native iOS & Android systems" },
-    { id: "Website", label: "Website Development & SEO Engine", desc: "SEO-optimized Jamstack pages and Web Vitals tuning" },
-    { id: "Software", label: "Custom Software Engineering", desc: "Secure SaaS platforms and distributed enterprise systems" }
+    { id: "AICore", label: "Next-Gen AI Core Architecture" },
+    { id: "AIAgents", label: "Autonomous AI Agent Orchestration" },
+    { id: "FullStack", label: "Full-Stack Web Ecosystems & Cloud" },
+    { id: "Mobile", label: "Cross-Platform Mobile Engineering" },
+    { id: "Website", label: "Website Development & SEO Engine" },
+    { id: "Software", label: "Custom Software Engineering" }
   ];
 
   const timelines = [
-    { id: "under-1m", label: "< 1 Month", desc: "Fast-tracked MVP prototyping" },
-    { id: "1-3m", label: "1 – 3 Months", desc: "Standard iterative sprint cycle" },
-    { id: "3-6m", label: "3 – 6 Months", desc: "Advanced systems development" },
-    { id: "over-6m", label: "6+ Months", desc: "Long-term partnership roadmap" }
+    { id: "under-1m", label: "< 1 Month" },
+    { id: "1-3m", label: "1 – 3 Months" },
+    { id: "3-6m", label: "3 – 6 Months" },
+    { id: "over-6m", label: "6+ Months" }
   ];
 
   const handleNeedToggle = (needId) => {
@@ -68,6 +68,20 @@ export default function IntakePlanner({ preselectedNeed }) {
 
   const handlePrev = () => {
     if (step > 1) setStep(step - 1);
+  };
+
+  const handleIndustrySelect = (industryId) => {
+    setFormData((prev) => ({ ...prev, industry: industryId }));
+    setTimeout(() => {
+      setStep(2);
+    }, 200);
+  };
+
+  const handleTimelineSelect = (timelineId) => {
+    setFormData((prev) => ({ ...prev, timeline: timelineId }));
+    setTimeout(() => {
+      setStep(4);
+    }, 200);
   };
 
   const handleSubmit = async (e) => {
@@ -152,9 +166,9 @@ export default function IntakePlanner({ preselectedNeed }) {
                     return (
                       <div
                         key={ind.id}
-                        onClick={() => setFormData({ ...formData, industry: ind.id })}
+                        onClick={() => handleIndustrySelect(ind.id)}
                         style={{
-                          padding: "1.25rem",
+                          padding: "0.85rem 1.25rem",
                           border: isSelected ? "2px solid var(--accent-primary)" : "1px solid var(--border-light)",
                           borderRadius: "12px",
                           background: isSelected ? "rgba(5, 150, 105, 0.04)" : "var(--bg-secondary)",
@@ -163,8 +177,7 @@ export default function IntakePlanner({ preselectedNeed }) {
                         }}
                         className="selectable-item"
                       >
-                        <h5 style={{ fontSize: "1rem", color: "var(--text-primary)", marginBottom: "0.25rem" }}>{ind.label}</h5>
-                        <p style={{ fontSize: "0.85rem", color: "var(--text-secondary)" }}>{ind.desc}</p>
+                        <h5 style={{ fontSize: "0.95rem", color: "var(--text-primary)", margin: 0 }}>{ind.label}</h5>
                       </div>
                     );
                   })}
@@ -186,7 +199,7 @@ export default function IntakePlanner({ preselectedNeed }) {
                         key={need.id}
                         onClick={() => handleNeedToggle(need.id)}
                         style={{
-                          padding: "1.25rem",
+                          padding: "0.85rem 1.25rem",
                           border: isSelected ? "2px solid var(--accent-primary)" : "1px solid var(--border-light)",
                           borderRadius: "12px",
                           background: isSelected ? "rgba(5, 150, 105, 0.04)" : "var(--bg-secondary)",
@@ -195,7 +208,7 @@ export default function IntakePlanner({ preselectedNeed }) {
                         }}
                         className="selectable-item"
                       >
-                        <div style={{ display: "flex", gap: "0.75rem", alignItems: "flex-start" }}>
+                        <div style={{ display: "flex", gap: "0.75rem", alignItems: "center" }}>
                           <div style={{
                             width: "18px",
                             height: "18px",
@@ -205,7 +218,6 @@ export default function IntakePlanner({ preselectedNeed }) {
                             display: "flex",
                             justifyContent: "center",
                             alignItems: "center",
-                            marginTop: "3px",
                             flexShrink: 0
                           }}>
                             {isSelected && (
@@ -214,10 +226,7 @@ export default function IntakePlanner({ preselectedNeed }) {
                               </svg>
                             )}
                           </div>
-                          <div>
-                            <h5 style={{ fontSize: "1rem", color: "var(--text-primary)", marginBottom: "0.25rem" }}>{need.label}</h5>
-                            <p style={{ fontSize: "0.85rem", color: "var(--text-secondary)" }}>{need.desc}</p>
-                          </div>
+                          <h5 style={{ fontSize: "0.95rem", color: "var(--text-primary)", margin: 0 }}>{need.label}</h5>
                         </div>
                       </div>
                     );
@@ -232,25 +241,25 @@ export default function IntakePlanner({ preselectedNeed }) {
                 <h4 style={{ fontSize: "1.1rem", marginBottom: "1.25rem", color: "var(--text-primary)" }}>
                   Expected Delivery Timeline:
                 </h4>
-                <div className="responsive-selection-grid">
+                <div className="timeline-selection-grid">
                   {timelines.map((t) => {
                     const isSelected = formData.timeline === t.id;
                     return (
                       <div
                         key={t.id}
-                        onClick={() => setFormData({ ...formData, timeline: t.id })}
+                        onClick={() => handleTimelineSelect(t.id)}
                         style={{
-                          padding: "1.25rem",
+                          padding: "0.85rem 1.25rem",
                           border: isSelected ? "2px solid var(--accent-primary)" : "1px solid var(--border-light)",
                           borderRadius: "12px",
                           background: isSelected ? "rgba(5, 150, 105, 0.04)" : "var(--bg-secondary)",
                           cursor: "pointer",
-                          transition: "all var(--transition-fast)"
+                          transition: "all var(--transition-fast)",
+                          textAlign: "center"
                         }}
                         className="selectable-item"
                       >
-                        <h5 style={{ fontSize: "1rem", color: "var(--text-primary)", marginBottom: "0.25rem" }}>{t.label}</h5>
-                        <p style={{ fontSize: "0.85rem", color: "var(--text-secondary)" }}>{t.desc}</p>
+                        <h5 style={{ fontSize: "0.95rem", color: "var(--text-primary)", margin: 0 }}>{t.label}</h5>
                       </div>
                     );
                   })}

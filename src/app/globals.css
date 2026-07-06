@@ -1887,3 +1887,22 @@ a {
   transform: translateY(0);
 }
 
+/* Compact Timeline Layout Grid */
+.timeline-selection-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.75rem;
+}
+
+@media (max-width: 767px) {
+  .timeline-selection-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .timeline-selection-grid {
+    grid-template-columns: 1fr !important;
+  }
+}
+
