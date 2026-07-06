@@ -642,6 +642,103 @@ export default function Home() {
     }
   ];
 
+  const renderConstellationCanvas = (idx) => {
+    const category = techStack[idx];
+    if (!category) return null;
+    return (
+      <div className="glass-card constellation-card" style={{ height: "480px", width: "100%", position: "relative", background: "var(--bg-secondary)", overflow: "hidden", display: "flex", justifyContent: "center", alignItems: "center" }}>
+        <div className="glass-card-content constellation-wrapper" style={{ width: "100%", height: "100%", position: "relative" }}>
+          
+          {/* SVG Connections layer */}
+          <svg style={{ position: "absolute", top: 0, left: 0, width: "100%", height: "100%", zIndex: 1, pointerEvents: "none" }}>
+            {category.connections.map((conn, i) => {
+              const fromNode = category.nodes[conn.from];
+              const toNode = category.nodes[conn.to];
+              if (!fromNode || !toNode) return null;
+              return (
+                <g key={i}>
+                  <line
+                    x1={`${fromNode.x}%`}
+                    y1={`${fromNode.y}%`}
+                    x2={`${toNode.x}%`}
+                    y2={`${toNode.y}%`}
+                    stroke="var(--border-active)"
+                    strokeWidth="1.5"
+                    opacity="0.3"
+                  />
+                  <line
+                    x1={`${fromNode.x}%`}
+                    y1={`${fromNode.y}%`}
+                    x2={`${toNode.x}%`}
+                    y2={`${toNode.y}%`}
+                    stroke={fromNode.glow}
+                    strokeWidth="2"
+                    opacity="0.6"
+                    className="constellation-pulse-line"
+                  />
+                </g>
+              );
+            })}
+          </svg>
+
+          {/* Nodes Layer */}
+          {category.nodes.map((node, i) => {
+            const sizeMultiplier = node.size === "large" ? 1.5 : node.size === "medium" ? 1.1 : 0.8;
+            return (
+              <div
+                key={node.name}
+                style={{
+                  position: "absolute",
+                  left: `${node.x}%`,
+                  top: `${node.y}%`,
+                  transform: "translate(-50%, -50%)",
+                  zIndex: 2,
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                  gap: "0.35rem"
+                }}
+                className="constellation-node-wrapper"
+              >
+                {/* Interactive circular dot */}
+                <div
+                  style={{
+                    width: `${16 * sizeMultiplier}px`,
+                    height: `${16 * sizeMultiplier}px`,
+                    borderRadius: "50%",
+                    background: node.glow,
+                    boxShadow: `0 0 ${12 * sizeMultiplier}px ${node.glow}`,
+                    transition: "all var(--transition-fast)"
+                  }}
+                  className="constellation-node-dot"
+                />
+                {/* Technology Text label */}
+                <span
+                  style={{
+                    fontSize: node.size === "large" ? "0.85rem" : "0.78rem",
+                    fontWeight: node.size === "large" ? "700" : "500",
+                    color: "var(--text-primary)",
+                    background: "var(--bg-secondary)",
+                    border: "1px solid var(--border-light)",
+                    padding: "0.2rem 0.5rem",
+                    borderRadius: "6px",
+                    boxShadow: "var(--shadow-sm)",
+                    whiteSpace: "nowrap",
+                    pointerEvents: "none",
+                    userSelect: "none"
+                  }}
+                  className="constellation-node-label"
+                >
+                  {node.name}
+                </span>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    );
+  };
+
   return (
     <div className="fade-in-section">
       {/* 1. HERO SECTION */}
@@ -1000,165 +1097,65 @@ export default function Home() {
               {techStack.map((category, idx) => {
                 const isActive = activeTechCategory === idx;
                 return (
-                  <button
-                    key={category.title}
-                    onClick={() => setActiveTechCategory(idx)}
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      gap: "1rem",
-                      padding: "1.25rem",
-                      borderRadius: "14px",
-                      border: isActive ? "2px solid var(--accent-primary)" : "1px solid var(--border-light)",
-                      background: isActive ? "var(--bg-secondary)" : "transparent",
-                      color: "var(--text-primary)",
-                      textAlign: "left",
-                      cursor: "pointer",
-                      transition: "all var(--transition-fast)",
-                      boxShadow: isActive ? "var(--shadow-md)" : "none",
-                      width: "100%",
-                      outline: "none"
-                    }}
-                    className="tech-tab-button"
-                  >
-                    <div style={{
-                      display: "flex",
-                      justifyContent: "center",
-                      alignItems: "center",
-                      width: "36px",
-                      height: "36px",
-                      borderRadius: "8px",
-                      background: isActive ? "rgba(5, 150, 105, 0.08)" : "var(--bg-tertiary)",
-                      color: isActive ? "var(--accent-primary)" : "var(--text-secondary)",
-                      transition: "all var(--transition-fast)",
-                      flexShrink: 0
-                    }}>
-                      {category.icon}
-                    </div>
-                    <div>
-                      <h4 style={{ fontSize: "1.1rem", fontWeight: "600", margin: 0 }}>
-                        {category.title}
-                      </h4>
-                      <p style={{ fontSize: "0.8rem", color: "var(--text-secondary)", margin: "0.15rem 0 0 0" }}>
-                        {category.nodes.length} Key Technologies
-                      </p>
-                    </div>
-                  </button>
+                  <div key={category.title} className={`tech-tab-wrapper ${isActive ? "active" : ""}`}>
+                    <button
+                      onClick={() => setActiveTechCategory(isActive ? -1 : idx)}
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        gap: "1rem",
+                        padding: "1.25rem",
+                        borderRadius: "14px",
+                        border: isActive ? "2px solid var(--accent-primary)" : "1px solid var(--border-light)",
+                        background: isActive ? "var(--bg-secondary)" : "transparent",
+                        color: "var(--text-primary)",
+                        textAlign: "left",
+                        cursor: "pointer",
+                        transition: "all var(--transition-fast)",
+                        boxShadow: isActive ? "var(--shadow-md)" : "none",
+                        width: "100%",
+                        outline: "none"
+                      }}
+                      className="tech-tab-button"
+                    >
+                      <div style={{
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        width: "36px",
+                        height: "36px",
+                        borderRadius: "8px",
+                        background: isActive ? "rgba(5, 150, 105, 0.08)" : "var(--bg-tertiary)",
+                        color: isActive ? "var(--accent-primary)" : "var(--text-secondary)",
+                        transition: "all var(--transition-fast)",
+                        flexShrink: 0
+                      }}>
+                        {category.icon}
+                      </div>
+                      <div>
+                        <h4 style={{ fontSize: "1.1rem", fontWeight: "600", margin: 0 }}>
+                          {category.title}
+                        </h4>
+                        <p style={{ fontSize: "0.8rem", color: "var(--text-secondary)", margin: "0.15rem 0 0 0" }}>
+                          {category.nodes.length} Key Technologies
+                        </p>
+                      </div>
+                    </button>
+
+                    {/* Mobile Accordion details panel */}
+                    {isActive && (
+                      <div className="mobile-tech-details">
+                        {renderConstellationCanvas(idx)}
+                      </div>
+                    )}
+                  </div>
                 );
               })}
             </div>
 
-            {/* Right Column: Visual Constellation Canvas */}
-            <div className="glass-card constellation-card" style={{ height: "480px", width: "100%", position: "relative", background: "var(--bg-secondary)", overflow: "hidden", display: "flex", justifyContent: "center", alignItems: "center" }}>
-              <div className="glass-card-content constellation-wrapper" style={{ width: "100%", height: "100%", position: "relative" }}>
-                
-                {/* SVG Connections layer */}
-                <svg style={{ position: "absolute", top: 0, left: 0, width: "100%", height: "100%", zIndex: 1, pointerEvents: "none" }}>
-                  {techStack[activeTechCategory].connections.map((conn, i) => {
-                    const fromNode = techStack[activeTechCategory].nodes[conn.from];
-                    const toNode = techStack[activeTechCategory].nodes[conn.to];
-                    if (!fromNode || !toNode) return null;
-                    return (
-                      <g key={i}>
-                        <line
-                          x1={`${fromNode.x}%`}
-                          y1={`${fromNode.y}%`}
-                          x2={`${toNode.x}%`}
-                          y2={`${toNode.y}%`}
-                          stroke="var(--border-active)"
-                          strokeWidth="1.5"
-                          opacity="0.3"
-                        />
-                        <line
-                          x1={`${fromNode.x}%`}
-                          y1={`${fromNode.y}%`}
-                          x2={`${toNode.x}%`}
-                          y2={`${toNode.y}%`}
-                          stroke={fromNode.glow}
-                          strokeWidth="2"
-                          opacity="0.6"
-                          className="constellation-pulse-line"
-                        />
-                      </g>
-                    );
-                  })}
-                </svg>
-
-                {/* Nodes Layer */}
-                {techStack[activeTechCategory].nodes.map((node, i) => {
-                  const sizeMultiplier = node.size === "large" ? 1.5 : node.size === "medium" ? 1.1 : 0.8;
-                  return (
-                    <div
-                      key={node.name}
-                      style={{
-                        position: "absolute",
-                        left: `${node.x}%`,
-                        top: `${node.y}%`,
-                        transform: "translate(-50%, -50%)",
-                        zIndex: 2,
-                        display: "flex",
-                        flexDirection: "column",
-                        alignItems: "center",
-                        gap: "0.35rem"
-                      }}
-                      className="constellation-node-wrapper"
-                    >
-                      {/* Interactive circular dot */}
-                      <div
-                        style={{
-                          width: `${16 * sizeMultiplier}px`,
-                          height: `${16 * sizeMultiplier}px`,
-                          borderRadius: "50%",
-                          background: node.glow,
-                          boxShadow: `0 0 ${12 * sizeMultiplier}px ${node.glow}`,
-                          transition: "all var(--transition-fast)"
-                        }}
-                        className="constellation-node-dot"
-                      />
-                      {/* Technology Text label */}
-                      <span
-                        style={{
-                          fontSize: node.size === "large" ? "0.85rem" : "0.78rem",
-                          fontWeight: node.size === "large" ? "700" : "500",
-                          color: "var(--text-primary)",
-                          background: "var(--bg-secondary)",
-                          border: "1px solid var(--border-light)",
-                          padding: "0.2rem 0.5rem",
-                          borderRadius: "6px",
-                          boxShadow: "var(--shadow-sm)",
-                          whiteSpace: "nowrap",
-                          pointerEvents: "none",
-                          userSelect: "none"
-                        }}
-                        className="constellation-node-label"
-                      >
-                        {node.name}
-                      </span>
-                    </div>
-                  );
-                })}
-              </div>
-              
-              {/* Mobile Swipe Guide */}
-              <div style={{
-                display: "none",
-                position: "absolute",
-                bottom: "1rem",
-                left: "50%",
-                transform: "translateX(-50%)",
-                background: "rgba(0, 0, 0, 0.7)",
-                backdropFilter: "blur(4px)",
-                border: "1px solid var(--border-light)",
-                color: "#ffffff",
-                fontSize: "0.75rem",
-                padding: "0.35rem 0.85rem",
-                borderRadius: "20px",
-                zIndex: 10,
-                pointerEvents: "none",
-                whiteSpace: "nowrap"
-              }} className="mobile-swipe-guide">
-                Swipe to explore map ↔
-              </div>
+            {/* Right Column: Visual Constellation Canvas (desktop only) */}
+            <div className="desktop-only-constellation" style={{ width: "100%" }}>
+              {renderConstellationCanvas(activeTechCategory)}
             </div>
           </div>
         </div>

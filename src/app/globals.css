@@ -1754,5 +1754,50 @@ a {
       max-height: 1000px;
     }
   }
+
+  /* Mobile Accordion overrides for Technology Stack */
+  .desktop-only-constellation {
+    display: none !important;
+  }
+
+  .constellation-section {
+    grid-template-columns: 1fr !important;
+    gap: 1.5rem !important;
+  }
+
+  .tech-tab-wrapper {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-light);
+    border-radius: 12px;
+    padding: 0.25rem 0.5rem;
+    transition: all var(--transition-fast);
+    margin-bottom: 0.75rem;
+  }
+
+  .tech-tab-wrapper.active {
+    border-color: var(--accent-primary);
+    box-shadow: var(--shadow-md);
+  }
+
+  .tech-tab-wrapper .tech-tab-button {
+    border: none !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    padding: 1rem 0.5rem !important;
+  }
+
+  .mobile-tech-details {
+    padding: 0.5rem 0.75rem 1.25rem 0.75rem;
+    border-top: 1px solid var(--border-light);
+    animation: accordion-slide-down 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+
+  .mobile-tech-details .constellation-card {
+    border: none !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    height: 340px !important;
+    padding: 0 !important;
+  }
 }
 
