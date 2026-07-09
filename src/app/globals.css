@@ -388,6 +388,15 @@ a {
   transform: translateX(2px);
 }
 
+.email-link {
+  color: var(--text-secondary);
+  transition: var(--transition-fast);
+}
+.email-link:hover {
+  color: var(--accent-primary) !important;
+  text-decoration: underline;
+}
+
 /* Scroll Reveal base and directional offsets (Apple blur-reveal) */
 .reveal-base {
   opacity: 0;
